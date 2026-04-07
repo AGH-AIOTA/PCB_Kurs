@@ -12702,16 +12702,89 @@
 		(layer "F.SilkS")
 		(uuid "ff3dab68-0930-4284-924b-b3e18b8d52f5")
 	)
-	(gr_rect
-		(start 45.27 45.4025)
-		(end 212.775 129.25)
+	(gr_arc
+		(start 210.775 45.4025)
+		(mid 212.189214 45.988286)
+		(end 212.775 47.4025)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
-		(fill no)
 		(layer "Edge.Cuts")
-		(uuid "8561ee35-a4a4-475e-9799-a4eca16ff8ca")
+		(uuid "398aa0f5-436e-49ab-bc38-3013442c19bd")
+	)
+	(gr_line
+		(start 45.27 127.25)
+		(end 45.27 47.4025)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "45799d71-f302-4548-b74a-5338285b52b6")
+	)
+	(gr_arc
+		(start 212.775 127.25)
+		(mid 212.189214 128.664214)
+		(end 210.775 129.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "76046a68-cb23-4a53-8de5-72682d9e05f1")
+	)
+	(gr_arc
+		(start 45.27 47.4025)
+		(mid 45.855786 45.988286)
+		(end 47.27 45.4025)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "b89b9089-6290-4965-9606-766549acd0a5")
+	)
+	(gr_line
+		(start 47.27 45.4025)
+		(end 210.775 45.4025)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "bc762e57-48ed-46d6-a2ff-dfa2ba2f670a")
+	)
+	(gr_line
+		(start 210.775 129.25)
+		(end 47.27 129.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "df292807-d6ff-4b89-a8c4-858e9f683fb4")
+	)
+	(gr_line
+		(start 212.775 47.4025)
+		(end 212.775 127.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "f92aadc2-e52a-4e5b-8646-7a805d00d48d")
+	)
+	(gr_arc
+		(start 47.27 129.25)
+		(mid 45.855786 128.664214)
+		(end 45.27 127.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "fd8e3f6e-d61e-437d-ad7d-7069919a1376")
 	)
 	(image
 		(at 56.95 75.35)
@@ -13044,6 +13117,18 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text "I2C"
+		(at 203.386 99 0)
+		(layer "F.SilkS")
+		(uuid "713cf75f-d8ae-40ec-acdb-7eba59babafe")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
 	(gr_text "RX"
 		(at 187.541524 104.724684 0)
 		(layer "F.SilkS")
@@ -13177,14 +13262,15 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "AIOTA X Logic_Labolatory"
-		(at 90.805 84.455 0)
+	(gr_text "AIOTA X AGH Drone Engineering X Logic_Labolatory"
+		(at 76.3 84.455 0)
 		(layer "F.SilkS")
 		(uuid "e07fe36c-9561-4ffa-97cd-6567b043486f")
 		(effects
 			(font
-				(size 1 1)
-				(thickness 0.1)
+				(size 0.85 0.85)
+				(thickness 0.15)
+				(bold yes)
 			)
 			(justify left bottom)
 		)
@@ -13244,6 +13330,18 @@
 		(effects
 			(font
 				(size 1.4 1.4)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "UART"
+		(at 190 99 0)
+		(layer "F.SilkS")
+		(uuid "f2240afb-fd79-4fd2-9aeb-679c8bd3cc87")
+		(effects
+			(font
+				(size 1 1)
 				(thickness 0.1)
 			)
 			(justify left bottom)
