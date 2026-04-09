@@ -1983,7 +1983,7 @@
 	(footprint "Potentiometer_THT:Potentiometer_Alps_RK163_Single_Horizontal"
 		(layer "F.Cu")
 		(uuid "13101d87-afb5-43c8-be54-675835e9ee6a")
-		(at 67.5 51.5)
+		(at 67.6 50.8)
 		(descr "1110U1Q 1110TNP 1110U2A 1110U0Q Potentiometer, horizontal, Alps RK163 Single, https://tech.alpsalpine.com/prod/e/pdf/potentiometer/rotarypotentiometers/rk16/rk16.pdf")
 		(tags "Potentiometer horizontal Alps RK163 Single")
 		(property "Reference" "RV5KK1"
@@ -10474,8 +10474,8 @@
 		(uuid "0892d64f-33e4-4f65-8900-cd353cb08bd1")
 	)
 	(gr_rect
-		(start 55.6 52.4)
-		(end 58.3 60.7)
+		(start 55.6 51.75)
+		(end 58.3 60.05)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -11857,7 +11857,7 @@
 		(uuid "9d69778e-939b-4736-9a0a-21c40a29d04a")
 	)
 	(gr_line
-		(start 56.95 52.4)
+		(start 56.95 51.75)
 		(end 56.95 51.75)
 		(stroke
 			(width 0.1)
@@ -12503,7 +12503,7 @@
 	)
 	(gr_line
 		(start 56.95 62)
-		(end 56.95 60.7)
+		(end 56.95 60.05)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -14000,20 +14000,20 @@
 		(uuid "08c4ffc7-076f-4b87-811b-04ae62d483db")
 	)
 	(segment
-		(start 67.4525 51.35)
-		(end 71.9 46.9025)
-		(width 2)
-		(layer "B.Cu")
-		(net 5)
-		(uuid "0a38bf34-d7a0-4449-8424-b7b148d0d5aa")
-	)
-	(segment
 		(start 151.25 82.905)
 		(end 149.78 84.375)
 		(width 2)
 		(layer "B.Cu")
 		(net 5)
 		(uuid "0a645585-256d-44df-af4d-c503c27847d3")
+	)
+	(segment
+		(start 67.6 50.8)
+		(end 68.0025 50.8)
+		(width 2)
+		(layer "B.Cu")
+		(net 5)
+		(uuid "0e677020-a366-4035-a3b7-551aacec9f7a")
 	)
 	(segment
 		(start 58.42 84.03)
@@ -14062,6 +14062,14 @@
 		(layer "B.Cu")
 		(net 5)
 		(uuid "3b0e3b5d-3235-4cc4-9eb7-614cf89abc6e")
+	)
+	(segment
+		(start 68.0025 50.8)
+		(end 71.9 46.9025)
+		(width 2)
+		(layer "B.Cu")
+		(net 5)
+		(uuid "3cd0501b-534e-4719-b3c5-2b2bf3dc0f0f")
 	)
 	(segment
 		(start 70.485 90.17)
@@ -14118,14 +14126,6 @@
 		(layer "B.Cu")
 		(net 5)
 		(uuid "59061b76-a7ec-4d93-a0ed-94cd1d652a2f")
-	)
-	(segment
-		(start 67.45 51.35)
-		(end 67.4525 51.35)
-		(width 2)
-		(layer "B.Cu")
-		(net 5)
-		(uuid "6461ea61-1e99-4c4a-843e-e1f4319492f2")
 	)
 	(segment
 		(start 165.331816 50.8325)
