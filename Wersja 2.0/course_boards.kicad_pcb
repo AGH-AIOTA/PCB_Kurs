@@ -13262,7 +13262,7 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "AIOTA X AGH Drone Engineering X Logic_Labolatory"
+	(gr_text "AIOTA X AGH Drone Engineering X Logic_Laboratory"
 		(at 76.3 84.455 0)
 		(layer "F.SilkS")
 		(uuid "e07fe36c-9561-4ffa-97cd-6567b043486f")
