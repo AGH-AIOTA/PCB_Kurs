@@ -1,0 +1,63 @@
+site_name: Kurs Programowania Mikrokontrolerów
+site_description: Profesjonalne materiały edukacyjne do układu ESP32-C6
+site_author: AGH-AIOTA
+
+# Wskazujemy folder z plikami źródłowymi
+docs_dir: Mikrokontrolery
+
+theme:
+  name: material
+  language: pl
+  # Nowoczesna typografia z Google Fonts
+  font:
+    text: Outfit
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.path
+    - navigation.footer
+    - content.code.copy # Wygodne kopiowanie bloków kodu
+  palette:
+    # Elegancki tryb jasny
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Przełącz na tryb ciemny
+    # Nowoczesny tryb ciemny (Slate)
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Przełącz na tryb jasny
+
+# Konfiguracja wtyczek (automatyczne renderowanie alertów GitHuba)
+plugins:
+  - search
+  - callouts
+
+# Konfiguracja nawigacji
+nav:
+  - Skrypt Laboratoryjny: index.md
+
+# Niezbędne rozszerzenia dla pięknego renderowania tabel, kodu, cytatów i szczegółów
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+  - pymdownx.details # Obsługa bloków <details>
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+  - pymdownx.inlinehilite
+
+# Dodatkowe style CSS dla unikalnego, pięknego wyglądu (kolorystyka premium)
+extra_css:
+  - stylesheets/custom.css
