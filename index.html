@@ -1240,7 +1240,7 @@ Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt
 <h4 id="zadanie-do-samodzielnego-wykonania-termostat-prog-alarmowy">Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):</h4>
 <p>Często odczyt z czujnika nie służy do płynnej regulacji, lecz do załączania ostrzeżenia po przekroczeniu pewnego progu. Zmodyfikuj program tak, aby całkowicie usunąć <code>analogWrite</code> oraz <code>map()</code>, a zamiast tego użyć instrukcji warunkowej <code>if ... else</code>:
 * Jeśli odczytana wartość z potencjometru jest <strong>większa niż 3000</strong>, włącz diodę LED (stan <code>HIGH</code>).
-* W przeciwnym wypadku (odczyt $\le$ 3000), wyłącz diodę (stan <code>LOW</code>).</p>
+* W przeciwnym wypadku (odczyt &lt;= 3000), wyłącz diodę (stan <code>LOW</code>).</p>
 <hr />
 <h3 id="cwiczenie-5-magistrala-i2c-i-zaawansowany-czujnik-mpu6050">Ćwiczenie 5: Magistrala I2C i zaawansowany czujnik MPU6050</h3>
 <p>Gdy chcemy podłączyć zaawansowane cyfrowe czujniki (np. wyświetlacze OLED, czujniki ciśnienia czy sensory ruchu), używamy magistrali <strong>I2C</strong>. Wykorzystuje ona tylko dwa przewody:
@@ -1301,7 +1301,7 @@ Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt
 </span></code></pre></div>
 <h4 id="zadanie-do-samodzielnego-wykonania-czarna-skrzynka-wykrywacz-wstrzasu">Zadanie do samodzielnego wykonania (Czarna skrzynka / Wykrywacz wstrząsu):</h4>
 <p>Zmieńmy koncepcję: zamiast badać powolny przechył, stwórzmy układ reagujący na gwałtowne przeciążenia (np. wykrywanie kolizji robota lub uderzenia).
-Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech osiach. Biblioteka udostępnia do tego gotowe metody <code>mpu.getAccX()</code>, <code>mpu.getAccY()</code> oraz <code>mpu.getAccZ()</code> (wartość 1.0 oznacza standardowe przyśpieszenie ziemskie $1g$).
+Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech osiach. Biblioteka udostępnia do tego gotowe metody <code>mpu.getAccX()</code>, <code>mpu.getAccY()</code> oraz <code>mpu.getAccZ()</code> (wartość 1.0 oznacza standardowe przyśpieszenie ziemskie <strong>1g</strong>).
 * Dopisz w pętli <code>loop()</code> warunek sprawdzający, czy przyśpieszenie w osi X lub Y przekroczyło próg <strong><code>2.0</code></strong> (silny wstrząs/uderzenie).
 * Jeśli wstrząs zostanie wykryty, natychmiast zapal czerwoną diodę na stałe (stan <code>HIGH</code>) jako zapisaną flagę alarmową informującą o zderzeniu.</p>
 <hr />
@@ -1309,8 +1309,8 @@ Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech o
 <p>Często projekty wymagają połączenia ze sobą dwóch oddzielnych układów (np. główny sterownik i moduł GPS lub komunikacja przewodowa dwóch płytek ESP). Służy do tego interfejs <strong>UART (Universal Asynchronous Receiver-Transmitter)</strong>.</p>
 <p>Wymaga on połączenia trzech linii ze złącza <code>J4</code>:
 1. <strong>Masa (GND):</strong> Płytki muszą mieć wspólną masę.
-2. <strong>TX (Nadajnik z ESP A) $\rightarrow$ RX (Odbiornik w ESP B)</strong>
-3. <strong>RX (Odbiornik w ESP A) $\rightarrow$ TX (Nadajnik w ESP B)</strong></p>
+2. <strong>TX (Nadajnik z ESP A) -&gt; RX (Odbiornik w ESP B)</strong>
+3. <strong>RX (Odbiornik w ESP A) -&gt; TX (Nadajnik w ESP B)</strong></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p><strong>Pamiętaj o skrzyżowaniu linii!</strong>
@@ -1391,7 +1391,7 @@ Piny nadawcze (TX) zawsze łączymy z pinami odbiorczymi (RX) drugiego urządzen
 <p><strong>Dla ciekawskich</strong>
 <strong>Czym jest kod ASCII?</strong>
 Komputery i mikrokontrolery nie rozumieją liter ani znaków – przetwarzają wyłącznie liczby. Dlatego każdy znak ma przypisaną stałą wartość liczbową w tzw. <strong>tabeli ASCII</strong> (np. znak <code>'0'</code> to w pamięci liczba 48, znak <code>'1'</code> to 49, a literka <code>'A'</code> to 65).
-Zapis <code>odebranyZnak - '0'</code> to popularny programistyczny trik: odejmując kod ASCII zera (48) od kodu ASCII odebranego znaku (np. <code>'5'</code>, czyli 53), otrzymujemy czystą wartość liczbową: $53 - 48 = 5$.</p>
+Zapis <code>odebranyZnak - '0'</code> to popularny programistyczny trik: odejmując kod ASCII zera (48) od kodu ASCII odebranego znaku (np. <code>'5'</code>, czyli 53), otrzymujemy czystą wartość liczbową: <strong>53 - 48 = 5</strong>.</p>
 </div>
 <h4 id="zadanie-do-samodzielnego-wykonania-sterowanie-komendami-literowymi">Zadanie do samodzielnego wykonania (Sterowanie komendami literowymi):</h4>
 <p>Zamiast przesyłać cyfry regulujące jasność, zmodyfikuj program Odbiornika (Płytki B) tak, aby reagował na konkretne <strong>litery</strong> działające jako polecenia:
