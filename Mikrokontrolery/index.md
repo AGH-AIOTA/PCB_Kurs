@@ -107,7 +107,7 @@ W tym ćwiczeniu nauczymy się sterować elementem fizycznym. Wyjście cyfrowe m
 * **HIGH (stan wysoki):** na pinie pojawia się napięcie 3.3V – dioda świeci.
 * **LOW (stan niski):** napięcie spada do 0V (połączenie z masą) – dioda gaśnie.
 
-Z naszego schematu wiemy, że dioda `D3` podłączona jest do pinu **2**. Funkcja `digitalWrite(pin, stan)` pozwala ustawić żądany stan na wybranym pinie.
+Z naszego schematu wiemy, że dioda `D3` podłączona jest do pinu **GPIO2**. Funkcja `digitalWrite(pin, stan)` pozwala ustawić żądany stan na wybranym pinie.
 
 #### Uzupełnij kod i wgraj na płytkę:
 ```cpp
@@ -129,7 +129,7 @@ void loop() {
 ```
 
 #### Zadanie do samodzielnego wykonania:
-Na płytce znajduje się druga dioda (`D10`) podłączona do pinu **3**. Zmodyfikuj program tak, aby uzyskać efekt **naprzemiennego migania obu diod** (gdy jedna się zapala, druga natychmiast gaśnie).
+Na płytce znajduje się druga dioda (`D10`) podłączona do pinu **GPIO3**. Zmodyfikuj program tak, aby uzyskać efekt **naprzemiennego migania obu diod** (gdy jedna się zapala, druga natychmiast gaśnie).
 
 ---
 
@@ -241,6 +241,7 @@ Podłączymy do niego moduł **MPU6050** (zawierający 3-osiowy akcelerometr ora
 
 #### Instalacja biblioteki:
 Zanim napiszemy kod, musimy zainstalować bibliotekę, która ułatwi nam komunikację z czujnikiem.
+
 1. W Arduino IDE wybierz: **Szkic -> Dołącz bibliotekę -> Zarządzaj bibliotekami...**
 2. Wyszukaj: **MPU6050_light** (autor: Romain JL).
 3. Kliknij **Zainstaluj**.
