@@ -1,0 +1,1468 @@
+
+<!doctype html>
+<html lang="pl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Profesjonalne materiały edukacyjne do układu ESP32-C6">
+      
+      
+        <meta name="author" content="AGH-AIOTA">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Kurs Programowania Mikrokontrolerów</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Outfit";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/custom.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#podstawy-programowania-mikrokontrolerow" class="md-skip">
+          Przejdź do treści
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Nagłówek">
+    <a href="." title="Kurs Programowania Mikrokontrolerów" class="md-header__button md-logo" aria-label="Kurs Programowania Mikrokontrolerów" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kurs Programowania Mikrokontrolerów
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Skrypt Laboratoryjny
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="deep-orange"  aria-label="Przełącz na tryb ciemny"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Przełącz na tryb ciemny" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="deep-orange"  aria-label="Przełącz na tryb jasny"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Przełącz na tryb jasny" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Szukaj" placeholder="Szukaj" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Szukaj">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Wyczyść" aria-label="Wyczyść" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicjowanie wyszukiwania
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Zakładki" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Skrypt Laboratoryjny
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Nawigacja" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Kurs Programowania Mikrokontrolerów" class="md-nav__button md-logo" aria-label="Kurs Programowania Mikrokontrolerów" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Kurs Programowania Mikrokontrolerów
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skrypt Laboratoryjny
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skrypt Laboratoryjny
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Spis treści">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Spis treści
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#czesc-1-sprzet-i-przygotowanie-do-pracy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CZĘŚĆ 1: Sprzęt i przygotowanie do pracy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CZĘŚĆ 1: Sprzęt i przygotowanie do pracy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-esp32-c6-i-dedykowana-pytka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ESP32-C6 i dedykowana płytka
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#czesc-2-podstawy-struktury-programu-w-arduino-ide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CZĘŚĆ 2: Podstawy struktury programu w Arduino IDE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#czesc-3-cwiczenia-praktyczne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CZĘŚĆ 3: Ćwiczenia Praktyczne
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CZĘŚĆ 3: Ćwiczenia Praktyczne">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-1-witaj-swiecie-wysanie-wiadomosci-do-komputera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 1: „Witaj świecie!” – Wysłanie wiadomości do komputera
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 1: „Witaj świecie!” – Wysłanie wiadomości do komputera">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kod-do-wgrania" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kod do wgrania:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-2-sterowanie-wyjsciem-cyfrowym-miganie-dioda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 2: Sterowanie wyjściem cyfrowym – Miganie diodą
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 2: Sterowanie wyjściem cyfrowym – Miganie diodą">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uzupenij-kod-i-wgraj-na-pytke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uzupełnij kod i wgraj na płytkę:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-3-pynna-regulacja-jasnosci-sygna-pwm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 3: Płynna regulacja jasności – Sygnał PWM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 3: Płynna regulacja jasności – Sygnał PWM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uzupenij-kod-i-wgraj-na-pytke_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uzupełnij kod i wgraj na płytkę:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania-diody-w-przeciwfazie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania (Diody w przeciwfazie):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-4-wejscie-analogowe-odczyt-z-potencjometru" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 4: Wejście analogowe – Odczyt z potencjometru
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 4: Wejście analogowe – Odczyt z potencjometru">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uzupenij-kod-i-wgraj-na-pytke_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uzupełnij kod i wgraj na płytkę:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania-termostat-prog-alarmowy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-5-magistrala-i2c-i-zaawansowany-czujnik-mpu6050" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 5: Magistrala I2C i zaawansowany czujnik MPU6050
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 5: Magistrala I2C i zaawansowany czujnik MPU6050">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instalacja-biblioteki" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalacja biblioteki:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uzupenij-kod-odczytu-w-petli-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uzupełnij kod odczytu w pętli loop():
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania-czarna-skrzynka-wykrywacz-wstrzasu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania (Czarna skrzynka / Wykrywacz wstrząsu):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-6-rozmowa-dwoch-mikrokontrolerow-interfejs-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 6: Rozmowa dwóch mikrokontrolerów – Interfejs UART
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 6: Rozmowa dwóch mikrokontrolerów – Interfejs UART">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kod-dla-pytki-a-nadajnik" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kod dla Płytki A (Nadajnik):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kod-dla-pytki-b-odbiornik" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kod dla Płytki B (Odbiornik):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania-sterowanie-komendami-literowymi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania (Sterowanie komendami literowymi):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Spis treści">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Spis treści
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#czesc-1-sprzet-i-przygotowanie-do-pracy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CZĘŚĆ 1: Sprzęt i przygotowanie do pracy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CZĘŚĆ 1: Sprzęt i przygotowanie do pracy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-esp32-c6-i-dedykowana-pytka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ESP32-C6 i dedykowana płytka
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#czesc-2-podstawy-struktury-programu-w-arduino-ide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CZĘŚĆ 2: Podstawy struktury programu w Arduino IDE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#czesc-3-cwiczenia-praktyczne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CZĘŚĆ 3: Ćwiczenia Praktyczne
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CZĘŚĆ 3: Ćwiczenia Praktyczne">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-1-witaj-swiecie-wysanie-wiadomosci-do-komputera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 1: „Witaj świecie!” – Wysłanie wiadomości do komputera
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 1: „Witaj świecie!” – Wysłanie wiadomości do komputera">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kod-do-wgrania" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kod do wgrania:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-2-sterowanie-wyjsciem-cyfrowym-miganie-dioda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 2: Sterowanie wyjściem cyfrowym – Miganie diodą
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 2: Sterowanie wyjściem cyfrowym – Miganie diodą">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uzupenij-kod-i-wgraj-na-pytke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uzupełnij kod i wgraj na płytkę:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-3-pynna-regulacja-jasnosci-sygna-pwm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 3: Płynna regulacja jasności – Sygnał PWM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 3: Płynna regulacja jasności – Sygnał PWM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uzupenij-kod-i-wgraj-na-pytke_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uzupełnij kod i wgraj na płytkę:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania-diody-w-przeciwfazie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania (Diody w przeciwfazie):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-4-wejscie-analogowe-odczyt-z-potencjometru" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 4: Wejście analogowe – Odczyt z potencjometru
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 4: Wejście analogowe – Odczyt z potencjometru">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uzupenij-kod-i-wgraj-na-pytke_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uzupełnij kod i wgraj na płytkę:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania-termostat-prog-alarmowy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-5-magistrala-i2c-i-zaawansowany-czujnik-mpu6050" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 5: Magistrala I2C i zaawansowany czujnik MPU6050
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 5: Magistrala I2C i zaawansowany czujnik MPU6050">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instalacja-biblioteki" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalacja biblioteki:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uzupenij-kod-odczytu-w-petli-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uzupełnij kod odczytu w pętli loop():
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania-czarna-skrzynka-wykrywacz-wstrzasu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania (Czarna skrzynka / Wykrywacz wstrząsu):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cwiczenie-6-rozmowa-dwoch-mikrokontrolerow-interfejs-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ćwiczenie 6: Rozmowa dwóch mikrokontrolerów – Interfejs UART
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ćwiczenie 6: Rozmowa dwóch mikrokontrolerów – Interfejs UART">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kod-dla-pytki-a-nadajnik" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kod dla Płytki A (Nadajnik):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kod-dla-pytki-b-odbiornik" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kod dla Płytki B (Odbiornik):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zadanie-do-samodzielnego-wykonania-sterowanie-komendami-literowymi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zadanie do samodzielnego wykonania (Sterowanie komendami literowymi):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="podstawy-programowania-mikrokontrolerow">Podstawy programowania mikrokontrolerów</h1>
+<hr />
+<h2 id="czesc-1-sprzet-i-przygotowanie-do-pracy">CZĘŚĆ 1: Sprzęt i przygotowanie do pracy</h2>
+<h3 id="1-esp32-c6-i-dedykowana-pytka">1. ESP32-C6 i dedykowana płytka</h3>
+<p>Podczas tych zajęć będziemy korzystać z układu <strong>ESP32-C6</strong>. Jest to mikrokontroler oparty na otwartej architekturze <strong>RISC-V</strong>, który posiada wbudowaną obsługę łączności bezprzewodowej: Wi-Fi 6, Bluetooth LE oraz protokołów Smart Home (Zigbee / Thread). Układ posiada również szereg innych zaawansowanych peryferiów. Wykorzystamy między innymi wbudowany <strong>przetwornik ADC</strong>, który pozwala mierzyć napięcie (np. z potencjometru). Ponadto układ obsługuje popularne standardy komunikacji, takie jak <strong>SPI, I2C oraz UART</strong>, co pozwala mu "rozmawiać" z niemal każdym zewnętrznym sensorem czy modułem dostępnym na rynku.</p>
+<div class="admonition tip">
+<p class="admonition-title">Important</p>
+<p><strong>Ważne!</strong>
+<strong>Jak czytać schemat i odnaleźć numery pinów?</strong>
+Początkujący często próbują wpisywać w kodzie fizyczne numery nóżek samego układu scalonego (czarnego "chipu"). <strong>To błąd!</strong> W programie zawsze posługujemy się numerami portów <strong>GPIO</strong> (ang. <em>General-Purpose Input/Output</em>). </p>
+<ul>
+<li><strong>Wskazówka:</strong> Numery pinów GPIO są również nadrukowane (zazwyczaj jako białe napisy) na pinoutach wzdłuż krawędzi płytki, obok otworów do lutowania.</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Dla ciekawskich</strong>
+<strong>Strapping Pins</strong>
+Niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu układu (tzw. <em>strapping pins</em>). Jeśli podłączymy do nich coś, co wymusi na nich konkretny stan w momencie włączania zasilania, mikrokontroler może nie wystartować poprawnie lub wejść w tryb programowania.</p>
+</div>
+<p>Poniżej znajduje się schemat naszej zestawowej płytki edukacyjnej:</p>
+<p><img alt="Schemat ideowy płytki edukacyjnej" src="schematic.png" /></p>
+<p>Analizując schemat, możemy odczytać, do których pinów GPIO podłączone są poszczególne elementy. To właśnie te numery wpiszemy w naszym kodzie:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Element na płytce</th>
+<th style="text-align: left;">Oznaczenie na schemacie</th>
+<th style="text-align: left;">Numer pinu w kodzie (GPIO)</th>
+<th style="text-align: left;">Opis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Dioda LED 1</strong></td>
+<td style="text-align: left;"><code>D3 LED</code></td>
+<td style="text-align: left;"><strong>2</strong></td>
+<td style="text-align: left;">Wyjście cyfrowe / PWM (stan wysoki włącza diodę)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dioda LED 2</strong></td>
+<td style="text-align: left;"><code>D10 LED</code></td>
+<td style="text-align: left;"><strong>3</strong></td>
+<td style="text-align: left;">Wyjście cyfrowe / PWM</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Potencjometr</strong></td>
+<td style="text-align: left;"><code>RV5K1</code></td>
+<td style="text-align: left;"><strong>4</strong></td>
+<td style="text-align: left;">Wejście analogowe (pomiar napięcia ADC)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Złącze I2C</strong></td>
+<td style="text-align: left;"><code>J2 I2C_CONN</code></td>
+<td style="text-align: left;"><strong>5</strong> (SDA), <strong>6</strong> (SCL)</td>
+<td style="text-align: left;">Cyfrowa magistrala do czujników (np. MPU6050)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Złącze UART</strong></td>
+<td style="text-align: left;"><code>J4 UART_CONN</code></td>
+<td style="text-align: left;"><strong>0</strong> (TX), <strong>1</strong> (RX)</td>
+<td style="text-align: left;">Linie komunikacji szeregowej z drugim ESP</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Inne</strong>
+Pozostałe piny na schemacie, które są oznaczone symbolem <strong>X</strong>, nie będą wykorzystywane w tym kursie.</p>
+</div>
+<hr />
+<h2 id="czesc-2-podstawy-struktury-programu-w-arduino-ide">CZĘŚĆ 2: Podstawy struktury programu w Arduino IDE</h2>
+<p>Każdy program pisany w środowisku Arduino (nazywany <em>szkicem</em> / <em>sketchem</em>) składa się z dwóch głównych bloków (funkcji):</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="c1">// Ten kod wykonuje się tylko RAZ, zaraz po włączeniu zasilania </span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="c1">// lub wciśnięciu przycisku RESET.</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="c1">// Tutaj konfigurujemy piny, uruchamiamy porty komunikacyjne itp.</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="c1">// Ten kod wykonuje się w NIESKOŃCZONĄ PĘTLĘ (z góry na dół i od nowa).</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="c1">// Tutaj umieszczamy główną logikę programu, odczyty z czujników,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="c1">// sterowanie diodami itp.</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h2 id="czesc-3-cwiczenia-praktyczne">CZĘŚĆ 3: Ćwiczenia Praktyczne</h2>
+<h3 id="cwiczenie-1-witaj-swiecie-wysanie-wiadomosci-do-komputera">Ćwiczenie 1: „Witaj świecie!” – Wysłanie wiadomości do komputera</h3>
+<p>Mikrokontroler nie posiada własnego monitora. Aby dowiedzieć się, co dzieje się wewnątrz układu, używamy <strong>Portu Szeregowego (Serial Port)</strong> do przesyłania tekstowych wiadomości przez kabel USB do komputera. W pierwszym ćwiczeniu wgrywamy kompletny kod, aby upewnić się, że połączenie z płytką działa poprawnie.</p>
+<h4 id="kod-do-wgrania">Kod do wgrania:</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="c1">// Uruchomienie komunikacji z prędkością 115200 bitów na sekundę</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="c1">// Wysłanie pojedynczej wiadomości po uruchomieniu</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Układ ESP32-C6 uruchomiony pomyślnie!&quot;</span><span class="p">);</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="c1">// Wysyłanie wiadomości co sekundę</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Witaj świecie z mikrokontrolera!&quot;</span><span class="p">);</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="c1">// Opóźnienie programu o 1000 milisekund (1 sekunda)</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Wskazówka</strong>
+<strong>Jak zobaczyć wynik?</strong></p>
+<ol>
+<li>Wgraj program na płytkę.</li>
+<li>W Arduino IDE kliknij ikonę lupy w prawym górnym rogu (lub użyj skrótu <code>Ctrl + Shift + M</code>), aby otworzyć <strong>Monitor Portu Szeregowego (Serial Monitor)</strong>.</li>
+<li>Upewnij się, że w dolnym rogu okna wybrano prędkość <strong>115200 baud</strong>.</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Dla ciekawskich</strong>
+<strong>Co to jest baud?</strong>
+Prędkość <strong>baud</strong> (bod) określa, ile symboli (bitów danych) jest przesyłanych w ciągu jednej sekundy. Ustawienie 115200 baud oznacza szybką komunikację. Ważne jest, aby prędkość ustawiona w kodzie (<code>Serial.begin</code>) była identyczna z tą wybraną w Monitorze Szeregowym – inaczej zamiast tekstu zobaczysz "krzaki" lub dziwne znaki.</p>
+</div>
+<p><em>(Miejsce na przygotowanie grafiki: Zrzut ekranu otwartego Serial Monitora w Arduino IDE z widocznym tekstem)</em>
+<code>![Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie](miejsce_na_grafike_serial_monitor.png)</code></p>
+<h4 id="zadanie-do-samodzielnego-wykonania">Zadanie do samodzielnego wykonania:</h4>
+<p>Dodaj w pętli <code>loop()</code> drugą instrukcję <code>Serial.println(...)</code> z dowolnym własnym tekstem (np. Twoim imieniem), aby mikrokontroler co sekundę wysyłał na ekran <strong>dwulinijkowy</strong> komunikat.</p>
+<hr />
+<h3 id="cwiczenie-2-sterowanie-wyjsciem-cyfrowym-miganie-dioda">Ćwiczenie 2: Sterowanie wyjściem cyfrowym – Miganie diodą</h3>
+<p>W tym ćwiczeniu nauczymy się sterować elementem fizycznym. Wyjście cyfrowe mikrokontrolera może przyjąć dwa stany:
+* <strong>HIGH (stan wysoki):</strong> na pinie pojawia się napięcie 3.3V – dioda świeci.
+* <strong>LOW (stan niski):</strong> napięcie spada do 0V (połączenie z masą) – dioda gaśnie.</p>
+<p>Z naszego schematu wiemy, że dioda <code>D3</code> podłączona jest do pinu <strong>2</strong>. Funkcja <code>digitalWrite(pin, stan)</code> pozwala ustawić żądany stan na wybranym pinie.</p>
+<h4 id="uzupenij-kod-i-wgraj-na-pytke">Uzupełnij kod i wgraj na płytkę:</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Definiujemy stałą z numerem pinu, aby kod był czytelniejszy</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PIN_LED1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="c1">// Konfigurujemy pin 2 jako WYJŚCIE (OUTPUT)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_LED1</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="c1">// UZUPEŁNIJ: Włącz diodę podając stan wysoki (HIGH) na PIN_LED1</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span><span class="w">                   </span><span class="c1">// Odczekanie pół sekundy (500 ms)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="c1">// UZUPEŁNIJ: Wyłącz diodę podając stan niski (LOW) na PIN_LED1</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span><span class="w">                   </span><span class="c1">// Odczekanie pół sekundy</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="zadanie-do-samodzielnego-wykonania_1">Zadanie do samodzielnego wykonania:</h4>
+<p>Na płytce znajduje się druga dioda (<code>D10</code>) podłączona do pinu <strong>3</strong>. Zmodyfikuj program tak, aby uzyskać efekt <strong>naprzemiennego migania obu diod</strong> (gdy jedna się zapala, druga natychmiast gaśnie).</p>
+<hr />
+<h3 id="cwiczenie-3-pynna-regulacja-jasnosci-sygna-pwm">Ćwiczenie 3: Płynna regulacja jasności – Sygnał PWM</h3>
+<p>Wyjście cyfrowe daje nam tylko opcje włącz/wyłącz. Co jeśli chcemy płynnie regulować jasność diody?
+Wykorzystujemy technikę <strong>PWM (Pulse Width Modulation)</strong>. Polega ona na bardzo szybkim włączaniu i wyłączaniu pinu. Zmieniając stosunek czasu włączenia do wyłączenia, ludzkie oko uśrednia ilość światła i widzi płynną zmianę jasności.</p>
+<p>W Arduino służy do tego funkcja <code>analogWrite(pin, wartość)</code>, gdzie wartość to liczba od <strong>0</strong> (całkowicie zgaszona) do <strong>255</strong> (maksymalna jasność).</p>
+<h4 id="uzupenij-kod-i-wgraj-na-pytke_1">Uzupełnij kod i wgraj na płytkę:</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PIN_LED1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_LED1</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="c1">// Pętla stopniowo zwiększająca zmienną &#39;jasnosc&#39; od 0 do 255</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">jasnosc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">jasnosc</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w"> </span><span class="n">jasnosc</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="c1">// UZUPEŁNIJ: Użyj odpowiedniej funkcji, aby ustawić jasność PIN_LED1</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c1">// Krótkie opóźnienie dla płynnego animowania</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">  </span><span class="c1">// Pętla stopniowo zmniejszająca zmienną &#39;jasnosc&#39; od 255 do 0</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">jasnosc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w"> </span><span class="n">jasnosc</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">jasnosc</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="c1">// UZUPEŁNIJ: Ponownie użyj odpowiedniej funkcji dla opadającej wartości</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="zadanie-do-samodzielnego-wykonania-diody-w-przeciwfazie">Zadanie do samodzielnego wykonania (Diody w przeciwfazie):</h4>
+<p>Podłącz drugą diodę (<code>const int PIN_LED2 = 3;</code> w nagłówku oraz <code>pinMode</code> w <code>setup</code>).
+Uzyskaj efekt, w którym gdy jedna dioda się rozjaśnia, druga w tym samym czasie płynnie gaśnie.</p>
+<details>
+<summary>Podpowiedź</summary>
+Wewnątrz istniejących pętli <code>for</code> dopisz sterowanie drugą diodą tak, aby jej jasność wynosiła zawsze <b><code>255 - jasnosc</code></b>.
+</details>
+
+<hr />
+<h3 id="cwiczenie-4-wejscie-analogowe-odczyt-z-potencjometru">Ćwiczenie 4: Wejście analogowe – Odczyt z potencjometru</h3>
+<p>Świat fizyczny jest analogowy (temperatura, oświetlenie czy położenie gałki zmieniają się płynnie). Aby mikrokontroler mógł odczytać płynne napięcie z potencjometru, wykorzystuje wbudowany moduł <strong>ADC (Przetwornik Analogowo-Cyfrowy)</strong>.</p>
+<p>Potencjometr na naszej płytce działa jak dzielnik napięcia i w zależności od obrotu podaje na pin <strong>GPIO4</strong> napięcie od 0V do 3.3V. Przetwornik ADC w ESP32 zamienia to napięcie na liczbę z zakresu <strong>od 0 do 4095</strong> (rozdzielczość 12-bitowa). Służy do tego funkcja <code>analogRead(pin)</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Notatka</strong>
+<strong>Jak działa funkcja map()?</strong>
+Zanim uzupełnisz kod, warto poznać funkcję <code>map()</code>. Pozwala ona proporcjonalnie przeskalować wartość z jednego zakresu na inny (np. z 0-4095 na 0-255). Przyjmuje 5 parametrów:
+<code>map(wartość_wejściowa, min_wejście, max_wejście, min_wyjście, max_wyjście)</code>
+W naszym przykładzie: bierze odczytaną z potencjometru liczbę od 0 do 4095 i zamienia ją na odpowiednią wartość PWM od 0 do 255.</p>
+</div>
+<h4 id="uzupenij-kod-i-wgraj-na-pytke_2">Uzupełnij kod i wgraj na płytkę:</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PIN_POTENCJOMETR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PIN_LED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_LED</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="c1">// Piny analogowe nie wymagają ustawiania pinMode jako INPUT</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">}</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="c1">// UZUPEŁNIJ: Odczytaj wartość z potencjometru za pomocą odpowiedniej funkcji i zapisz ją w zmiennej &quot;odczyt&quot;</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">odczyt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="c1">// Wypisanie wyniku do Serial Monitora</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Wartosc z potencjometru: &quot;</span><span class="p">);</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">odczyt</span><span class="p">);</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">  </span><span class="c1">// UZUPEŁNIJ: Przeskaluj zakres odczytu ADC (0-4095) na zakres jasności PWM (0-255)</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">jasnosc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="cm">/* TUTAJ WPISZ ARGUMENTY FUNKCJI */</span><span class="p">);</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">  </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">PIN_LED</span><span class="p">,</span><span class="w"> </span><span class="n">jasnosc</span><span class="p">);</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Wskazówka</strong>
+<strong>Narzędzie Serial Plotter</strong>
+Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt; Kreślarka portu szeregowego (Serial Plotter)</strong>. Pokręć potencjometrem, a zobaczysz piękny, rysowany na żywo wykres zmian napięcia!</p>
+</div>
+<p><em>(Miejsce na przygotowanie grafiki: Zrzut ekranu Serial Plottera rysującego sinusoide/wykres z potencjometru)</em>
+<code>![Zrzut ekranu: Wykres z potencjometru w Serial Plotterze](miejsce_na_grafike_serial_plotter.png)</code></p>
+<h4 id="zadanie-do-samodzielnego-wykonania-termostat-prog-alarmowy">Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):</h4>
+<p>Często odczyt z czujnika nie służy do płynnej regulacji, lecz do załączania ostrzeżenia po przekroczeniu pewnego progu. Zmodyfikuj program tak, aby całkowicie usunąć <code>analogWrite</code> oraz <code>map()</code>, a zamiast tego użyć instrukcji warunkowej <code>if ... else</code>:
+* Jeśli odczytana wartość z potencjometru jest <strong>większa niż 3000</strong>, włącz diodę LED (stan <code>HIGH</code>).
+* W przeciwnym wypadku (odczyt $\le$ 3000), wyłącz diodę (stan <code>LOW</code>).</p>
+<hr />
+<h3 id="cwiczenie-5-magistrala-i2c-i-zaawansowany-czujnik-mpu6050">Ćwiczenie 5: Magistrala I2C i zaawansowany czujnik MPU6050</h3>
+<p>Gdy chcemy podłączyć zaawansowane cyfrowe czujniki (np. wyświetlacze OLED, czujniki ciśnienia czy sensory ruchu), używamy magistrali <strong>I2C</strong>. Wykorzystuje ona tylko dwa przewody:
+* <strong>SDA (Serial Data):</strong> linia przesyłania danych.
+* <strong>SCL (Serial Clock):</strong> linia zegarowa synchronizująca przesył.</p>
+<p>Na jednym zestawie przewodów można podłączyć wiele urządzeń, ponieważ każde z nich ma swój unikalny adres cyfrowy. Nasze złącze <code>J2</code> podłączone jest do pinów <strong>5 (SDA)</strong> oraz <strong>6 (SCL)</strong>.</p>
+<p>Podłączymy do niego moduł <strong>MPU6050</strong> (zawierający 3-osiowy akcelerometr oraz żyroskop, używany między innymi w dronach do stabilizacji lotu).</p>
+<h4 id="instalacja-biblioteki">Instalacja biblioteki:</h4>
+<p>Zanim napiszemy kod, musimy zainstalować bibliotekę, która ułatwi nam komunikację z czujnikiem.
+1. W Arduino IDE wybierz: <strong>Szkic -&gt; Dołącz bibliotekę -&gt; Zarządzaj bibliotekami...</strong>
+2. Wyszukaj: <strong>MPU6050_light</strong> (autor: Romain JL).
+3. Kliknij <strong>Zainstaluj</strong>.</p>
+<p><em>(Miejsce na przygotowanie grafiki: Okno Menedżera bibliotek z wyszukaną biblioteką MPU6050_light)</em>
+<code>![Zrzut ekranu: Menedżer bibliotek w Arduino IDE](miejsce_na_grafike_library_manager.png)</code></p>
+<h4 id="uzupenij-kod-odczytu-w-petli-loop">Uzupełnij kod odczytu w pętli loop():</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;MPU6050_light.h&gt;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1">// Tworzymy obiekt reprezentujący nasz czujnik</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">MPU6050</span><span class="w"> </span><span class="nf">mpu</span><span class="p">(</span><span class="n">Wire</span><span class="p">);</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1">// Definicja naszych pinów I2C ze schematu</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">I2C_SDA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">I2C_SCL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">  </span><span class="c1">// Konfiguracja magistrali I2C na naszych konkretnych pinach</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">I2C_SDA</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_SCL</span><span class="p">);</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Inicjalizacja czujnika MPU6050...&quot;</span><span class="p">);</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">  </span><span class="n">byte</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mpu</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Błąd połączenia z MPU6050! Sprawdź połączenia.&quot;</span><span class="p">);</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// Zatrzymanie programu w przypadku błędu</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Czujnik wykryty! Nie ruszaj płytką - trwa kalibracja...&quot;</span><span class="p">);</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">  </span><span class="n">mpu</span><span class="p">.</span><span class="n">calcOffsets</span><span class="p">();</span><span class="w"> </span><span class="c1">// Kalibracja początkowego położenia</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Kalibracja zakończona!&quot;</span><span class="p">);</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="p">}</span>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">  </span><span class="c1">// Pobranie najnowszych pomiarów z czujnika</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">  </span><span class="n">mpu</span><span class="p">.</span><span class="n">update</span><span class="p">();</span>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">  </span><span class="c1">// Odczyt kątów nachylenia w osiach X i Y</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Kat X: &quot;</span><span class="p">);</span>
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">mpu</span><span class="p">.</span><span class="n">getAngleX</span><span class="p">());</span>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Kat Y: &quot;</span><span class="p">);</span>
+</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">mpu</span><span class="p">.</span><span class="n">getAngleY</span><span class="p">());</span>
+</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="zadanie-do-samodzielnego-wykonania-czarna-skrzynka-wykrywacz-wstrzasu">Zadanie do samodzielnego wykonania (Czarna skrzynka / Wykrywacz wstrząsu):</h4>
+<p>Zmieńmy koncepcję: zamiast badać powolny przechył, stwórzmy układ reagujący na gwałtowne przeciążenia (np. wykrywanie kolizji robota lub uderzenia).
+Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech osiach. Biblioteka udostępnia do tego gotowe metody <code>mpu.getAccX()</code>, <code>mpu.getAccY()</code> oraz <code>mpu.getAccZ()</code> (wartość 1.0 oznacza standardowe przyśpieszenie ziemskie $1g$).
+* Dopisz w pętli <code>loop()</code> warunek sprawdzający, czy przyśpieszenie w osi X lub Y przekroczyło próg <strong><code>2.0</code></strong> (silny wstrząs/uderzenie).
+* Jeśli wstrząs zostanie wykryty, natychmiast zapal czerwoną diodę na stałe (stan <code>HIGH</code>) jako zapisaną flagę alarmową informującą o zderzeniu.</p>
+<hr />
+<h3 id="cwiczenie-6-rozmowa-dwoch-mikrokontrolerow-interfejs-uart">Ćwiczenie 6: Rozmowa dwóch mikrokontrolerów – Interfejs UART</h3>
+<p>Często projekty wymagają połączenia ze sobą dwóch oddzielnych układów (np. główny sterownik i moduł GPS lub komunikacja przewodowa dwóch płytek ESP). Służy do tego interfejs <strong>UART (Universal Asynchronous Receiver-Transmitter)</strong>.</p>
+<p>Wymaga on połączenia trzech linii ze złącza <code>J4</code>:
+1. <strong>Masa (GND):</strong> Płytki muszą mieć wspólną masę.
+2. <strong>TX (Nadajnik z ESP A) $\rightarrow$ RX (Odbiornik w ESP B)</strong>
+3. <strong>RX (Odbiornik w ESP A) $\rightarrow$ TX (Nadajnik w ESP B)</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Pamiętaj o skrzyżowaniu linii!</strong>
+Piny nadawcze (TX) zawsze łączymy z pinami odbiorczymi (RX) drugiego urządzenia. Połączenie TX-TX lub RX-RX nie zadziała.</p>
+</div>
+<p>Ze schematu odczytujemy piny na złączu <code>J4</code>: <strong>GPIO0</strong> (linia 3 złącza) oraz <strong>GPIO1</strong> (linia 2 złącza). Skonfigurujemy je jako interfejs sprzętowy <code>Serial1</code>.</p>
+<p><em>(Miejsce na przygotowanie grafiki: Schemat połączenia dwóch płytek ESP32-C6 kabelkami ze skrzyżowanymi liniami TX/RX)</em>
+<code>![Schemat połączenia UART dwóch płytek](miejsce_na_grafike_uart_wiring.png)</code></p>
+<h4 id="kod-dla-pytki-a-nadajnik">Kod dla Płytki A (Nadajnik):</h4>
+<p>Ta płytka czeka na wpisanie cyfry na klawiaturze (w Monitorze Szeregowym komputera), a następnie przesyła ją kablem do drugiej płytki.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">UART_TX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">UART_RX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="c1">// Główny port do podglądu na komputerze</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="c1">// Uruchomienie drugiego portu UART do komunikacji z ESP B</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="n">Serial1</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">,</span><span class="w"> </span><span class="n">SERIAL_8N1</span><span class="p">,</span><span class="w"> </span><span class="n">UART_RX</span><span class="p">,</span><span class="w"> </span><span class="n">UART_TX</span><span class="p">);</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Nadajnik gotowy. Wpisz cyfre (0-9) w Monitorze Szeregowym!&quot;</span><span class="p">);</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="p">}</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">  </span><span class="c1">// Sprawdzamy, czy UŻYTKOWNIK wpisał coś na klawiaturze komputera</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="c1">// Odczytujemy znak z klawiatury</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">znak</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">    </span><span class="c1">// Przesyłamy ten sam znak dalej, do drugiej płytki przez Serial1</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">    </span><span class="n">Serial1</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">znak</span><span class="p">);</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Wyslano do drugiej plytki: &quot;</span><span class="p">);</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">znak</span><span class="p">);</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="kod-dla-pytki-b-odbiornik">Kod dla Płytki B (Odbiornik):</h4>
+<p>Ta płytka odbiera cyfrę i w zależności od jej wartości steruje jasnością diody.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PIN_LED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">UART_TX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">UART_RX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="n">Serial1</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">,</span><span class="w"> </span><span class="n">SERIAL_8N1</span><span class="p">,</span><span class="w"> </span><span class="n">UART_RX</span><span class="p">,</span><span class="w"> </span><span class="n">UART_TX</span><span class="p">);</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_LED</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Odbiornik gotowy. Czekam na dane...&quot;</span><span class="p">);</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="p">}</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">  </span><span class="c1">// Sprawdź, czy na porcie Serial1 nadeszły dane od Płytki A</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Serial1</span><span class="p">.</span><span class="n">available</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">    </span><span class="c1">// Odczytaj odebrany znak za pomocą Serial1.read()</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">odebranyZnak</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Serial1</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Odebrano: &quot;</span><span class="p">);</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">odebranyZnak</span><span class="p">);</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">    </span><span class="c1">// ZABEZPIECZENIE: Sprawdzamy, czy odebrany znak to rzeczywiście cyfra od &#39;0&#39; do &#39;9&#39;.</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">    </span><span class="c1">// Zapobiega to błędom, gdy ktoś wyśle np. literę &#39;d&#39; lub znak nowej linii.</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">odebranyZnak</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="sc">&#39;0&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">odebranyZnak</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="sc">&#39;9&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">      </span><span class="c1">// Konwertujemy znak na cyfrę i ustawiamy jasność diody</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">      </span><span class="c1">// (Odejmujemy kod ASCII znaku &#39;0&#39;)</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">cyfra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">odebranyZnak</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;0&#39;</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="w">      </span><span class="c1">// Skalowamy cyfrę (0-9) na jasność PWM (0-255)</span>
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">jasnosc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="n">cyfra</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">);</span>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="w">      </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">PIN_LED</span><span class="p">,</span><span class="w"> </span><span class="n">jasnosc</span><span class="p">);</span>
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Dla ciekawskich</strong>
+<strong>Czym jest kod ASCII?</strong>
+Komputery i mikrokontrolery nie rozumieją liter ani znaków – przetwarzają wyłącznie liczby. Dlatego każdy znak ma przypisaną stałą wartość liczbową w tzw. <strong>tabeli ASCII</strong> (np. znak <code>'0'</code> to w pamięci liczba 48, znak <code>'1'</code> to 49, a literka <code>'A'</code> to 65).
+Zapis <code>odebranyZnak - '0'</code> to popularny programistyczny trik: odejmując kod ASCII zera (48) od kodu ASCII odebranego znaku (np. <code>'5'</code>, czyli 53), otrzymujemy czystą wartość liczbową: $53 - 48 = 5$.</p>
+</div>
+<h4 id="zadanie-do-samodzielnego-wykonania-sterowanie-komendami-literowymi">Zadanie do samodzielnego wykonania (Sterowanie komendami literowymi):</h4>
+<p>Zamiast przesyłać cyfry regulujące jasność, zmodyfikuj program Odbiornika (Płytki B) tak, aby reagował na konkretne <strong>litery</strong> działające jako polecenia:
+* Jeśli odebrany znak to <strong><code>'W'</code></strong> (Włącz), zapal diodę na stałe (<code>digitalWrite(PIN_LED, HIGH)</code>).
+* Jeśli odebrany znak to <strong><code>'G'</code></strong> (Gaś), wyłącz diodę (<code>digitalWrite(PIN_LED, LOW)</code>).</p>
+<details>
+<summary>Podpowiedź</summary>
+Do porównania odebranych znaków użyj instrukcji warunkowej, na przykład: <code>if (odebranyZnak == 'W') { ... } else if (odebranyZnak == 'G') { ... }</code>.
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Powrót do góry
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.top", "navigation.path", "navigation.footer", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Skopiowano do schowka", "clipboard.copy": "Kopiuj do schowka", "search.result.more.one": "1 wi\u0119cej na tej stronie", "search.result.more.other": "# wi\u0119cej na tej stronie", "search.result.none": "Brak wynik\u00f3w wyszukiwania", "search.result.one": "Wyniki wyszukiwania: 1", "search.result.other": "Wyniki wyszukiwania: #", "search.result.placeholder": "Zacznij pisa\u0107, aby szuka\u0107", "search.result.term.missing": "Brak", "select.version": "Wybierz wersj\u0119"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

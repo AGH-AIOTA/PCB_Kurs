@@ -1,0 +1,42 @@
+/* Premium Design System & Aesthetics */
+:root {
+  --md-primary-fg-color: #4f46e5; /* Elegancki odcień Indigo/Violet */
+  --md-primary-fg-color--light: #6366f1;
+  --md-primary-fg-color--dark: #4338ca;
+  --md-accent-fg-color: #ff5722; /* Głęboki pomarańczowy akcent */
+}
+
+/* Dostosowanie nagłówków dla estetycznego wyglądu */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Wzbogacenie wyglądu bloków kodu */
+.md-typeset pre>code {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+[data-md-color-scheme="slate"] .md-typeset pre>code {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Stylowanie alertów i cytatów na wzór premium Callouts */
+.md-typeset blockquote {
+  border-left-width: 4px;
+  border-radius: 0 8px 8px 0;
+  background-color: var(--md-footer-bg-color--dark);
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+[data-md-color-scheme="slate"] .md-typeset blockquote {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Płynne przejścia dla interaktywnych elementów */
+.md-typeset a {
+  transition: color 0.2s ease;
+}
