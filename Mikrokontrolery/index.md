@@ -103,6 +103,7 @@ Dodaj w pętli `loop()` drugą instrukcję `Serial.println(...)` z dowolnym wła
 
 ### Ćwiczenie 2: Sterowanie wyjściem cyfrowym – Miganie diodą
 W tym ćwiczeniu nauczymy się sterować elementem fizycznym. Wyjście cyfrowe mikrokontrolera może przyjąć dwa stany:
+
 * **HIGH (stan wysoki):** na pinie pojawia się napięcie 3.3V – dioda świeci.
 * **LOW (stan niski):** napięcie spada do 0V (połączenie z masą) – dioda gaśnie.
 
@@ -222,13 +223,15 @@ void loop() {
 
 #### Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):
 Często odczyt z czujnika nie służy do płynnej regulacji, lecz do załączania ostrzeżenia po przekroczeniu pewnego progu. Zmodyfikuj program tak, aby całkowicie usunąć `analogWrite` oraz `map()`, a zamiast tego użyć instrukcji warunkowej `if ... else`:
+
 * Jeśli odczytana wartość z potencjometru jest **większa niż 3000**, włącz diodę LED (stan `HIGH`).
-* W przeciwnym wypadku (odczyt $\le$ 3000), wyłącz diodę (stan `LOW`).
+* W przeciwnym wypadku (odczyt ≤ 3000), wyłącz diodę (stan `LOW`).
 
 ---
 
 ### Ćwiczenie 5: Magistrala I2C i zaawansowany czujnik MPU6050
 Gdy chcemy podłączyć zaawansowane cyfrowe czujniki (np. wyświetlacze OLED, czujniki ciśnienia czy sensory ruchu), używamy magistrali **I2C**. Wykorzystuje ona tylko dwa przewody:
+
 * **SDA (Serial Data):** linia przesyłania danych.
 * **SCL (Serial Clock):** linia zegarowa synchronizująca przesył.
 
@@ -293,7 +296,8 @@ void loop() {
 
 #### Zadanie do samodzielnego wykonania (Czarna skrzynka / Wykrywacz wstrząsu):
 Zmieńmy koncepcję: zamiast badać powolny przechył, stwórzmy układ reagujący na gwałtowne przeciążenia (np. wykrywanie kolizji robota lub uderzenia).
-Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech osiach. Biblioteka udostępnia do tego gotowe metody `mpu.getAccX()`, `mpu.getAccY()` oraz `mpu.getAccZ()` (wartość 1.0 oznacza standardowe przyśpieszenie ziemskie $1g$).
+Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech osiach. Biblioteka udostępnia do tego gotowe metody `mpu.getAccX()`, `mpu.getAccY()` oraz `mpu.getAccZ()` (wartość 1.0 oznacza standardowe przyśpieszenie ziemskie **1g**).
+
 * Dopisz w pętli `loop()` warunek sprawdzający, czy przyśpieszenie w osi X lub Y przekroczyło próg **`2.0`** (silny wstrząs/uderzenie).
 * Jeśli wstrząs zostanie wykryty, natychmiast zapal czerwoną diodę na stałe (stan `HIGH`) jako zapisaną flagę alarmową informującą o zderzeniu.
 
@@ -304,8 +308,8 @@ Często projekty wymagają połączenia ze sobą dwóch oddzielnych układów (n
 
 Wymaga on połączenia trzech linii ze złącza `J4`:
 1. **Masa (GND):** Płytki muszą mieć wspólną masę.
-2. **TX (Nadajnik z ESP A) $\rightarrow$ RX (Odbiornik w ESP B)**
-3. **RX (Odbiornik w ESP A) $\rightarrow$ TX (Nadajnik w ESP B)**
+2. **TX (Nadajnik z ESP A) -> RX (Odbiornik w ESP B)**
+3. **RX (Odbiornik w ESP A) -> TX (Nadajnik w ESP B)**
 
 > [!WARNING]
 > **Pamiętaj o skrzyżowaniu linii!**
@@ -393,10 +397,11 @@ void loop() {
 > **Dla ciekawskich**
 > **Czym jest kod ASCII?**
 > Komputery i mikrokontrolery nie rozumieją liter ani znaków – przetwarzają wyłącznie liczby. Dlatego każdy znak ma przypisaną stałą wartość liczbową w tzw. **tabeli ASCII** (np. znak `'0'` to w pamięci liczba 48, znak `'1'` to 49, a literka `'A'` to 65).
-> Zapis `odebranyZnak - '0'` to popularny programistyczny trik: odejmując kod ASCII zera (48) od kodu ASCII odebranego znaku (np. `'5'`, czyli 53), otrzymujemy czystą wartość liczbową: $53 - 48 = 5$.
+> Zapis `odebranyZnak - '0'` to popularny programistyczny trik: odejmując kod ASCII zera (48) od kodu ASCII odebranego znaku (np. `'5'`, czyli 53), otrzymujemy czystą wartość liczbową: **53 - 48 = 5**.
 
 #### Zadanie do samodzielnego wykonania (Sterowanie komendami literowymi):
 Zamiast przesyłać cyfry regulujące jasność, zmodyfikuj program Odbiornika (Płytki B) tak, aby reagował na konkretne **litery** działające jako polecenia:
+
 * Jeśli odebrany znak to **`'W'`** (Włącz), zapal diodę na stałe (`digitalWrite(PIN_LED, HIGH)`).
 * Jeśli odebrany znak to **`'G'`** (Gaś), wyłącz diodę (`digitalWrite(PIN_LED, LOW)`).
 
