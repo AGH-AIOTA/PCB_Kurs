@@ -1240,7 +1240,7 @@ Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt
 <h4 id="zadanie-do-samodzielnego-wykonania-termostat-prog-alarmowy">Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):</h4>
 <p>Często odczyt z czujnika nie służy do płynnej regulacji, lecz do załączania ostrzeżenia po przekroczeniu pewnego progu. Zmodyfikuj program tak, aby całkowicie usunąć <code>analogWrite</code> oraz <code>map()</code>, a zamiast tego użyć instrukcji warunkowej <code>if ... else</code>:
 * Jeśli odczytana wartość z potencjometru jest <strong>większa niż 3000</strong>, włącz diodę LED (stan <code>HIGH</code>).
-* W przeciwnym wypadku (odczyt &lt;= 3000), wyłącz diodę (stan <code>LOW</code>).</p>
+* W przeciwnym wypadku (odczyt ≤ 3000), wyłącz diodę (stan <code>LOW</code>).</p>
 <hr />
 <h3 id="cwiczenie-5-magistrala-i2c-i-zaawansowany-czujnik-mpu6050">Ćwiczenie 5: Magistrala I2C i zaawansowany czujnik MPU6050</h3>
 <p>Gdy chcemy podłączyć zaawansowane cyfrowe czujniki (np. wyświetlacze OLED, czujniki ciśnienia czy sensory ruchu), używamy magistrali <strong>I2C</strong>. Wykorzystuje ona tylko dwa przewody:
