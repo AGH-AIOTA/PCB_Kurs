@@ -43,7 +43,8 @@ plugins:
 
 # Konfiguracja nawigacji
 nav:
-  - Skrypt Laboratoryjny: index.md
+  - Moduły Podstawowe: index.md
+  - Moduły Zaawansowane: zaawansowane.md
 
 # Niezbędne rozszerzenia dla pięknego renderowania tabel, kodu, cytatów i szczegółów
 markdown_extensions:
