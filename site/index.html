@@ -1012,19 +1012,17 @@
 <h3 id="1-esp32-c6-i-dedykowana-pytka">1. ESP32-C6 i dedykowana płytka</h3>
 <p>Podczas tych zajęć będziemy korzystać z układu <strong>ESP32-C6</strong>. Jest to mikrokontroler oparty na otwartej architekturze <strong>RISC-V</strong>, który posiada wbudowaną obsługę łączności bezprzewodowej: Wi-Fi 6, Bluetooth LE oraz protokołów Smart Home (Zigbee / Thread). Układ posiada również szereg innych zaawansowanych peryferiów. Wykorzystamy między innymi wbudowany <strong>przetwornik ADC</strong>, który pozwala mierzyć napięcie (np. z potencjometru). Ponadto układ obsługuje popularne standardy komunikacji, takie jak <strong>SPI, I2C oraz UART</strong>, co pozwala mu "rozmawiać" z niemal każdym zewnętrznym sensorem czy modułem dostępnym na rynku.</p>
 <div class="admonition tip">
-<p class="admonition-title">Important</p>
-<p><strong>Ważne!</strong>
-<strong>Jak czytać schemat i odnaleźć numery pinów?</strong>
+<p class="admonition-title">Ważne!</p>
+<p><strong>Jak czytać schemat i odnaleźć numery pinów?</strong>
 Początkujący często próbują wpisywać w kodzie fizyczne numery nóżek samego układu scalonego (czarnego "chipu"). <strong>To błąd!</strong> W programie zawsze posługujemy się numerami portów <strong>GPIO</strong> (ang. <em>General-Purpose Input/Output</em>). </p>
 <ul>
 <li><strong>Wskazówka:</strong> Numery pinów GPIO są również nadrukowane (zazwyczaj jako białe napisy) na pinoutach wzdłuż krawędzi płytki, obok otworów do lutowania.</li>
 </ul>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Dla ciekawskich</strong>
-<strong>Strapping Pins</strong>
-Niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu układu (tzw. <em>strapping pins</em>). Jeśli podłączymy do nich coś, co wymusi na nich konkretny stan w momencie włączania zasilania, mikrokontroler może nie wystartować poprawnie lub wejść w tryb programowania.</p>
+<p class="admonition-title">Dla ciekawskich</p>
+<p><strong>Strapping Pins</strong> -
+niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu układu (tzw. <em>strapping pins</em>). Jeśli podłączymy do nich coś, co wymusi na nich konkretny stan w momencie włączania zasilania, mikrokontroler może nie wystartować poprawnie lub wejść w tryb programowania.</p>
 </div>
 <p>Poniżej znajduje się schemat naszej zestawowej płytki edukacyjnej:</p>
 <p><img alt="Schemat ideowy płytki edukacyjnej" src="schematic.png" /></p>
@@ -1072,9 +1070,8 @@ Niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu ukła
 </tbody>
 </table>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Inne</strong>
-Pozostałe piny na schemacie, które są oznaczone symbolem <strong>X</strong>, nie będą wykorzystywane w tym kursie.</p>
+<p class="admonition-title">Inne</p>
+<p>Pozostałe piny na schemacie, które są oznaczone symbolem <strong>X</strong>, nie będą wykorzystywane w tym kursie.</p>
 </div>
 <hr />
 <h2 id="czesc-2-podstawy-struktury-programu-w-arduino-ide">CZĘŚĆ 2: Podstawy struktury programu w Arduino IDE</h2>
@@ -1113,9 +1110,8 @@ Pozostałe piny na schemacie, które są oznaczone symbolem <strong>X</strong>, 
 </span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="p">}</span>
 </span></code></pre></div>
 <div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p><strong>Wskazówka</strong>
-<strong>Jak zobaczyć wynik?</strong></p>
+<p class="admonition-title">Wskazówka</p>
+<p><strong>Jak zobaczyć wynik?</strong></p>
 <ol>
 <li>Wgraj program na płytkę.</li>
 <li>W Arduino IDE kliknij ikonę lupy w prawym górnym rogu (lub użyj skrótu <code>Ctrl + Shift + M</code>), aby otworzyć <strong>Monitor Portu Szeregowego (Serial Monitor)</strong>.</li>
@@ -1123,9 +1119,8 @@ Pozostałe piny na schemacie, które są oznaczone symbolem <strong>X</strong>, 
 </ol>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Dla ciekawskich</strong>
-<strong>Co to jest baud?</strong>
+<p class="admonition-title">Dla ciekawskich</p>
+<p><strong>Co to jest baud?</strong>
 Prędkość <strong>baud</strong> (bod) określa, ile symboli (bitów danych) jest przesyłanych w ciągu jednej sekundy. Ustawienie 115200 baud oznacza szybką komunikację. Ważne jest, aby prędkość ustawiona w kodzie (<code>Serial.begin</code>) była identyczna z tą wybraną w Monitorze Szeregowym – inaczej zamiast tekstu zobaczysz "krzaki" lub dziwne znaki.</p>
 </div>
 <p><img alt="Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie" src="serial_monitor.png" /></p>
@@ -1197,9 +1192,8 @@ Wewnątrz istniejących pętli <code>for</code> dopisz sterowanie drugą diodą 
 <p>Świat fizyczny jest analogowy (temperatura, oświetlenie czy położenie gałki zmieniają się płynnie). Aby mikrokontroler mógł odczytać płynne napięcie z potencjometru, wykorzystuje wbudowany moduł <strong>ADC (Przetwornik Analogowo-Cyfrowy)</strong>.</p>
 <p>Potencjometr na naszej płytce działa jak dzielnik napięcia i w zależności od obrotu podaje na pin <strong>GPIO4</strong> napięcie od 0V do 3.3V. Przetwornik ADC w ESP32 zamienia to napięcie na liczbę z zakresu <strong>od 0 do 4095</strong> (rozdzielczość 12-bitowa). Służy do tego funkcja <code>analogRead(pin)</code>.</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Notatka</strong>
-<strong>Jak działa funkcja map()?</strong>
+<p class="admonition-title">Notatka</p>
+<p><strong>Jak działa funkcja map()?</strong>
 Zanim uzupełnisz kod, warto poznać funkcję <code>map()</code>. Pozwala ona proporcjonalnie przeskalować wartość z jednego zakresu na inny (np. z 0-4095 na 0-255). Przyjmuje 5 parametrów:
 <code>map(wartość_wejściowa, min_wejście, max_wejście, min_wyjście, max_wyjście)</code>
 W naszym przykładzie: bierze odczytaną z potencjometru liczbę od 0 do 4095 i zamienia ją na odpowiednią wartość PWM od 0 do 255.</p>
@@ -1230,9 +1224,8 @@ W naszym przykładzie: bierze odczytaną z potencjometru liczbę od 0 do 4095 i 
 </span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="p">}</span>
 </span></code></pre></div>
 <div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p><strong>Wskazówka</strong>
-<strong>Narzędzie Serial Plotter</strong>
+<p class="admonition-title">Wskazówka</p>
+<p><strong>Narzędzie Serial Plotter</strong>
 Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt; Kreślarka portu szeregowego (Serial Plotter)</strong>. Pokręć potencjometrem, a zobaczysz piękny, rysowany na żywo wykres zmian napięcia!</p>
 </div>
 <p><img alt="Zrzut ekranu: Wykres z potencjometru w Serial Plotterze" src="serial_plotter.png" /></p>
@@ -1318,13 +1311,10 @@ Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech o
 2. <strong>TX (Nadajnik z ESP A) -&gt; RX (Odbiornik w ESP B)</strong>
 3. <strong>RX (Odbiornik w ESP A) -&gt; TX (Nadajnik w ESP B)</strong></p>
 <div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><strong>Pamiętaj o skrzyżowaniu linii!</strong>
-Piny nadawcze (TX) zawsze łączymy z pinami odbiorczymi (RX) drugiego urządzenia. Połączenie TX-TX lub RX-RX nie zadziała.</p>
+<p class="admonition-title">Pamiętaj o skrzyżowaniu linii!</p>
+<p>Piny nadawcze (TX) zawsze łączymy z pinami odbiorczymi (RX) drugiego urządzenia. Połączenie TX-TX lub RX-RX nie zadziała.</p>
 </div>
 <p>Ze schematu odczytujemy piny na złączu <code>J4</code>: <strong>GPIO0</strong> (linia 3 złącza) oraz <strong>GPIO1</strong> (linia 2 złącza). Skonfigurujemy je jako interfejs sprzętowy <code>Serial1</code>.</p>
-<p><em>(Miejsce na przygotowanie grafiki: Schemat połączenia dwóch płytek ESP32-C6 kabelkami ze skrzyżowanymi liniami TX/RX)</em>
-<code>![Schemat połączenia UART dwóch płytek](miejsce_na_grafike_uart_wiring.png)</code></p>
 <h4 id="kod-dla-pytki-a-nadajnik">Kod dla Płytki A (Nadajnik):</h4>
 <p>Ta płytka czeka na wpisanie cyfry na klawiaturze (w Monitorze Szeregowym komputera), a następnie przesyła ją kablem do drugiej płytki.</p>
 <div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">UART_TX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
@@ -1393,9 +1383,8 @@ Piny nadawcze (TX) zawsze łączymy z pinami odbiorczymi (RX) drugiego urządzen
 </span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="p">}</span>
 </span></code></pre></div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Dla ciekawskich</strong>
-<strong>Czym jest kod ASCII?</strong>
+<p class="admonition-title">Dla ciekawskich</p>
+<p><strong>Czym jest kod ASCII?</strong>
 Komputery i mikrokontrolery nie rozumieją liter ani znaków – przetwarzają wyłącznie liczby. Dlatego każdy znak ma przypisaną stałą wartość liczbową w tzw. <strong>tabeli ASCII</strong> (np. znak <code>'0'</code> to w pamięci liczba 48, znak <code>'1'</code> to 49, a literka <code>'A'</code> to 65).
 Zapis <code>odebranyZnak - '0'</code> to popularny programistyczny trik: odejmując kod ASCII zera (48) od kodu ASCII odebranego znaku (np. <code>'5'</code>, czyli 53), otrzymujemy czystą wartość liczbową: <strong>53 - 48 = 5</strong>.</p>
 </div>
