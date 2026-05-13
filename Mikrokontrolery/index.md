@@ -6,16 +6,14 @@
 ### 1. ESP32-C6 i dedykowana płytka
 Podczas tych zajęć będziemy korzystać z układu **ESP32-C6**. Jest to mikrokontroler oparty na otwartej architekturze **RISC-V**, który posiada wbudowaną obsługę łączności bezprzewodowej: Wi-Fi 6, Bluetooth LE oraz protokołów Smart Home (Zigbee / Thread). Układ posiada również szereg innych zaawansowanych peryferiów. Wykorzystamy między innymi wbudowany **przetwornik ADC**, który pozwala mierzyć napięcie (np. z potencjometru). Ponadto układ obsługuje popularne standardy komunikacji, takie jak **SPI, I2C oraz UART**, co pozwala mu "rozmawiać" z niemal każdym zewnętrznym sensorem czy modułem dostępnym na rynku.
 
-> [!IMPORTANT]
-> **Ważne!**
+> [!IMPORTANT] Ważne!
 > **Jak czytać schemat i odnaleźć numery pinów?**
 > Początkujący często próbują wpisywać w kodzie fizyczne numery nóżek samego układu scalonego (czarnego "chipu"). **To błąd!** W programie zawsze posługujemy się numerami portów **GPIO** (ang. *General-Purpose Input/Output*). 
 > * **Wskazówka:** Numery pinów GPIO są również nadrukowane (zazwyczaj jako białe napisy) na pinoutach wzdłuż krawędzi płytki, obok otworów do lutowania.
 
-> [!NOTE]
-> **Dla ciekawskich**
-> **Strapping Pins**
-> Niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu układu (tzw. *strapping pins*). Jeśli podłączymy do nich coś, co wymusi na nich konkretny stan w momencie włączania zasilania, mikrokontroler może nie wystartować poprawnie lub wejść w tryb programowania.
+> [!NOTE] Dla ciekawskich
+> **Strapping Pins** -
+> niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu układu (tzw. *strapping pins*). Jeśli podłączymy do nich coś, co wymusi na nich konkretny stan w momencie włączania zasilania, mikrokontroler może nie wystartować poprawnie lub wejść w tryb programowania.
 
 Poniżej znajduje się schemat naszej zestawowej płytki edukacyjnej:
 
@@ -31,8 +29,7 @@ Analizując schemat, możemy odczytać, do których pinów GPIO podłączone są
 | **Złącze I2C** | `J2 I2C_CONN` | **5** (SDA), **6** (SCL) | Cyfrowa magistrala do czujników (np. MPU6050) |
 | **Złącze UART** | `J4 UART_CONN` | **0** (TX), **1** (RX) | Linie komunikacji szeregowej z drugim ESP |
 
-> [!NOTE]
-> **Inne**
+> [!NOTE] Inne
 > Pozostałe piny na schemacie, które są oznaczone symbolem **X**, nie będą wykorzystywane w tym kursie.
 
 ---
@@ -81,15 +78,13 @@ void loop() {
 }
 ```
 
-> [!TIP]
-> **Wskazówka**
+> [!TIP] Wskazówka
 > **Jak zobaczyć wynik?**
 > 1. Wgraj program na płytkę.
 > 2. W Arduino IDE kliknij ikonę lupy w prawym górnym rogu (lub użyj skrótu `Ctrl + Shift + M`), aby otworzyć **Monitor Portu Szeregowego (Serial Monitor)**.
 > 3. Upewnij się, że w dolnym rogu okna wybrano prędkość **115200 baud**.
 
-> [!NOTE]
-> **Dla ciekawskich**
+> [!NOTE] Dla ciekawskich
 > **Co to jest baud?**
 > Prędkość **baud** (bod) określa, ile symboli (bitów danych) jest przesyłanych w ciągu jednej sekundy. Ustawienie 115200 baud oznacza szybką komunikację. Ważne jest, aby prędkość ustawiona w kodzie (`Serial.begin`) była identyczna z tą wybraną w Monitorze Szeregowym – inaczej zamiast tekstu zobaczysz "krzaki" lub dziwne znaki.
 
@@ -177,8 +172,7 @@ Wewnątrz istniejących pętli <code>for</code> dopisz sterowanie drugą diodą 
 
 Potencjometr na naszej płytce działa jak dzielnik napięcia i w zależności od obrotu podaje na pin **GPIO4** napięcie od 0V do 3.3V. Przetwornik ADC w ESP32 zamienia to napięcie na liczbę z zakresu **od 0 do 4095** (rozdzielczość 12-bitowa). Służy do tego funkcja `analogRead(pin)`.
 
-> [!NOTE]
-> **Notatka**
+> [!NOTE] Notatka
 > **Jak działa funkcja map()?**
 > Zanim uzupełnisz kod, warto poznać funkcję `map()`. Pozwala ona proporcjonalnie przeskalować wartość z jednego zakresu na inny (np. z 0-4095 na 0-255). Przyjmuje 5 parametrów:
 > `map(wartość_wejściowa, min_wejście, max_wejście, min_wyjście, max_wyjście)`
@@ -211,8 +205,7 @@ void loop() {
 }
 ```
 
-> [!TIP]
-> **Wskazówka**
+> [!TIP] Wskazówka
 > **Narzędzie Serial Plotter**
 > Zamiast czytać suche liczby, otwórz w Arduino IDE menu **Narzędzia -> Kreślarka portu szeregowego (Serial Plotter)**. Pokręć potencjometrem, a zobaczysz piękny, rysowany na żywo wykres zmian napięcia!
 
@@ -308,14 +301,10 @@ Wymaga on połączenia trzech linii ze złącza `J4`:
 2. **TX (Nadajnik z ESP A) -> RX (Odbiornik w ESP B)**
 3. **RX (Odbiornik w ESP A) -> TX (Nadajnik w ESP B)**
 
-> [!WARNING]
-> **Pamiętaj o skrzyżowaniu linii!**
+> [!WARNING] Pamiętaj o skrzyżowaniu linii!
 > Piny nadawcze (TX) zawsze łączymy z pinami odbiorczymi (RX) drugiego urządzenia. Połączenie TX-TX lub RX-RX nie zadziała.
 
 Ze schematu odczytujemy piny na złączu `J4`: **GPIO0** (linia 3 złącza) oraz **GPIO1** (linia 2 złącza). Skonfigurujemy je jako interfejs sprzętowy `Serial1`.
-
-*(Miejsce na przygotowanie grafiki: Schemat połączenia dwóch płytek ESP32-C6 kabelkami ze skrzyżowanymi liniami TX/RX)*
-`![Schemat połączenia UART dwóch płytek](miejsce_na_grafike_uart_wiring.png)`
 
 #### Kod dla Płytki A (Nadajnik):
 Ta płytka czeka na wpisanie cyfry na klawiaturze (w Monitorze Szeregowym komputera), a następnie przesyła ją kablem do drugiej płytki.
@@ -390,8 +379,7 @@ void loop() {
 }
 ```
 
-> [!NOTE]
-> **Dla ciekawskich**
+> [!NOTE] Dla ciekawskich
 > **Czym jest kod ASCII?**
 > Komputery i mikrokontrolery nie rozumieją liter ani znaków – przetwarzają wyłącznie liczby. Dlatego każdy znak ma przypisaną stałą wartość liczbową w tzw. **tabeli ASCII** (np. znak `'0'` to w pamięci liczba 48, znak `'1'` to 49, a literka `'A'` to 65).
 > Zapis `odebranyZnak - '0'` to popularny programistyczny trik: odejmując kod ASCII zera (48) od kodu ASCII odebranego znaku (np. `'5'`, czyli 53), otrzymujemy czystą wartość liczbową: **53 - 48 = 5**.
