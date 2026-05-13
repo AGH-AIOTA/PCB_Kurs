@@ -589,7 +589,7 @@ void setup() {
   }
   
   // Rejestracja funkcji odbierającej dane
-  esp_now_register_recv_cb(onDataRecv);
+  esp_now_register_recv_cb((esp_send_cb_t)onDataRecv);
   
   Serial.println("Odbiornik ESP-NOW gotowy i nasluchuje...");
 }

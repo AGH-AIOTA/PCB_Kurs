@@ -1776,7 +1776,7 @@ Do porównania odebranych znaków użyj instrukcji warunkowej, na przykład: <co
 </span><span id="__span-11-55"><a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-11-56"><a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>
 </span><span id="__span-11-57"><a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a><span class="w">  </span><span class="c1">// Rejestracja funkcji odbierającej dane</span>
-</span><span id="__span-11-58"><a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a><span class="w">  </span><span class="n">esp_now_register_recv_cb</span><span class="p">(</span><span class="n">onDataRecv</span><span class="p">);</span>
+</span><span id="__span-11-58"><a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a><span class="w">  </span><span class="n">esp_now_register_recv_cb</span><span class="p">((</span><span class="n">esp_send_cb_t</span><span class="p">)</span><span class="n">onDataRecv</span><span class="p">);</span>
 </span><span id="__span-11-59"><a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a>
 </span><span id="__span-11-60"><a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Odbiornik ESP-NOW gotowy i nasluchuje...&quot;</span><span class="p">);</span>
 </span><span id="__span-11-61"><a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a><span class="p">}</span>
