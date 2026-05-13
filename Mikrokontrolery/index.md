@@ -238,7 +238,7 @@ Zanim napiszemy kod, musimy zainstalować bibliotekę, która ułatwi nam komuni
 
 ![Zrzut ekranu: Menedżer bibliotek w Arduino IDE](library_manager.png){ width="60%" }
 
-#### Uzupełnij kod odczytu w pętli loop():
+#### Kod odczytu w pętli loop():
 ```cpp
 #include <Wire.h>
 #include <MPU6050_light.h>
