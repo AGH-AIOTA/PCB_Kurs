@@ -240,7 +240,7 @@ Podłączymy do niego moduł **MPU6050** (zawierający 3-osiowy akcelerometr ora
 Zanim napiszemy kod, musimy zainstalować bibliotekę, która ułatwi nam komunikację z czujnikiem.
 
 1. W Arduino IDE wybierz: **Szkic -> Dołącz bibliotekę -> Zarządzaj bibliotekami...**
-2. Wyszukaj: **MPU6050_light** (autor: Romain JL).
+2. Wyszukaj: **MPU6050_light** (autor: rfetick).
 3. Kliknij **Zainstaluj**.
 
 ![Zrzut ekranu: Menedżer bibliotek w Arduino IDE](library_manager.png){ width="60%" }
