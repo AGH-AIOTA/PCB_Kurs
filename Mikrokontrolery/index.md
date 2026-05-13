@@ -395,3 +395,228 @@ Zamiast przesyłać cyfry regulujące jasność, zmodyfikuj program Odbiornika (
 <summary>Podpowiedź</summary>
 Do porównania odebranych znaków użyj instrukcji warunkowej, na przykład: <code>if (odebranyZnak == 'W') { ... } else if (odebranyZnak == 'G') { ... }</code>.
 </details>
+
+---
+
+## CZĘŚĆ 4: Sekcja dla zaawansowanych – Komunikacja bezprzewodowa ESP-NOW
+
+### Ćwiczenie 7: Bezprzewodowa wymiana danych przez ESP-NOW
+Gdy chcemy połączyć dwa mikrokontrolery bez użycia kabli (w przeciwieństwie do interfejsu UART z poprzedniego ćwiczenia) i bez pośrednictwa domowego routera Wi-Fi, z pomocą przychodzi autorski protokół firmy Espressif – **ESP-NOW**.
+
+#### Czym jest ESP-NOW?
+ESP-NOW to protokół komunikacji bezpośredniej (peer-to-peer), który pozwala na błyskawiczne i energooszczędne przesyłanie krótkich pakietów danych (do 250 bajtów) pomiędzy układami z rodziny ESP. Działa to w oparciu o unikalne fizyczne adresy kart sieciowych – **adresy MAC**. Nie wymaga to logowania do żadnej lokalnej sieci Wi-Fi, dzięki czemu opóźnienia są minimalne, a połączenie jest niezwykle stabilne i szybkie w zestawieniu.
+
+> [!IMPORTANT] Klucz do komunikacji: Adres MAC
+> Każdy układ ESP32 posiada wbudowany, unikalny adres MAC (składający się z 6 bajtów, np. `24:DC:C3:A1:B2:C0`). Aby Płytka A mogła wysłać wiadomość do Płytki B, musi dokładnie znać jej adres MAC!
+
+#### Krok 1: Jak odczytać adres MAC odbiornika?
+Zanim przystąpisz do pisania głównego programu komunikacyjnego, musisz poznać adres MAC płytki, która będzie pełniła rolę Odbiornika. W tym celu wgraj na nią poniższy, krótki program pomocniczy:
+
+```cpp
+#include <WiFi.h>
+
+void setup() {
+  Serial.begin(115200);
+  // Ustawienie modułu Wi-Fi w tryb stacji (STA)
+  WiFi.mode(WIFI_STA);
+  
+  Serial.println("=== Informacje o urzadzeniu ===");
+  Serial.print("Adres MAC tej plytki: ");
+  Serial.println(WiFi.macAddress());
+}
+
+void loop() {
+  // Pętla pozostaje pusta
+}
+```
+
+> [!TIP] Zapisz adres MAC!
+> Otwórz Monitor Szeregowy, skopiuj wyświetlony adres MAC i zapisz go sobie (np. w notatniku). Będzie on niezbędny do uzupełnienia kodu Nadajnika w kolejnym kroku.
+
+---
+
+#### Krok 2: Struktura danych (C-struct)
+W protokole ESP-NOW najwygodniej przesyłać ustrukturyzowane pakiety danych zamiast pojedynczych, luźnych bajtów. Używamy do tego struktur (`struct`), które pozwalają spakować różne zmienne (np. liczby całkowite, zmiennoprzecinkowe lub tekst) w jedną spójną paczkę. 
+
+Zdefiniujmy wspólną strukturę, którą umieścimy w kodzie zarówno Nadajnika, jak i Odbiornika:
+
+```cpp
+// Struktura przesyłanej wiadomości
+typedef struct struct_message {
+  char polecenie[10]; // Tekstowe polecenie, np. "MIGANIE"
+  int wartosc;        // Dowolna wartość liczbowa
+} struct_message;
+
+// Tworzymy zmienną "dane" o typie naszej struktury
+struct_message dane;
+```
+
+---
+
+#### Krok 3: Kod Nadajnika (Płytka A)
+Poniższy kod konfiguruje ESP-NOW, rejestruje odbiornik (tzw. *peer*) za pomocą jego adresu MAC i cyklicznie wysyła pakiet danych.
+
+Uzupełnij w kodzie adres MAC Odbiornika, który odczytałeś w Kroku 1 (zastępując przykładowe wartości `0xFF` odpowiednimi bajtami w formacie szesnastkowym z przedrostkiem `0x`):
+
+```cpp
+#include <esp_now.h>
+#include <WiFi.h>
+
+// UZUPEŁNIJ: Wpisz tutaj odczytany adres MAC Odbiornika (Płytki B)
+// Pamiętaj o przedrostku 0x przed każdą wartością, np. {0x24, 0xDC, 0xC3, 0xA1, 0xB2, 0xC0}
+uint8_t adresOdbiornika[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+typedef struct struct_message {
+  char polecenie[10];
+  int wartosc;
+} struct_message;
+
+struct_message wysylaneDane;
+
+// Informacje o zarejestrowanym urządzeniu (peer)
+esp_now_peer_info_t peerInfo;
+
+// Funkcja wywoływana automatycznie po próbie wysłania wiadomości
+void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("Status ostatniej transmisji: ");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Sukces (Dostarczono)" : "Blad dostarczenia");
+}
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);
+
+  // Inicjalizacja protokołu ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Blad inicjalizacji ESP-NOW");
+    return;
+  }
+
+  // Rejestracja funkcji wywoływanej po wysłaniu pakietu
+  esp_now_register_send_cb(onDataSent);
+
+  // Konfiguracja i dodanie odbiornika (peera)
+  memcpy(peerInfo.peer_addr, adresOdbiornika, 6);
+  peerInfo.channel = 0;     // Domyślny kanał Wi-Fi
+  peerInfo.encrypt = false; // Brak szyfrowania w celach edukacyjnych
+
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.println("Nie udalo sie dodac odbiornika");
+    return;
+  }
+}
+
+void loop() {
+  // Przygotowanie danych do wysłania
+  strcpy(wysylaneDane.polecenie, "MIGANIE");
+  wysylaneDane.wartosc = random(10, 100); // Losowa wartość dla demonstracji
+
+  Serial.println("Wysylanie pakietu danych...");
+  
+  // Wysłanie pakietu przez ESP-NOW
+  esp_err_t wynik = esp_now_send(adresOdbiornika, (uint8_t *) &wysylaneDane, sizeof(wysylaneDane));
+  
+  if (wynik == ESP_OK) {
+    Serial.println("Wyslano polecenie do odbiornika!");
+  } else {
+    Serial.println("Blad podczas wysylania.");
+  }
+
+  delay(2000); // Wysyłaj pakiet co 2 sekundy
+}
+```
+
+---
+
+#### Krok 4: Kod Odbiornika (Płytka B)
+Odbiornik stale nasłuchuje w tle nadchodzących pakietów. Gdy pojawi się nowa wiadomość, automatycznie wywoływana jest funkcja zwrotna (tzw. *callback*), która pozwala natychmiastowo przetworzyć odebrane dane.
+
+```cpp
+#include <esp_now.h>
+#include <WiFi.h>
+
+const int PIN_LED = 2; // Dioda D3 na naszej płytce
+
+typedef struct struct_message {
+  char polecenie[10];
+  int wartosc;
+} struct_message;
+
+struct_message odebraneDane;
+
+// Funkcja wywoływana automatycznie w momencie odebrania pakietu danych
+void onDataRecv(const esp_now_recv_info_t *recv_info, const uint8_t *incomingData, int len) {
+  // Kopiowanie surowych bajtów do naszej czytelnej struktury
+  memcpy(&odebraneDane, incomingData, sizeof(odebraneDane));
+  
+  Serial.print("Odebrano pakiet od adresu MAC: ");
+  for (int i = 0; i < 6; i++) {
+    Serial.printf("%02X", recv_info->src_addr[i]);
+    if (i < 5) Serial.print(":");
+  }
+  Serial.println();
+  
+  Serial.print("Rozmiar danych: ");
+  Serial.print(len);
+  Serial.println(" bajtow");
+  
+  Serial.print("Polecenie: ");
+  Serial.println(odebraneDane.polecenie);
+  Serial.print("Wartosc: ");
+  Serial.println(odebraneDane.wartosc);
+  Serial.println("-----------------------------");
+
+  // Przykładowa reakcja na odebrane polecenie
+  if (strcmp(odebraneDane.polecenie, "MIGANIE") == 0) {
+    // Krótkie błyśnięcie diodą sygnalizujące odbiór danych
+    digitalWrite(PIN_LED, HIGH);
+    delay(50);
+    digitalWrite(PIN_LED, LOW);
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_LED, OUTPUT);
+  digitalWrite(PIN_LED, LOW);
+  
+  // Ustawienie Wi-Fi w tryb stacji
+  WiFi.mode(WIFI_STA);
+
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Blad inicjalizacji ESP-NOW");
+    return;
+  }
+  
+  // Rejestracja funkcji odbierającej dane
+  esp_now_register_recv_cb(onDataRecv);
+  
+  Serial.println("Odbiornik ESP-NOW gotowy i nasluchuje...");
+}
+
+void loop() {
+  // Odbieranie pakietów realizowane jest w tle (asynchronicznie) przez funkcje onDataRecv.
+  // Pętla loop() pozostaje całkowicie wolna do realizacji innych zadan!
+}
+```
+
+> [!NOTE] Ważne dla układów ESP32-C6 (Core v3.x)
+> Zwróć uwagę na nagłówek funkcji `onDataRecv`. W najnowszych wersjach biblioteki dla układów ESP32 opartych na rdzeniu Arduino w wersji 3.x (czyli m.in. dla ESP32-C6), pierwszym argumentem funkcji zwrotnej jest wskaźnik na strukturę `const esp_now_recv_info_t *recv_info`, z której w wygodny sposób odczytujemy pełne metadane o nadawcy.
+
+---
+
+#### Zadanie do samodzielnego wykonania (Bezprzewodowy kontroler ruchu):
+Połącz wiedzę z poprzednich ćwiczeń i stwórz zaawansowany projekt zdalnego sterowania!
+
+1. **Nadajnik:** Podłącz do Płytki A czujnik **MPU6050** (magistrala I2C). Zmodyfikuj przesyłaną strukturę tak, aby zawierała odczytane wartości kąta nachylenia (np. `float katX; float katY;`). W pętli `loop()` odczytuj bieżący kąt z czujnika i wysyłaj go bezprzewodowo przez ESP-NOW do Odbiornika dziesięć razy na sekundę (`delay(100)`).
+2. **Odbiornik:** Płytka B odbiera paczkę z danymi o nachyleniu. Zaprogramuj ją tak, aby w zależności od przechyłu Płytki A (np. gdy `katX > 30.0` stopni) włączała odpowiednią diodę LED na płytce. W ten sposób uzyskasz w pełni bezprzewodowy, gestowy kontroler ruchu!
+
+<details>
+<summary>Wskazówka do modyfikacji struktury</summary>
+Pamiętaj, że struktura w kodzie Nadajnika i Odbiornika musi być <b>dokładnie identyczna</b>. Zmień definicję na:
+<pre><code>typedef struct struct_message {
+  float katX;
+  float katY;
+} struct_message;
+</code></pre>
+</details>
