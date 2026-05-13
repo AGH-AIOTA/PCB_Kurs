@@ -495,7 +495,7 @@ Struktura serwera wygląda następująco:
 ### Ćwiczenie 5: Odbieranie komend ze smartfona przez BLE
 Skonfigurujemy ESP32-C6 jako serwer BLE udostępniający jedną usługę z charakterystyką zapisu (Write). Klientem będzie uniwersalna aplikacja narzędziowa **nRF Connect for Mobile** (dostępna bezpłatnie na systemy Android oraz iOS), z poziomu której prześlemy liczbowe komendy sterujące diodą.
 
-#### Wgraj poniższy kod na płytkę:
+#### Kod do uzupełnienia i wgrania na płytkę:
 ```cpp
 #include <BLEDevice.h>
 #include <BLEServer.h>
@@ -690,7 +690,7 @@ void loop() {
 ```
 
 #### Instrukcja testowania:
-1. Połącz się z urządzeniem **ESP32_Potencjometr_BLE** w aplikacji **nRF Connect**.
+1. Połącz się z urządzeniem w aplikacji **nRF Connect**.
 2. Odszukaj charakterystykę o identyfikatorze `29f37c35-...`.
 3. Zauważysz przy niej ikonę **wielokrotnych strzałek w dół** (Notify). Kliknij ją, aby włączyć subskrypcję powiadomień (ikona zmieni kolor lub zniknie jej przekreślenie).
 4. Zaczynaj powoli kręcić potencjometrem na płytce. Na ekranie smartfona w czasie rzeczywistym będą pojawiać się odczytywane wartości napięcia bez konieczności klikania przycisku odświeżania!
