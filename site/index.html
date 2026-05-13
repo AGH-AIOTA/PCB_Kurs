@@ -1128,8 +1128,7 @@ Pozostałe piny na schemacie, które są oznaczone symbolem <strong>X</strong>, 
 <strong>Co to jest baud?</strong>
 Prędkość <strong>baud</strong> (bod) określa, ile symboli (bitów danych) jest przesyłanych w ciągu jednej sekundy. Ustawienie 115200 baud oznacza szybką komunikację. Ważne jest, aby prędkość ustawiona w kodzie (<code>Serial.begin</code>) była identyczna z tą wybraną w Monitorze Szeregowym – inaczej zamiast tekstu zobaczysz "krzaki" lub dziwne znaki.</p>
 </div>
-<p><em>(Miejsce na przygotowanie grafiki: Zrzut ekranu otwartego Serial Monitora w Arduino IDE z widocznym tekstem)</em>
-<code>![Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie](miejsce_na_grafike_serial_monitor.png)</code></p>
+<p><img alt="Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie" src="serial_monitor.png" /></p>
 <h4 id="zadanie-do-samodzielnego-wykonania">Zadanie do samodzielnego wykonania:</h4>
 <p>Dodaj w pętli <code>loop()</code> drugą instrukcję <code>Serial.println(...)</code> z dowolnym własnym tekstem (np. Twoim imieniem), aby mikrokontroler co sekundę wysyłał na ekran <strong>dwulinijkowy</strong> komunikat.</p>
 <hr />
@@ -1139,7 +1138,7 @@ Prędkość <strong>baud</strong> (bod) określa, ile symboli (bitów danych) je
 <li><strong>HIGH (stan wysoki):</strong> na pinie pojawia się napięcie 3.3V – dioda świeci.</li>
 <li><strong>LOW (stan niski):</strong> napięcie spada do 0V (połączenie z masą) – dioda gaśnie.</li>
 </ul>
-<p>Z naszego schematu wiemy, że dioda <code>D3</code> podłączona jest do pinu <strong>2</strong>. Funkcja <code>digitalWrite(pin, stan)</code> pozwala ustawić żądany stan na wybranym pinie.</p>
+<p>Z naszego schematu wiemy, że dioda <code>D3</code> podłączona jest do pinu <strong>GPIO2</strong>. Funkcja <code>digitalWrite(pin, stan)</code> pozwala ustawić żądany stan na wybranym pinie.</p>
 <h4 id="uzupenij-kod-i-wgraj-na-pytke">Uzupełnij kod i wgraj na płytkę:</h4>
 <div class="highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Definiujemy stałą z numerem pinu, aby kod był czytelniejszy</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PIN_LED1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
@@ -1158,7 +1157,7 @@ Prędkość <strong>baud</strong> (bod) określa, ile symboli (bitów danych) je
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="p">}</span>
 </span></code></pre></div>
 <h4 id="zadanie-do-samodzielnego-wykonania_1">Zadanie do samodzielnego wykonania:</h4>
-<p>Na płytce znajduje się druga dioda (<code>D10</code>) podłączona do pinu <strong>3</strong>. Zmodyfikuj program tak, aby uzyskać efekt <strong>naprzemiennego migania obu diod</strong> (gdy jedna się zapala, druga natychmiast gaśnie).</p>
+<p>Na płytce znajduje się druga dioda (<code>D10</code>) podłączona do pinu <strong>GPIO3</strong>. Zmodyfikuj program tak, aby uzyskać efekt <strong>naprzemiennego migania obu diod</strong> (gdy jedna się zapala, druga natychmiast gaśnie).</p>
 <hr />
 <h3 id="cwiczenie-3-pynna-regulacja-jasnosci-sygna-pwm">Ćwiczenie 3: Płynna regulacja jasności – Sygnał PWM</h3>
 <p>Wyjście cyfrowe daje nam tylko opcje włącz/wyłącz. Co jeśli chcemy płynnie regulować jasność diody?
@@ -1237,8 +1236,7 @@ W naszym przykładzie: bierze odczytaną z potencjometru liczbę od 0 do 4095 i 
 <strong>Narzędzie Serial Plotter</strong>
 Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt; Kreślarka portu szeregowego (Serial Plotter)</strong>. Pokręć potencjometrem, a zobaczysz piękny, rysowany na żywo wykres zmian napięcia!</p>
 </div>
-<p><em>(Miejsce na przygotowanie grafiki: Zrzut ekranu Serial Plottera rysującego sinusoide/wykres z potencjometru)</em>
-<code>![Zrzut ekranu: Wykres z potencjometru w Serial Plotterze](miejsce_na_grafike_serial_plotter.png)</code></p>
+<p><img alt="Zrzut ekranu: Wykres z potencjometru w Serial Plotterze" src="serial_plotter.png" /></p>
 <h4 id="zadanie-do-samodzielnego-wykonania-termostat-prog-alarmowy">Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):</h4>
 <p>Często odczyt z czujnika nie służy do płynnej regulacji, lecz do załączania ostrzeżenia po przekroczeniu pewnego progu. Zmodyfikuj program tak, aby całkowicie usunąć <code>analogWrite</code> oraz <code>map()</code>, a zamiast tego użyć instrukcji warunkowej <code>if ... else</code>:</p>
 <ul>
@@ -1255,12 +1253,13 @@ Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt
 <p>Na jednym zestawie przewodów można podłączyć wiele urządzeń, ponieważ każde z nich ma swój unikalny adres cyfrowy. Nasze złącze <code>J2</code> podłączone jest do pinów <strong>5 (SDA)</strong> oraz <strong>6 (SCL)</strong>.</p>
 <p>Podłączymy do niego moduł <strong>MPU6050</strong> (zawierający 3-osiowy akcelerometr oraz żyroskop, używany między innymi w dronach do stabilizacji lotu).</p>
 <h4 id="instalacja-biblioteki">Instalacja biblioteki:</h4>
-<p>Zanim napiszemy kod, musimy zainstalować bibliotekę, która ułatwi nam komunikację z czujnikiem.
-1. W Arduino IDE wybierz: <strong>Szkic -&gt; Dołącz bibliotekę -&gt; Zarządzaj bibliotekami...</strong>
-2. Wyszukaj: <strong>MPU6050_light</strong> (autor: Romain JL).
-3. Kliknij <strong>Zainstaluj</strong>.</p>
-<p><em>(Miejsce na przygotowanie grafiki: Okno Menedżera bibliotek z wyszukaną biblioteką MPU6050_light)</em>
-<code>![Zrzut ekranu: Menedżer bibliotek w Arduino IDE](miejsce_na_grafike_library_manager.png)</code></p>
+<p>Zanim napiszemy kod, musimy zainstalować bibliotekę, która ułatwi nam komunikację z czujnikiem.</p>
+<ol>
+<li>W Arduino IDE wybierz: <strong>Szkic -&gt; Dołącz bibliotekę -&gt; Zarządzaj bibliotekami...</strong></li>
+<li>Wyszukaj: <strong>MPU6050_light</strong> (autor: Romain JL).</li>
+<li>Kliknij <strong>Zainstaluj</strong>.</li>
+</ol>
+<p><img alt="Zrzut ekranu: Menedżer bibliotek w Arduino IDE" src="library_manager.png" width="70%" /></p>
 <h4 id="uzupenij-kod-odczytu-w-petli-loop">Uzupełnij kod odczytu w pętli loop():</h4>
 <div class="highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;MPU6050_light.h&gt;</span>

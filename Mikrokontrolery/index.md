@@ -93,8 +93,7 @@ void loop() {
 > **Co to jest baud?**
 > Prędkość **baud** (bod) określa, ile symboli (bitów danych) jest przesyłanych w ciągu jednej sekundy. Ustawienie 115200 baud oznacza szybką komunikację. Ważne jest, aby prędkość ustawiona w kodzie (`Serial.begin`) była identyczna z tą wybraną w Monitorze Szeregowym – inaczej zamiast tekstu zobaczysz "krzaki" lub dziwne znaki.
 
-*(Miejsce na przygotowanie grafiki: Zrzut ekranu otwartego Serial Monitora w Arduino IDE z widocznym tekstem)*
-`![Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie](miejsce_na_grafike_serial_monitor.png)`
+![Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie](serial_monitor.png)
 
 #### Zadanie do samodzielnego wykonania:
 Dodaj w pętli `loop()` drugą instrukcję `Serial.println(...)` z dowolnym własnym tekstem (np. Twoim imieniem), aby mikrokontroler co sekundę wysyłał na ekran **dwulinijkowy** komunikat.
@@ -201,7 +200,6 @@ void loop() {
   int odczyt = ;
   
   // Wypisanie wyniku do Serial Monitora
-  Serial.print("Wartosc z potencjometru: ");
   Serial.println(odczyt);
   
   // UZUPEŁNIJ: Przeskaluj zakres odczytu ADC (0-4095) na zakres jasności PWM (0-255)
@@ -218,8 +216,7 @@ void loop() {
 > **Narzędzie Serial Plotter**
 > Zamiast czytać suche liczby, otwórz w Arduino IDE menu **Narzędzia -> Kreślarka portu szeregowego (Serial Plotter)**. Pokręć potencjometrem, a zobaczysz piękny, rysowany na żywo wykres zmian napięcia!
 
-*(Miejsce na przygotowanie grafiki: Zrzut ekranu Serial Plottera rysującego sinusoide/wykres z potencjometru)*
-`![Zrzut ekranu: Wykres z potencjometru w Serial Plotterze](miejsce_na_grafike_serial_plotter.png)`
+![Zrzut ekranu: Wykres z potencjometru w Serial Plotterze](serial_plotter.png)
 
 #### Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):
 Często odczyt z czujnika nie służy do płynnej regulacji, lecz do załączania ostrzeżenia po przekroczeniu pewnego progu. Zmodyfikuj program tak, aby całkowicie usunąć `analogWrite` oraz `map()`, a zamiast tego użyć instrukcji warunkowej `if ... else`:
@@ -246,8 +243,7 @@ Zanim napiszemy kod, musimy zainstalować bibliotekę, która ułatwi nam komuni
 2. Wyszukaj: **MPU6050_light** (autor: Romain JL).
 3. Kliknij **Zainstaluj**.
 
-*(Miejsce na przygotowanie grafiki: Okno Menedżera bibliotek z wyszukaną biblioteką MPU6050_light)*
-`![Zrzut ekranu: Menedżer bibliotek w Arduino IDE](miejsce_na_grafike_library_manager.png)`
+![Zrzut ekranu: Menedżer bibliotek w Arduino IDE](library_manager.png){ width="60%" }
 
 #### Uzupełnij kod odczytu w pętli loop():
 ```cpp
