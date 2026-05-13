@@ -160,9 +160,10 @@ void TaskNadajnik(void *pvParameters) {
     int odczyt = analogRead(PIN_POTENCJOMETR);
 
     // UZUPEŁNIJ: Wyślij adres zmiennej '&odczyt' do kolejki 'kolejkaDanych'.
-    // Trzeci argument portMAX_DELAY oznacza nieskończone oczekiwanie, jeśli kolejka jest pełna.
     xQueueSend(
-      
+      /* 1. Uchwyt kolejki */,
+      /* 2. Wskaźnik na wysyłane dane */,
+      /* 3. Czas oczekiwania (np. portMAX_DELAY) */
     );
 
     // Pobieraj próbkę co 100 milisekund
@@ -175,9 +176,11 @@ void TaskOdbiornik(void *pvParameters) {
 
   for (;;) {
     // UZUPEŁNIJ: Odbierz dane z kolejki 'kolejkaDanych' i zapisz pod adresem '&odebranaWartosc'.
-    // Użyj instrukcji warunkowej if (xQueueReceive(...) == pdPASS), która zablokuje zadanie w oczekiwaniu na dane.
+    // Funkcja xQueueReceive zablokuje zadanie w oczekiwaniu na dane.
     if (xQueueReceive(
-      
+      /* 1. Uchwyt kolejki */,
+      /* 2. Wskaźnik na bufor odbiorczy */,
+      /* 3. Czas oczekiwania (np. portMAX_DELAY) */
     ) == pdPASS) {
       Serial.print("Odebrano z kolejki: ");
       Serial.println(odebranaWartosc);
@@ -352,16 +355,23 @@ Wykorzystuje się do tego architekturę **REST API** oraz powszechny protokół 
 
 Aby mikrokontroler uzyskał dostęp do globalnej sieci Internet, musimy przełączyć go w tryb **Stacji (`WIFI_STA`)** i podać mu dane logowania do istniejącego routera z wyjściem na świat (np. przenośnego punktu dostępowego / hotspotu udostępnionego z Twojego smartfona).
 
-### Ćwiczenie 4: Klient HTTP – Pobieranie danych z publicznego REST API
-W tym ćwiczeniu połączymy się z ogólnodostępnym, darmowym API serwującym losowe ciekawostki. Użyjemy wbudowanej biblioteki `HTTPClient`, aby wysłać zapytanie `GET` pod określony adres URL, a następnie odczytamy odpowiedź serwera.
+### Ćwiczenie 4: Klient HTTP – Pobieranie i parsowanie danych z REST API
+W tym ćwiczeniu połączymy się z ogólnodostępnym, darmowym API serwującym losowe ciekawostki w formacie JSON. Użyjemy wbudowanej biblioteki `HTTPClient` do pobrania danych, a następnie za pomocą profesjonalnej biblioteki **ArduinoJson** sparsujemy odpowiedź, aby wyciągnąć z niej wyłącznie interesujący nas tekst.
+
+#### Instalacja biblioteki ArduinoJson:
+Zanim wgrasz kod, musisz zainstalować w środowisku narzędzie do obsługi formatu JSON.
+1. W Arduino IDE wybierz: **Szkic -> Dołącz bibliotekę -> Zarządzaj bibliotekami...**
+2. Wyszukaj: **ArduinoJson** (autor: Benoit Blanchon).
+3. Kliknij **Zainstaluj**.
 
 > [!IMPORTANT] Konfiguracja Hotspotu
 > Przed wgraniem kodu włącz w swoim smartfonie funkcję **Przenośny punkt dostępowy (Hotspot Wi-Fi)**. Wpisz nazwę swojej udostępnionej sieci (SSID) oraz hasło w odpowiednich zmiennych w poniższym kodzie.
 
-#### Uzupełnij kod i wgraj na płytkę:
+#### Kod do uzupełnienia i wgrania na płytkę:
 ```cpp
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h> // Biblioteka do parsowania formatu JSON
 
 // UZUPEŁNIJ: Wpisz dane logowania do hotspotu w swoim telefonie
 const char* ssid = "Nazwa_Twojego_Hotspotu";
@@ -400,8 +410,8 @@ void loop() {
     // Konfiguracja docelowego adresu URL
     http.begin(urlAPI);
     
-    // UZUPEŁNIJ: Wykonaj zapytanie metodą GET za pomocą funkcji http.GET()
-    int kodOdpowiedzi = ;
+    // Wykonanie zapytania metodą GET
+    int kodOdpowiedzi = http.GET();
     
     // Kod 200 (HTTP_CODE_OK) oznacza standardowy sukces HTTP
     if (kodOdpowiedzi > 0) {
@@ -411,8 +421,28 @@ void loop() {
       if (kodOdpowiedzi == HTTP_CODE_OK) {
         // Pobranie pełnej treści odpowiedzi z serwera jako ciąg znaków (String)
         String odpowiedz = http.getString();
-        Serial.println("Odebrane dane z serwera:");
+        Serial.println("Odebrano surowy JSON z serwera:");
         Serial.println(odpowiedz);
+
+        // --- PARSOWANIE JSON ---
+        // Tworzymy dokument JSON o pojemności pozwalającej przechować strukturę
+        JsonDocument doc;
+        
+        // Deserializacja (parsowanie) odebranego tekstu
+        DeserializationError error = deserializeJson(doc, odpowiedz);
+
+        if (error) {
+          Serial.print("Blad parsowania JSON: ");
+          Serial.println(error.c_str());
+        } else {
+          // Wyciągamy interesujące nas pole "text" ze sparsowanego obiektu
+          const char* trescFaktu = doc["text"];
+          
+          Serial.println("\n========================================");
+          Serial.print("Wylosowany fakt: ");
+          Serial.println(trescFaktu);
+          Serial.println("========================================\n");
+        }
       }
     } else {
       Serial.print("Blad zapytania HTTP: ");
@@ -431,9 +461,13 @@ void loop() {
 ```
 
 #### Zadanie do samodzielnego wykonania:
-Odebrany z serwera tekst zawiera surowy format JSON (np. `{"id":"...","text":"Treść faktu","source":"..."}`). W profesjonalnych projektach do wyciągania poszczególnych pól z takiego ciągu znaków nie używa się ręcznego wycinania tekstu, lecz zewnętrznej biblioteki **ArduinoJson**. 
+Odwiedź repozytorium gromadzące darmowe, publiczne interfejsy z całego świata:  
+🔗 **[Public APIs na GitHubie](https://github.com/public-apis/public-apis)**
 
-Zainstaluj w Menedżerze Bibliotek wtyczkę `ArduinoJson` (autor: Benoit Blanchon). Następnie spróbuj sparsować zmienną `odpowiedz` i zaktualizować program tak, aby wypisywał w Monitorze Szeregowym **wyłącznie samą treść faktu** (wartość kryjącą się pod kluczem `"text"`), pomijając całą resztę znaczników i nawiasów JSON!
+Wybierz z listy dowolne, interesujące Cię API (najlepiej takie, które w kolumnie **Auth** nie wymaga autoryzacji – wartość `No`). 
+1. Sprawdź w przeglądarce, jak wygląda zwracana przez to API struktura JSON.
+2. Podmień w kodzie zmienną `urlAPI` na adres wybranego serwisu.
+3. Zmodyfikuj sekcję parsowania `doc[...]` tak, aby program poprawnie wyciągał i wyświetlał interesujące pola z Twojego wybranego API!
 
 ---
 
@@ -506,10 +540,8 @@ void setup() {
   // Tworzenie serwera BLE
   BLEServer *pServer = BLEDevice::createServer();
 
-  // UZUPEŁNIJ: Utwórz usługę w serwerze, przekazując zdefiniowany makrem SERVICE_UUID
-  BLEService *pService = pServer->createService(
-    
-  );
+  // Tworzenie usługi w serwerze za pomocą zdefiniowanego makra SERVICE_UUID
+  BLEService *pService = pServer->createService(SERVICE_UUID);
 
   // Tworzenie charakterystyki z właściwością WRITE (Zapis).
   // Właściwość PROPERTY_WRITE nadaje uprawnienia pozwalające zewnętrznemu klientowi (aplikacji)
@@ -616,11 +648,9 @@ void setup() {
                             BLECharacteristic::PROPERTY_NOTIFY
                           );
 
-  // UZUPEŁNIJ: Dodaj deskryptor CCCD (new BLE2902()) do charakterystyki, 
-  // co pozwoli smartfonowi włączyć subskrypcję powiadomień!
-  pCharacteristicNotify->addDescriptor(
-    
-  );
+  // Dodanie deskryptora CCCD (BLE2902) do charakterystyki, 
+  // co pozwala smartfonowi włączyć subskrypcję powiadomień
+  pCharacteristicNotify->addDescriptor(new BLE2902());
 
   // Uruchomienie usługi i aktywacja rozgłaszania
   pService->start();
@@ -643,9 +673,8 @@ void loop() {
     // Aktualizacja wartości wewnątrz charakterystyce
     pCharacteristicNotify->setValue(wartoscTekstowa.c_str());
 
-    // UZUPEŁNIJ: Wywołaj metodę notify() na obiekcie pCharacteristicNotify, 
-    // aby natychmiastowo przesłać zaktualizowaną wartość do smartfona
-    pCharacteristicNotify->
+    // Natychmiastowe przesłanie zaktualizowanej wartości powiadomieniem do smartfona
+    pCharacteristicNotify->notify();
     
     Serial.print("Wyslano powiadomienie BLE: ");
     Serial.println(wartoscTekstowa);
