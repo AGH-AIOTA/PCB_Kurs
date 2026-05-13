@@ -103,9 +103,99 @@ Stwórz w programie **trzecie zadanie** (np. `TaskLicznik`), które posiada wyż
 > **Pętla loop() to również zadanie!**
 > Warto wiedzieć, że w środowisku programistycznym dla układów ESP32 standardowe funkcje `setup()` oraz `loop()` pod spodem nie działają "magicznie" poza systemem. Środowisko automatycznie tworzy dla nich domyślne zadanie FreeRTOS o nazwie `loopTask` i priorytecie 1. Pisząc zwykły kod w Arduino, od zawsze programowałeś wewnątrz zadania FreeRTOS, nawet o tym nie wiedząc! Właśnie dlatego w naszym kodzie mogliśmy bezpiecznie usunąć to domyślne zadanie za pomocą instrukcji `vTaskDelete(NULL)`, zwalniając przydzieloną mu pamięć.
 
+> [!IMPORTANT] Task Watchdog Timer (TWDT)
+> **Dlaczego zadanie bez opóźnienia resetuje płytkę?**
+> W systemie FreeRTOS dla układów ESP32 stale czuwa wbudowany mechanizm nadzorcy – **Task Watchdog Timer**. Jeśli stworzysz zadanie o wysokim priorytecie, które zajmie procesor w nieskończonej pętli `for(;;)` lub `while(1)` bez wywołania funkcji oddającej czas planiście (takiej jak `vTaskDelay()` lub `yield()`), planista nie będzie w stanie przełączyć kontekstu na inne, krytyczne zadania systemowe (np. obsługę stosu Wi-Fi). 
+> 
+> Watchdog uzna, że program uległ zawieszeniu, i po jakimś czasie **zresetuje mikrokontroler**, wypisując w Monitorze Szeregowym charakterystyczny błąd: `Task watchdog got triggered`. Zawsze pamiętaj o dodawaniu opóźnień wewnątrz nieskończonych pętli zadań!
+
 ---
 
-## MODUŁ 2: Wi-Fi – Access Point i wbudowany serwer WWW
+### Ćwiczenie 2: Bezpieczna wymiana danych – Kolejki (Queues)
+W profesjonalnych aplikacjach wielozadaniowych dążymy do całkowitej eliminacji **zmiennych globalnych** przy przekazywaniu danych między poszczególnymi zadaniami. Służą do tego **Kolejki (Queues)**. Kolejka to bezpieczny bufor FIFO (*First-In, First-Out*), do którego jedno zadanie może wrzucać dane, a inne je stamtąd odbierać. Operacje na kolejce są automatycznie synchronizowane przez system, co całkowicie zabezpiecza program przed problemem *Race Condition*.
+
+W tym ćwiczeniu stworzymy dwa zadania:
+1. **`TaskNadajnik`**: Odczytuje napięcie z potencjometru (GPIO4) i bezpiecznie wysyła odczytaną wartość do kolejki za pomocą funkcji `xQueueSend`.
+2. **`TaskOdbiornik`**: Czeka na pojawienie się nowej wartości w kolejce za pomocą funkcji `xQueueReceive`. Gdy dane nadejdą, wypisuje je w Monitorze Szeregowym i steruje jasnością diody (GPIO2).
+
+#### Uzupełnij kod i wgraj na płytkę:
+```cpp
+const int PIN_LED = 2;
+const int PIN_POTENCJOMETR = 4;
+
+// Globalny uchwyt do naszej kolejki przechowującej liczby całkowite (int)
+QueueHandle_t kolejkaDanych;
+
+void TaskNadajnik(void *pvParameters);
+void TaskOdbiornik(void *pvParameters);
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_LED, OUTPUT);
+
+  // Tworzenie kolejki mogącej pomieścić maksymalnie 5 elementów typu int
+  kolejkaDanych = xQueueCreate(5, sizeof(int));
+
+  if (kolejkaDanych == NULL) {
+    Serial.println("Blad: Nie udalo sie utworzyc kolejki!");
+    return;
+  }
+
+  // Tworzenie zadania nadawczego
+  xTaskCreate(TaskNadajnik, "Nadajnik", 2048, NULL, 1, NULL);
+  
+  // Tworzenie zadania odbiorczego z wyższym priorytetem
+  xTaskCreate(TaskOdbiornik, "Odbiornik", 2048, NULL, 2, NULL);
+
+  Serial.println("Zadania z kolejka uruchomione!");
+}
+
+void loop() {
+  vTaskDelete(NULL);
+}
+
+void TaskNadajnik(void *pvParameters) {
+  for (;;) {
+    // Odczyt wartości z przetwornika ADC (potencjometr)
+    int odczyt = analogRead(PIN_POTENCJOMETR);
+
+    // UZUPEŁNIJ: Wyślij adres zmiennej '&odczyt' do kolejki 'kolejkaDanych'.
+    // Trzeci argument portMAX_DELAY oznacza nieskończone oczekiwanie, jeśli kolejka jest pełna.
+    xQueueSend(
+      
+    );
+
+    // Pobieraj próbkę co 100 milisekund
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+}
+
+void TaskOdbiornik(void *pvParameters) {
+  int odebranaWartosc;
+
+  for (;;) {
+    // UZUPEŁNIJ: Odbierz dane z kolejki 'kolejkaDanych' i zapisz pod adresem '&odebranaWartosc'.
+    // Użyj instrukcji warunkowej if (xQueueReceive(...) == pdPASS), która zablokuje zadanie w oczekiwaniu na dane.
+    if (xQueueReceive(
+      
+    ) == pdPASS) {
+      Serial.print("Odebrano z kolejki: ");
+      Serial.println(odebranaWartosc);
+
+      // Skalowanie odczytu (0-4095) na jasność PWM diody (0-255)
+      int jasnosc = map(odebranaWartosc, 0, 4095, 0, 255);
+      analogWrite(PIN_LED, jasnosc);
+    }
+  }
+}
+```
+
+#### Zadanie do samodzielnego wykonania:
+Spróbuj zmienić rozmiar kolejki przy tworzeniu (`xQueueCreate`) na **`1`** i zaobserwuj w Monitorze Szeregowym, czy wpływa to na płynność przekazywania danych. Następnie zmodyfikuj kod w funkcji `TaskNadajnik` dodając instrukcję warunkową, aby mikrokontroler wysyłał dane do kolejki **tylko wtedy**, gdy odczyt z potencjometru zmienił się o więcej niż 50 jednostek w stosunku do poprzedniego pomiaru. Pozwoli to zaoszczędzić czas procesora i nie zapychać kolejki identycznymi, powtarzającymi się wartościami!
+
+---
+
+## MODUŁ 2: Wi-Fi – Access Point, mDNS i Klient HTTP (REST API)
 
 Mikrokontroler ESP32-C6 posiada wbudowany moduł sieci bezprzewodowej Wi-Fi. 
 
@@ -114,21 +204,26 @@ Układ może pracować w dwóch podstawowych trybach:
 1. **Tryb Stacji (`WIFI_STA` - Station):** Mikrokontroler łączy się z zewnętrznym routerem (np. w Twoim domu) i staje się klientem w istniejącej sieci, uzyskując dostęp do Internetu.
 2. **Tryb Punktu Dostępowego (`WIFI_AP` - Access Point):** Mikrokontroler sam staje się routerem i tworzy własną, nową sieć Wi-Fi, do której mogą podłączać się inne urządzenia (smartfony, laptopy).
 
-Podczas naszych zajęć wykorzystamy tryb **Access Point (`WIFI_AP`)**. Dzięki temu połączysz się z płytką bezpośrednio ze swojego telefonu, tworząc całkowicie niezależny system sterowania.
+Podczas pierwszej części zajęć wykorzystamy tryb **Access Point (`WIFI_AP`)**. Dzięki temu połączysz się z płytką bezpośrednio ze swojego telefonu, tworząc całkowicie niezależny system sterowania.
+
+### Czym jest usługa DNS i protokół mDNS?
+W standardowej komunikacji sieciowej urządzenia identyfikują się za pomocą liczbowych adresów IP (np. `192.168.4.1`). Z punktu widzenia człowieka zapamiętywanie ciągów liczb jest bardzo niewygodne. W Internecie problem ten rozwiązuje globalna usługa **DNS (Domain Name System)**, która działa jak potężna rozproszona książka telefoniczna – tłumaczy przyjazne nazwy domenowe (np. `google.com`) na odpowiadające im liczbowe adresy IP serwerów.
+
+W małych, lokalnych sieciach Wi-Fi (gdzie nie ma centralnego serwera DNS) wykorzystuje się protokół **mDNS (Multicast DNS)**. Pozwala on urządzeniom w sieci lokalnej rozgłaszać swoją przyjazną nazwę hosta. Dzięki temu, zamiast wpisywać w przeglądarce surowy adres IP mikrokontrolera, możemy połączyć się z nim wpisując adres z końcówką `.local` (w naszym przypadku będzie to `http://esp32.local`).
 
 ### Serwowanie strony WWW z poziomu kodu C++
 Aby wyświetlić interfejs graficzny w przeglądarce internetowej, mikrokontroler musi odesłać klientowi kod strony w języku HTML oraz style CSS. 
 
 Kompletny kod strony zapiszemy bezpośrednio w pliku źródłowym w postaci stałego ciągu znaków. Służy do tego konstrukcja tzw. **surowego literału (Raw String Literal)** o składni `R"rawliteral(...)rawliteral"`, która pozwala wygodnie wklejać wielolinijkowy kod HTML zawierający cudzysłowy bez konieczności ich uciążliwego echowania.
 
-### Ćwiczenie 2: Bezprzewodowy włącznik diody
-Stworzymy prosty serwer WWW z estetycznym interfejsem graficznym. Strona zawiera przyciski, po kliknięciu których przeglądarka wyśle do mikrokontrolera żądanie pod określony adres URL (np. `/on` lub `/off`), co spowoduje fizyczną zmianę stanu wyjścia GPIO.
-
+### Ćwiczenie 3: Bezprzewodowy włącznik diody z obsługą mDNS
+Stworzymy prosty serwer WWW z estetycznym interfejsem graficznym oraz aktywną usługą mDNS. Strona zawiera przyciski, po kliknięciu których przeglądarka wyśle do mikrokontrolera żądanie pod określony adres URL (np. `/on` lub `/off`), co spowoduje fizyczną zmianę stanu wyjścia GPIO.
 
 #### Uzupełnij kod i wgraj na płytkę:
 ```cpp
 #include <WiFi.h>
 #include <WebServer.h>
+#include <ESPmDNS.h> // Biblioteka niezbędna do obsługi przyjaznych nazw mDNS
 
 const int PIN_LED = 2;
 
@@ -185,7 +280,7 @@ const char STRONA_HTML[] PROGMEM = R"rawliteral(
   <div class="karta">
     <h2>Sterowanie ESP32</h2>
     <p>Wybierz akcję poniżej:</p>
-    <!-- Kliknięcie przekierowuje przeglądarkę na odpowiedni podstronę -->
+    <!-- Kliknięcie przekierowuje przeglądarkę na odpowiednią podstronę -->
     <button onclick="location.href='/on'">Włącz Diodę</button>
     <button class="btn-off" onclick="location.href='/off'">Wyłącz Diodę</button>
   </div>
@@ -206,9 +301,14 @@ void setup() {
   Serial.print("Adres IP strony WWW: ");
   Serial.println(WiFi.softAPIP());
 
+  // Uruchomienie usługi mDNS z nazwą hosta "esp32"
+  if (MDNS.begin("esp32")) {
+    Serial.println("Usługa mDNS aktywna! Strona dostępna pod adresem: http://esp32.local");
+  }
+
   // --- Konfiguracja tras (routingów) serwera ---
 
-  // 1. Wyświetlenie strony głównej po wejściu na czysty adres IP
+  // 1. Wyświetlenie strony głównej po wejściu na czysty adres IP lub domenę .local
   server.on("/", []() {
     server.send(200, "text/html", STRONA_HTML);
   });
@@ -245,6 +345,98 @@ Zmodyfikuj kod strony HTML oraz logikę serwera w C++, aby dodać obsługę **dr
 
 ---
 
+### Architektura REST API i praca w trybie Stacji (STA)
+Do tej pory nasz mikrokontroler pełnił rolę Serwera, który czekał na żądania od przeglądarki. W świecie Internetu Rzeczy równie często zależy nam na odwrotnej sytuacji: mikrokontroler staje się **klientem**, który aktywnie łączy się z zewnętrznymi serwisami w Internecie, aby pobrać dane (np. aktualną prognozę pogody, dokładny czas z serwera NTP czy kursy walut) lub wysłać pomiary z czujników do chmury.
+
+Wykorzystuje się do tego architekturę **REST API** oraz powszechny protokół HTTP. Dane w nowoczesnych serwisach najczęściej wymieniane są w lekkim, ustrukturyzowanym formacie **JSON** (*JavaScript Object Notation*) lub jako czysty tekst.
+
+Aby mikrokontroler uzyskał dostęp do globalnej sieci Internet, musimy przełączyć go w tryb **Stacji (`WIFI_STA`)** i podać mu dane logowania do istniejącego routera z wyjściem na świat (np. przenośnego punktu dostępowego / hotspotu udostępnionego z Twojego smartfona).
+
+### Ćwiczenie 4: Klient HTTP – Pobieranie danych z publicznego REST API
+W tym ćwiczeniu połączymy się z ogólnodostępnym, darmowym API serwującym losowe ciekawostki. Użyjemy wbudowanej biblioteki `HTTPClient`, aby wysłać zapytanie `GET` pod określony adres URL, a następnie odczytamy odpowiedź serwera.
+
+> [!IMPORTANT] Konfiguracja Hotspotu
+> Przed wgraniem kodu włącz w swoim smartfonie funkcję **Przenośny punkt dostępowy (Hotspot Wi-Fi)**. Wpisz nazwę swojej udostępnionej sieci (SSID) oraz hasło w odpowiednich zmiennych w poniższym kodzie.
+
+#### Uzupełnij kod i wgraj na płytkę:
+```cpp
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+// UZUPEŁNIJ: Wpisz dane logowania do hotspotu w swoim telefonie
+const char* ssid = "Nazwa_Twojego_Hotspotu";
+const char* password = "Haslo_Do_Hotspotu";
+
+// Adres publicznego API serwującego losowy fakt w formacie JSON
+const char* urlAPI = "https://uselessfacts.jsph.pl/api/v2/facts/random";
+
+void setup() {
+  Serial.begin(115200);
+  
+  // Przełączenie w tryb stacji (klienta)
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  
+  Serial.print("Laczenie z siecia Wi-Fi");
+  
+  // Oczekiwanie na poprawne połączenie z routerem
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  
+  Serial.println("\nPolaczono z Wi-Fi!");
+  Serial.print("Przypisany adres IP: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() {
+  // Sprawdzamy, czy połączenie z siecią jest nadal aktywne
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    
+    Serial.println("\nWysylanie zapytania do REST API...");
+    
+    // Konfiguracja docelowego adresu URL
+    http.begin(urlAPI);
+    
+    // UZUPEŁNIJ: Wykonaj zapytanie metodą GET za pomocą funkcji http.GET()
+    int kodOdpowiedzi = ;
+    
+    // Kod 200 (HTTP_CODE_OK) oznacza standardowy sukces HTTP
+    if (kodOdpowiedzi > 0) {
+      Serial.print("Kod odpowiedzi HTTP: ");
+      Serial.println(kodOdpowiedzi);
+      
+      if (kodOdpowiedzi == HTTP_CODE_OK) {
+        // Pobranie pełnej treści odpowiedzi z serwera jako ciąg znaków (String)
+        String odpowiedz = http.getString();
+        Serial.println("Odebrane dane z serwera:");
+        Serial.println(odpowiedz);
+      }
+    } else {
+      Serial.print("Blad zapytania HTTP: ");
+      Serial.println(http.errorToString(kodOdpowiedzi).c_str());
+    }
+    
+    // Zamknięcie połączenia i zwolnienie zasobów
+    http.end();
+  } else {
+    Serial.println("Rozlaczono z siecia Wi-Fi!");
+  }
+  
+  // Odczekaj 10 sekund przed kolejnym zapytaniem
+  delay(10000);
+}
+```
+
+#### Zadanie do samodzielnego wykonania:
+Odebrany z serwera tekst zawiera surowy format JSON (np. `{"id":"...","text":"Treść faktu","source":"..."}`). W profesjonalnych projektach do wyciągania poszczególnych pól z takiego ciągu znaków nie używa się ręcznego wycinania tekstu, lecz zewnętrznej biblioteki **ArduinoJson**. 
+
+Zainstaluj w Menedżerze Bibliotek wtyczkę `ArduinoJson` (autor: Benoit Blanchon). Następnie spróbuj sparsować zmienną `odpowiedz` i zaktualizować program tak, aby wypisywał w Monitorze Szeregowym **wyłącznie samą treść faktu** (wartość kryjącą się pod kluczem `"text"`), pomijając całą resztę znaczników i nawiasów JSON!
+
+---
+
 ## MODUŁ 3: Bluetooth Low Energy (BLE) – Podstawy protokołu
 
 W świecie nowoczesnego Internetu Rzeczy (IoT) **klasyczny Bluetooth (Bluetooth Classic)** powoli odchodzi do lamusa. Ze względu na konieczność ciągłego podtrzymywania prądożernego połączenia, standard ten ustąpił miejsca technologii **Bluetooth Low Energy (BLE)**.
@@ -255,17 +447,15 @@ Protokół BLE został zoptymalizowany pod kątem minimalnego zużycia energii. 
 Komunikacja w standardzie BLE opiera się na architekturze **GATT** (*Generic Attribute Profile*). W tym modelu nasza płytka pełni rolę **Serwera**, a łączący się z nią smartfon to **Klient**.
 
 Struktura serwera wygląda następująco:
-1. **Usługa (Service):** Główny kontener grupujący powiązane funkcjonalności w postacji charakterystyk.
+1. **Usługa (Service):** Główny kontener grupujący powiązane funkcjonalności w postaci charakterystyk.
 2. **Charakterystyka (Characteristic):** Konkretny punkt wymiany danych wewnątrz usługi. Każda charakterystyka definiuje **właściwości**, określające dozwolone operacje:
    * **Read:** Zezwala klientowi na odczytanie wartości.
    * **Write:** Zezwala klientowi na przesłanie nowej wartości do serwera.
    * **Notify:** Serwer samoczynnie wysyła nową wartość do klienta w momencie jej zmiany.
 3. **UUID (Universally Unique Identifier):** Unikalny identyfikator liczbowy przypisany do każdej usługi i charakterystyki, pozwalający jednoznacznie zidentyfikować jej przeznaczenie.
 
-### Ćwiczenie 3: Odbieranie komend ze smartfona przez BLE
+### Ćwiczenie 5: Odbieranie komend ze smartfona przez BLE
 Skonfigurujemy ESP32-C6 jako serwer BLE udostępniający jedną usługę z charakterystyką zapisu (Write). Klientem będzie uniwersalna aplikacja narzędziowa **nRF Connect for Mobile** (dostępna bezpłatnie na systemy Android oraz iOS), z poziomu której prześlemy liczbowe komendy sterujące diodą.
-
-
 
 #### Uzupełnij kod i wgraj na płytkę:
 ```cpp
@@ -316,8 +506,10 @@ void setup() {
   // Tworzenie serwera BLE
   BLEServer *pServer = BLEDevice::createServer();
 
-  // UZUPEŁNIJ: Utwórz usługę w serwerze, przekazując zdefiniowany SERVICE_UUID
-  BLEService *pService = pServer->createService();
+  // UZUPEŁNIJ: Utwórz usługę w serwerze, przekazując zdefiniowany makrem SERVICE_UUID
+  BLEService *pService = pServer->createService(
+    
+  );
 
   // Tworzenie charakterystyki z właściwością WRITE (Zapis).
   // Właściwość PROPERTY_WRITE nadaje uprawnienia pozwalające zewnętrznemu klientowi (aplikacji)
@@ -356,6 +548,124 @@ void loop() {
 
 #### Zadanie do samodzielnego wykonania:
 Zmień obsługę logiki w metodzie `onWrite`, aby płytka reagowała na inne, wybrane przez Ciebie wartości liczbowe (np. przesłanie bajtu `0x02` włącza drugą diodę podłączoną do GPIO3, a `0x03` gasi obie).
+
+---
+
+### Wysłanie danych w czasie rzeczywistym – Powiadomienia (Notify)
+W poprzednim ćwiczeniu to aplikacja na smartfonie aktywnie przesyłała polecenia do mikrokontrolera (zapis). W systemach IoT opartych na pomiarach zależy nam na sytuacji odwrotnej: mikrokontroler samoczynnie informuje smartfon o nowym odczycie natychmiast po jego wykonaniu, bez konieczności ciągłego, ręcznego odpytywania (Read) ze strony użytkownika.
+
+Służy do tego właściwość **Notify (Powiadomienia)**. Aby jednak klient (smartfon) mógł odbierać powiadomienia, musi najpierw wyrazić na to zgodę (tzw. subskrypcja). Technicznie realizowane jest to poprzez wpisanie odpowiedniej flagi do specjalnego rejestru konfiguracyjnego charakterystyki, nazywanego **Deskryptorem CCCD** (*Client Characteristic Configuration Descriptor*) o ustandaryzowanym identyfikatorze UUID **`0x2902`**.
+
+W bibliotece BLE dla środowiska Arduino służy do tego dedykowana klasa `BLE2902`.
+
+### Ćwiczenie 6: Przesyłanie odczytu z potencjometru do smartfona (Notify)
+Skonfigurujemy mikrokontroler tak, aby odczytywał napięcie z potencjometru (GPIO4) i cyklicznie przesyłał zaktualizowany wynik do podłączonego smartfona w formie bezprzewodowego powiadomienia BLE.
+
+> [!IMPORTANT] Pamiętaj o unikalnych UUID
+> Aby nowa usługa nie weszła w konflikt z pamięcią podręczną (cache) aplikacji nRF Connect z poprzedniego ćwiczeniem, w poniższym kodzie zdefiniowaliśmy zupełnie nowe, odrębne identyfikatory UUID dla usługi i charakterystyki.
+
+#### Uzupełnij kod i wgraj na płytkę:
+```cpp
+#include <BLEDevice.h>
+#include <BLEServer.h>
+#include <BLEUtils.h>
+#include <BLE2902.h> // Biblioteka niezbędna do obsługi deskryptora powiadomień
+
+const int PIN_POTENCJOMETR = 4;
+
+// Nowe, unikalne identyfikatory dla usługi Notify
+#define SERVICE_UUID_NOTIFY        "18a55060-705d-4ab0-9b4e-86e0c0903330"
+#define CHARACTERISTIC_UUID_NOTIFY "29f37c35-1521-419b-abf7-2d4dfa666e10"
+
+BLEServer* pServer = NULL;
+BLECharacteristic* pCharacteristicNotify = NULL;
+bool urzadzeniePolaczone = false;
+
+// Klasa śledząca stan połączenia (czy klient podłączył się lub rozłączył)
+class ObslugaSerwera: public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+      urzadzeniePolaczone = true;
+      Serial.println("Smartfon polaczony z serwerem BLE!");
+    };
+
+    void onDisconnect(BLEServer* pServer) {
+      urzadzeniePolaczone = false;
+      Serial.println("Smartfon rozlaczony. Automatyczne wznowienie rozglaszania...");
+      // Wznowienie widoczności płytki po rozłączeniu klienta
+      BLEDevice::startAdvertising();
+    }
+};
+
+void setup() {
+  Serial.begin(115200);
+
+  // Inicjalizacja BLE z unikalną nazwą
+  BLEDevice::init("ESP32_Potencjometr_BLE");
+
+  // Tworzenie serwera i przypisanie obsługi zdarzeń połączenia
+  pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new ObslugaSerwera());
+
+  // Tworzenie usługi Notify
+  BLEService *pService = pServer->createService(SERVICE_UUID_NOTIFY);
+
+  // Tworzenie charakterystyki z właściwościami READ oraz NOTIFY
+  pCharacteristicNotify = pService->createCharacteristic(
+                            CHARACTERISTIC_UUID_NOTIFY,
+                            BLECharacteristic::PROPERTY_READ   |
+                            BLECharacteristic::PROPERTY_NOTIFY
+                          );
+
+  // UZUPEŁNIJ: Dodaj deskryptor CCCD (new BLE2902()) do charakterystyki, 
+  // co pozwoli smartfonowi włączyć subskrypcję powiadomień!
+  pCharacteristicNotify->addDescriptor(
+    
+  );
+
+  // Uruchomienie usługi i aktywacja rozgłaszania
+  pService->start();
+  
+  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID_NOTIFY);
+  BLEDevice::startAdvertising();
+
+  Serial.println("Serwer BLE Notify gotowy! Otworz aplikacje nRF Connect.");
+}
+
+void loop() {
+  // Jeśli smartfon jest połączony, przesyłaj mu na bieżąco odczyty z potencjometru
+  if (urzadzeniePolaczone) {
+    int odczytADC = analogRead(PIN_POTENCJOMETR);
+
+    // Konwersja liczby całkowitej na ciąg znaków (String)
+    String wartoscTekstowa = String(odczytADC);
+
+    // Aktualizacja wartości wewnątrz charakterystyce
+    pCharacteristicNotify->setValue(wartoscTekstowa.c_str());
+
+    // UZUPEŁNIJ: Wywołaj metodę notify() na obiekcie pCharacteristicNotify, 
+    // aby natychmiastowo przesłać zaktualizowaną wartość do smartfona
+    pCharacteristicNotify->
+    
+    Serial.print("Wyslano powiadomienie BLE: ");
+    Serial.println(wartoscTekstowa);
+  }
+
+  // Odczekaj pół sekundy przed kolejnym pomiarem
+  delay(500);
+}
+```
+
+#### Instrukcja testowania:
+1. Połącz się z urządzeniem **ESP32_Potencjometr_BLE** w aplikacji **nRF Connect**.
+2. Odszukaj charakterystykę o identyfikatorze `29f37c35-...`.
+3. Zauważysz przy niej ikonę **wielokrotnych strzałek w dół** (Notify). Kliknij ją, aby włączyć subskrypcję powiadomień (ikona zmieni kolor lub zniknie jej przekreślenie).
+4. Zaczynaj powoli kręcić potencjometrem na płytce. Na ekranie smartfona w czasie rzeczywistym będą pojawiać się odczytywane wartości napięcia bez konieczności klikania przycisku odświeżania!
+
+#### Zadanie do samodzielnego wykonania:
+Ciągłe wysyłanie pakietów radiowych co 500 ms, nawet gdy potencjometr leży całkowicie nieruchomo, niepotrzebnie zużywa energię baterii telefonu i mikrokontrolera. 
+
+Zmodyfikuj kod w pętli `loop()` dodając statyczną lub globalną zmienną pomocniczą `ostatniOdczyt`. Zaprogramuj logikę tak, aby mikrokontroler wywoływał powiadomienie `notify()` **wyłącznie w sytuacji**, gdy aktualny odczyt z potencjometru różni się od poprzedniego pomiaru o co najmniej 50 jednostek.
 
 ---
 
