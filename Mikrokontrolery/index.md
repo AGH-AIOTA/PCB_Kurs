@@ -493,7 +493,7 @@ void setup() {
   }
 
   // Rejestracja funkcji wywoływanej po wysłaniu pakietu
-  esp_now_register_send_cb(onDataSent);
+  esp_now_register_send_cb((esp_now_send_cb_t)onDataSent);
 
   // Konfiguracja i dodanie odbiornika (peera)
   memcpy(peerInfo.peer_addr, adresOdbiornika, 6);
@@ -589,7 +589,7 @@ void setup() {
   }
   
   // Rejestracja funkcji odbierającej dane
-  esp_now_register_recv_cb((esp_send_cb_t)onDataRecv);
+  esp_now_register_recv_cb((esp_now_recv_cb_t)onDataRecv);
   
   Serial.println("Odbiornik ESP-NOW gotowy i nasluchuje...");
 }
