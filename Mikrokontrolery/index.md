@@ -297,6 +297,7 @@ Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech o
 Często projekty wymagają połączenia ze sobą dwóch oddzielnych układów (np. główny sterownik i moduł GPS lub komunikacja przewodowa dwóch płytek ESP). Służy do tego interfejs **UART (Universal Asynchronous Receiver-Transmitter)**.
 
 Wymaga on połączenia trzech linii ze złącza `J4`:
+
 1. **Masa (GND):** Płytki muszą mieć wspólną masę.
 2. **TX (Nadajnik z ESP A) -> RX (Odbiornik w ESP B)**
 3. **RX (Odbiornik w ESP A) -> TX (Nadajnik w ESP B)**
