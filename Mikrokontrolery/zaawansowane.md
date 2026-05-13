@@ -343,6 +343,7 @@ void loop() {
 
 #### Zadanie do samodzielnego wykonania:
 Zmodyfikuj kod strony HTML oraz logikę serwera w C++, aby dodać obsługę **drugiej diody** znajdującej się na płytce (GPIO3).
+
 1. Dopisz w kodzie HTML kolejne dwa przyciski (np. *Włącz Diodę 2* i *Wyłącz Diodę 2*), kierujące na trasy `/on2` oraz `/off2`.
 2. Zarejestruj w funkcji `setup()` odpowiednie procedury `server.on(...)` obsługujące te nowe ścieżki.
 
@@ -356,10 +357,11 @@ Wykorzystuje się do tego architekturę **REST API** oraz powszechny protokół 
 Aby mikrokontroler uzyskał dostęp do globalnej sieci Internet, musimy przełączyć go w tryb **Stacji (`WIFI_STA`)** i podać mu dane logowania do istniejącego routera z wyjściem na świat (np. przenośnego punktu dostępowego / hotspotu udostępnionego z Twojego smartfona).
 
 ### Ćwiczenie 4: Klient HTTP – Pobieranie i parsowanie danych z REST API
-W tym ćwiczeniu połączymy się z ogólnodostępnym, darmowym API serwującym losowe ciekawostki w formacie JSON. Użyjemy wbudowanej biblioteki `HTTPClient` do pobrania danych, a następnie za pomocą profesjonalnej biblioteki **ArduinoJson** sparsujemy odpowiedź, aby wyciągnąć z niej wyłącznie interesujący nas tekst.
+W tym ćwiczeniu połączymy się z ogólnodostępnym, darmowym API serwującym losowe ciekawostki w formacie JSON. Użyjemy wbudowanej biblioteki `HTTPClient` do pobrania danych, a następnie za pomocą biblioteki **ArduinoJson** sparsujemy odpowiedź, aby wyciągnąć z niej wyłącznie interesujący nas tekst.
 
 #### Instalacja biblioteki ArduinoJson:
 Zanim wgrasz kod, musisz zainstalować w środowisku narzędzie do obsługi formatu JSON.
+
 1. W Arduino IDE wybierz: **Szkic -> Dołącz bibliotekę -> Zarządzaj bibliotekami...**
 2. Wyszukaj: **ArduinoJson** (autor: Benoit Blanchon).
 3. Kliknij **Zainstaluj**.
@@ -425,7 +427,7 @@ void loop() {
         Serial.println(odpowiedz);
 
         // --- PARSOWANIE JSON ---
-        // Tworzymy dokument JSON o pojemności pozwalającej przechować strukturę
+        // Tworzymy dokument JSON
         JsonDocument doc;
         
         // Deserializacja (parsowanie) odebranego tekstu
@@ -465,9 +467,10 @@ Odwiedź repozytorium gromadzące darmowe, publiczne interfejsy z całego świat
 🔗 **[Public APIs na GitHubie](https://github.com/public-apis/public-apis)**
 
 Wybierz z listy dowolne, interesujące Cię API (najlepiej takie, które w kolumnie **Auth** nie wymaga autoryzacji – wartość `No`). 
+
 1. Sprawdź w przeglądarce, jak wygląda zwracana przez to API struktura JSON.
 2. Podmień w kodzie zmienną `urlAPI` na adres wybranego serwisu.
-3. Zmodyfikuj sekcję parsowania `doc[...]` tak, aby program poprawnie wyciągał i wyświetlał interesujące pola z Twojego wybranego API!
+3. Zmodyfikuj sekcję parsowania `doc[...]` tak, aby program poprawnie wyciągał i wyświetlał interesujące pola z Twojego wybranego API.
 
 ---
 
@@ -481,6 +484,7 @@ Protokół BLE został zoptymalizowany pod kątem minimalnego zużycia energii. 
 Komunikacja w standardzie BLE opiera się na architekturze **GATT** (*Generic Attribute Profile*). W tym modelu nasza płytka pełni rolę **Serwera**, a łączący się z nią smartfon to **Klient**.
 
 Struktura serwera wygląda następująco:
+
 1. **Usługa (Service):** Główny kontener grupujący powiązane funkcjonalności w postaci charakterystyk.
 2. **Charakterystyka (Characteristic):** Konkretny punkt wymiany danych wewnątrz usługi. Każda charakterystyka definiuje **właściwości**, określające dozwolone operacje:
    * **Read:** Zezwala klientowi na odczytanie wartości.
@@ -491,7 +495,7 @@ Struktura serwera wygląda następująco:
 ### Ćwiczenie 5: Odbieranie komend ze smartfona przez BLE
 Skonfigurujemy ESP32-C6 jako serwer BLE udostępniający jedną usługę z charakterystyką zapisu (Write). Klientem będzie uniwersalna aplikacja narzędziowa **nRF Connect for Mobile** (dostępna bezpłatnie na systemy Android oraz iOS), z poziomu której prześlemy liczbowe komendy sterujące diodą.
 
-#### Uzupełnij kod i wgraj na płytkę:
+#### Wgraj poniższy kod na płytkę:
 ```cpp
 #include <BLEDevice.h>
 #include <BLEServer.h>
