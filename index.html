@@ -1306,10 +1306,12 @@ Czujnik MPU6050 za pomocą akcelerometru stale mierzy przyśpieszenie w trzech o
 <hr />
 <h3 id="cwiczenie-6-rozmowa-dwoch-mikrokontrolerow-interfejs-uart">Ćwiczenie 6: Rozmowa dwóch mikrokontrolerów – Interfejs UART</h3>
 <p>Często projekty wymagają połączenia ze sobą dwóch oddzielnych układów (np. główny sterownik i moduł GPS lub komunikacja przewodowa dwóch płytek ESP). Służy do tego interfejs <strong>UART (Universal Asynchronous Receiver-Transmitter)</strong>.</p>
-<p>Wymaga on połączenia trzech linii ze złącza <code>J4</code>:
-1. <strong>Masa (GND):</strong> Płytki muszą mieć wspólną masę.
-2. <strong>TX (Nadajnik z ESP A) -&gt; RX (Odbiornik w ESP B)</strong>
-3. <strong>RX (Odbiornik w ESP A) -&gt; TX (Nadajnik w ESP B)</strong></p>
+<p>Wymaga on połączenia trzech linii ze złącza <code>J4</code>:</p>
+<ol>
+<li><strong>Masa (GND):</strong> Płytki muszą mieć wspólną masę.</li>
+<li><strong>TX (Nadajnik z ESP A) -&gt; RX (Odbiornik w ESP B)</strong></li>
+<li><strong>RX (Odbiornik w ESP A) -&gt; TX (Nadajnik w ESP B)</strong></li>
+</ol>
 <div class="admonition warning">
 <p class="admonition-title">Pamiętaj o skrzyżowaniu linii!</p>
 <p>Piny nadawcze (TX) zawsze łączymy z pinami odbiorczymi (RX) drugiego urządzenia. Połączenie TX-TX lub RX-RX nie zadziała.</p>
