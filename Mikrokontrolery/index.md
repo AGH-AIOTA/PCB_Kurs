@@ -32,6 +32,18 @@ Analizując schemat, możemy odczytać, do których pinów GPIO podłączone są
 > [!NOTE] Inne
 > Pozostałe piny na schemacie, które są oznaczone symbolem **X**, nie będą wykorzystywane w tym kursie.
 
+### 2. Podłączenie płytki i konfiguracja portu USB
+Aby rozpocząć pracę, płytkę łączymy z komputerem za pomocą kabla podłączonego do portu **USB**. 
+
+Dla układu ESP32-C6 istotne jest prawidłowe skonfigurowanie portu komunikacyjnego w środowisku Arduino IDE. Abyśmy mogli poprawnie odbierać komunikaty przesyłane z mikrokontrolera na ekran komputera, musimy włączyć obsługę wbudowanego kontrolera USB CDC.
+
+W tym celu **po wybraniu** odpowiedniej płytki w menu **Narzędzia (Tools)** odnajdujemy opcję **USB CDC On Boot** i ustawiamy ją na **Enabled**:
+
+![Zrzut ekranu: Włączenie opcji USB CDC On Boot w Arduino IDE](cnc_enable.png)
+
+> [!IMPORTANT] Pamiętaj!
+> Jeśli opcja ta pozostanie wyłączona (Disabled), mikrokontroler nie będzie w stanie przesyłać tekstowych wiadomości do komputera przez port USB za pomocą instrukcji `Serial.println()`.
+
 ---
 
 ## CZĘŚĆ 2: Podstawy struktury programu w Arduino IDE
