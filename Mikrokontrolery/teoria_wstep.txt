@@ -1,5 +1,3 @@
-Oto zwięzła i przejrzysta notatka, idealna jako „ściągawka” do poprowadzenia wykładu. Podzieliłem ją na logiczne bloki, aby łatwo było Ci przechodzić między tematami.
-
 ### 1. Wstęp: Kontekst i Różnice (MCU vs PC)
 
 * **Punkt wyjścia:** Zwykły komputer (PC/Smartfon) vs Mikrokontroler (MCU).
