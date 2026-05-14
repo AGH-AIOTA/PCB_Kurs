@@ -1,0 +1,3 @@
+dodać przycisk do strony mikrokontrolera na jakiś pin
+wyciągnąć piny pod servo
+rozłączyć zasilanie 5v z bateryjnym, ewentualnie połączyć 3.3 przez diodę (schottkiego) aby tylko z espa na płytkę mogło iść
