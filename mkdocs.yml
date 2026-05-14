@@ -44,7 +44,7 @@ plugins:
 # Konfiguracja nawigacji
 nav:
   - Moduły Podstawowe: index.md
-  - Moduły Zaawansowane: zaawansowane.md
+  - Technologie Bezprzewodowe: zaawansowane.md
 
 # Niezbędne rozszerzenia dla pięknego renderowania tabel, kodu, cytatów i szczegółów
 markdown_extensions:

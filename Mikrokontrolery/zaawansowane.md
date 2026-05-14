@@ -1,200 +1,233 @@
-# Moduły Zaawansowane: <br> FreeRTOS, Wi-Fi oraz BLE 
+# Technologie Bezprzewodowe: <br> ESP-NOW, Wi-Fi oraz BLE
 ---
-Niniejsza sekcja została przygotowana z myślą o osobach, które opanowały już podstawy programowania mikrokontrolerów i chcą poznać techniki stosowane w zaawansowanych systemach wbudowanych (*embedded systems*). 
+Niniejsza sekcja została przygotowana z myślą o osobach, które opanowały już podstawy programowania mikrokontrolerów i chcą poznać techniki komunikacji bezprzewodowej w systemach wbudowanych (*embedded systems*). 
 
-Podczas realizacji poniższych modułów będziemy korzystać z naszej płytki edukacyjnej z układem **ESP32-C6**. Skupimy się natomiast na oprogramowaniu: prawdziwej wielozadaniowości, budowie interfejsów sieciowych oraz komunikacji w standardzie Bluetooth Low Energy.
+Podczas realizacji poniższych modułów będziemy korzystać z naszej płytki edukacyjnej z układem **ESP32-C6**, który posiada bogate, wbudowane wsparcie dla standardów radiowych. Skupimy się na trzech technologiach: bezpośredniej komunikacji w protokole ESP-NOW, budowie interfejsów sieciowych i klientów REST API z użyciem Wi-Fi, oraz niskoenergetycznej komunikacji w standardzie Bluetooth Low Energy (BLE).
 
 ---
 
-## MODUŁ 1: Wprowadzenie do FreeRTOS – Prawdziwa wielozadaniowość
+## MODUŁ 1: Komunikacja bezpośrednia ESP-NOW
 
-W klasycznym podejściu programy pisane w środowisku Arduino działają wewnątrz jednej głównej pętli `loop()`. Jeśli chcemy realizować kilka operacji jednocześnie, musimy tworzyć rozbudowane maszyny stanów i stale kontrolować upływ czasu za pomocą funkcji `millis()`. Takie rozwiązanie staje się trudne w utrzymaniu, szczególnie gdy poszczególne procesy wymagają precyzyjnego rygoru czasowego (np. bezwzględnego wywoływania kodu dokładnie co 10 ms). Istnieje jednak o wiele wygodniejsza alternatywa:
+### Ćwiczenie 1: Bezprzewodowa wymiana danych przez ESP-NOW
+Gdy chcemy połączyć dwa mikrokontrolery bez użycia kabli (w przeciwieństwie do interfejsu UART z poprzednich zajęć) i bez pośrednictwa domowego routera Wi-Fi, z pomocą przychodzi autorski protokół firmy Espressif – **ESP-NOW**.
 
-Układ ESP32-C6 natywnie działa pod kontrolą systemu operacyjnego czasu rzeczywistego **FreeRTOS** (*Free Real-Time Operating System*). System ten posiada **planistę (schedulera)**, który potrafi przełączać kontekst wykonania i przydzielać czas procesora do niezależnych bloków kodu, nazywanych **Zadaniami (Tasks)**. Każde zadanie posiada własny stos pamięci oraz przypisany priorytet.
+#### Czym jest ESP-NOW?
+ESP-NOW to protokół komunikacji bezpośredniej (peer-to-peer), który pozwala na błyskawiczne i energooszczędne przesyłanie krótkich pakietów danych (do 250 bajtów) pomiędzy układami z rodziny ESP. Działa to w oparciu o unikalne fizyczne adresy kart sieciowych – **adresy MAC**. Nie wymaga to logowania do żadnej lokalnej sieci Wi-Fi, dzięki czemu opóźnienia są minimalne, a połączenie jest niezwykle stabilne i szybkie w zestawieniu.
 
-### **Wyzwania programowania współbieżnego**
-Dzielenie czasu procesora pomiędzy różne zadania daje ogromne możliwości, ale wprowadza również specyficzne dla systemów wielozadaniowych problemy architektoniczne, które programista musi wziąć pod uwagę:
+> [!IMPORTANT] Klucz do komunikacji: Adres MAC
+> Każdy układ ESP32 posiada wbudowany, unikalny adres MAC (składający się z 6 bajtów, np. `24:DC:C3:A1:B2:C0`). Aby Płytka A mogła wysłać wiadomość do Płytki B, musi dokładnie znać jej adres MAC!
 
-> [!WARNING] Race Condition (Wyścig)
-> Sytuacja, w której dwa lub więcej zadań próbuje niemal jednocześnie uzyskać dostęp do tego samego, współdzielonego zasobu (np. modyfikować tę samą zmienną globalną lub zapisywać dane do jednego portu komunikacyjnego) bez odpowiedniej synchronizacji. 
-> 
-> Ostateczny wynik operacji staje się nieprzewidywalny i zależy od tego, które zadanie akurat zostało wstrzymane lub wznowione przez planistę. Aby temu zapobiec, stosuje się mechanizmy blokujące dostęp innym zadaniom na czas operacji, np. **Muteksy (Mutex)**.
+#### Krok 1: Jak odczytać adres MAC odbiornika?
+Zanim przystąpisz do pisania głównego programu komunikacyjnego, musisz poznać adres MAC płytki, która będzie pełniła rolę Odbiornika. W tym celu wgraj na nią poniższy, krótki program pomocniczy:
 
-> [!CAUTION] Deadlock (Zakleszczenie)
-> Krytyczny błąd w programie współbieżnym, w którym dwa lub więcej zadań blokuje się nawzajem w nieskończoność. 
-> 
-> Dochodzi do tego, gdy Zadanie A zablokowało dostęp do Zasobu X i czeka na zwolnienie Zasobu Y, podczas gdy Zadanie B posiada zablokowany Zasób Y i nieskończenie czeka na zwolnienie Zasobu X. W efekcie oba zadania zamrażają swoje działanie na stałe.
-
-### Ćwiczenie 1: Niezależne zadania migania diodami
-W tym ćwiczeniu zrezygnujemy z kodu w pętli `loop()`. Zaimplementujemy dwa oddzielne zadania: jedno będzie sterować diodą `LED1`, a drugie diodą `LED2`. Każde z zadań będzie działać z zupełnie innym opóźnieniem.
-
-#### Uzupełnij kod i wgraj na płytkę:
 ```cpp
-const int PIN_LED1 = 2;
-const int PIN_LED2 = 3;
-
-// Nagłówki naszych funkcji zadań
-void TaskDioda1(void *pvParameters);
-void TaskDioda2(void *pvParameters);
+#include <WiFi.h>
 
 void setup() {
   Serial.begin(115200);
+  // Ustawienie modułu Wi-Fi w tryb stacji (STA)
+  WiFi.mode(WIFI_STA);
   
-  // Konfiguracja pinów
-  pinMode(PIN_LED1, OUTPUT);
-  pinMode(PIN_LED2, OUTPUT);
-
-  // Tworzenie Zadania 1
-  xTaskCreate(
-    TaskDioda1,     // Funkcja realizująca kod zadania
-    "ZadanieLED1",  // Nazwa zadania
-    1024,           // Rozmiar stosu w bajtach, zazwyczaj potęga 2
-    NULL,           // Parametry wejściowe
-    1,              // Priorytet (1 - niski)
-    NULL            // Uchwyt
-  );
-
-  // UZUPEŁNIJ: Utwórz Zadanie 2 (TaskDioda2) o nazwie "ZadanieLED2", z priorytetem 1
-  xTaskCreate(
-    
-  );
-
-  Serial.println("Zadania FreeRTOS uruchomione!");
+  Serial.println("=== Informacje o urzadzeniu ===");
+  Serial.print("Adres MAC tej plytki: ");
+  Serial.println(WiFi.macAddress());
 }
 
 void loop() {
-  // Pętla główna pozostaje pusta - zadania działają w tle
-  vTaskDelete(NULL); 
-}
-
-// ================= IMPLEMENTACJA ZADAŃ =================
-
-void TaskDioda1(void *pvParameters) {
-  // Nieskończona pętla zadania
-  for (;;) {
-    digitalWrite(PIN_LED1, HIGH);
-
-    // Makro pdMS_TO_TICKS przelicza czas w milisekundach na tzw. ticki (takty) planisty.
-    // Ticki to bazowe jednostki czasu, w jakich FreeRTOS odmierza działanie systemu 
-    vTaskDelay(pdMS_TO_TICKS(200));
-    
-    digitalWrite(PIN_LED1, LOW);
-    vTaskDelay(pdMS_TO_TICKS(200));
-  }
-}
-
-void TaskDioda2(void *pvParameters) {
-  for (;;) {
-    digitalWrite(PIN_LED2, HIGH);
-    // UZUPEŁNIJ: Ustaw inne opóźnienie, np. 555 milisekund
-    vTaskDelay();
-    
-    digitalWrite(PIN_LED2, LOW);
-    // UZUPEŁNIJ: Ustaw opóźnienie, np. 555 milisekund
-    vTaskDelay();
-  }
+  // Pętla pozostaje pusta
 }
 ```
 
-#### Zadanie do samodzielnego wykonania:
-Stwórz w programie **trzecie zadanie** (np. `TaskLicznik`), które posiada wyższy priorytet (`2`) i w nieskończonej pętli co sekundę wypisuje na port szeregowy kolejną liczbę (licznik sekund). Zaobserwuj w Monitorze Szeregowym, w jaki sposób FreeRTOS współdzieli czas procesora dla wszystkich trzech procesów.
-
-> [!NOTE] Ciekawostka
-> **Pętla loop() to również zadanie!**
-> Warto wiedzieć, że w środowisku programistycznym dla układów ESP32 standardowe funkcje `setup()` oraz `loop()` pod spodem nie działają "magicznie" poza systemem. Środowisko automatycznie tworzy dla nich domyślne zadanie FreeRTOS o nazwie `loopTask` i priorytecie 1. Pisząc zwykły kod w Arduino, od zawsze programowałeś wewnątrz zadania FreeRTOS, nawet o tym nie wiedząc! Właśnie dlatego w naszym kodzie mogliśmy bezpiecznie usunąć to domyślne zadanie za pomocą instrukcji `vTaskDelete(NULL)`, zwalniając przydzieloną mu pamięć.
-
-> [!IMPORTANT] Task Watchdog Timer (TWDT)
-> **Dlaczego zadanie bez opóźnienia resetuje płytkę?**
-> W systemie FreeRTOS dla układów ESP32 stale czuwa wbudowany mechanizm nadzorcy – **Task Watchdog Timer**. Jeśli stworzysz zadanie o wysokim priorytecie, które zajmie procesor w nieskończonej pętli `for(;;)` lub `while(1)` bez wywołania funkcji oddającej czas planiście (takiej jak `vTaskDelay()` lub `yield()`), planista nie będzie w stanie przełączyć kontekstu na inne, krytyczne zadania systemowe (np. obsługę stosu Wi-Fi). 
-> 
-> Watchdog uzna, że program uległ zawieszeniu, i po jakimś czasie **zresetuje mikrokontroler**, wypisując w Monitorze Szeregowym charakterystyczny błąd: `Task watchdog got triggered`. Zawsze pamiętaj o dodawaniu opóźnień wewnątrz nieskończonych pętli zadań!
+> [!TIP] Zapisz adres MAC!
+> Otwórz Monitor Szeregowy, skopiuj wyświetlony adres MAC i zapisz go sobie (np. w notatniku). Będzie on niezbędny do uzupełnienia kodu Nadajnika w kolejnym kroku.
 
 ---
 
-### Ćwiczenie 2: Bezpieczna wymiana danych – Kolejki (Queues)
-W profesjonalnych aplikacjach wielozadaniowych dążymy do całkowitej eliminacji **zmiennych globalnych** przy przekazywaniu danych między poszczególnymi zadaniami. Służą do tego **Kolejki (Queues)**. Kolejka to bezpieczny bufor FIFO (*First-In, First-Out*), do którego jedno zadanie może wrzucać dane, a inne je stamtąd odbierać. Operacje na kolejce są automatycznie synchronizowane przez system, co całkowicie zabezpiecza program przed problemem *Race Condition*.
+#### Krok 2: Struktura danych (C-struct)
+W protokole ESP-NOW najwygodniej przesyłać ustrukturyzowane pakiety danych zamiast pojedynczych, luźnych bajtów. Używamy do tego struktur (`struct`), które pozwalają spakować różne zmienne (np. liczby całkowite, zmiennoprzecinkowe lub tekst) w jedną spójną paczkę. 
 
-W tym ćwiczeniu stworzymy dwa zadania:
-1. **`TaskNadajnik`**: Odczytuje napięcie z potencjometru (GPIO4) i bezpiecznie wysyła odczytaną wartość do kolejki za pomocą funkcji `xQueueSend`.
-2. **`TaskOdbiornik`**: Czeka na pojawienie się nowej wartości w kolejce za pomocą funkcji `xQueueReceive`. Gdy dane nadejdą, wypisuje je w Monitorze Szeregowym i steruje jasnością diody (GPIO2).
+Zdefiniujmy wspólną strukturę, którą umieścimy w kodzie zarówno Nadajnika, jak i Odbiornika:
 
-#### Uzupełnij kod i wgraj na płytkę:
 ```cpp
-const int PIN_LED = 2;
-const int PIN_POTENCJOMETR = 4;
+// Struktura przesyłanej wiadomości
+typedef struct struct_message {
+  char polecenie[10]; // Tekstowe polecenie, np. "MIGANIE"
+  int wartosc;        // Dowolna wartość liczbowa
+} struct_message;
 
-// Globalny uchwyt do naszej kolejki przechowującej liczby całkowite (int)
-QueueHandle_t kolejkaDanych;
+// Tworzymy zmienną "dane" o typie naszej struktury
+struct_message dane;
+```
 
-void TaskNadajnik(void *pvParameters);
-void TaskOdbiornik(void *pvParameters);
+---
+
+#### Krok 3: Kod Nadajnika (Płytka A)
+Poniższy kod konfiguruje ESP-NOW, rejestruje odbiornik (tzw. *peer*) za pomocą jego adresu MAC i cyklicznie wysyła pakiet danych.
+
+Uzupełnij w kodzie adres MAC Odbiornika, który odczytałeś w Kroku 1 (zastępując przykładowe wartości `0xFF` odpowiednimi bajtami w formacie szesnastkowym z przedrostkiem `0x`):
+
+```cpp
+#include <esp_now.h>
+#include <WiFi.h>
+
+// UZUPEŁNIJ: Wpisz tutaj odczytany adres MAC Odbiornika (Płytki B)
+// Pamiętaj o przedrostku 0x przed każdą wartością, np. {0x24, 0xDC, 0xC3, 0xA1, 0xB2, 0xC0}
+uint8_t adresOdbiornika[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+typedef struct struct_message {
+  char polecenie[10];
+  int wartosc;
+} struct_message;
+
+struct_message wysylaneDane;
+
+// Informacje o zarejestrowanym urządzeniu (peer)
+esp_now_peer_info_t peerInfo;
+
+// Funkcja wywoływana automatycznie po próbie wysłania wiadomości
+void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("Status ostatniej transmisji: ");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Sukces (Dostarczono)" : "Blad dostarczenia");
+}
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);
+
+  // Inicjalizacja protokołu ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Blad inicjalizacji ESP-NOW");
+    return;
+  }
+
+  // Rejestracja funkcji wywoływanej po wysłaniu pakietu
+  esp_now_register_send_cb((esp_now_send_cb_t)onDataSent);
+
+  // Konfiguracja i dodanie odbiornika (peera)
+  memcpy(peerInfo.peer_addr, adresOdbiornika, 6);
+  peerInfo.channel = 0;     // Domyślny kanał Wi-Fi
+  peerInfo.encrypt = false; // Brak szyfrowania w celach edukacyjnych
+
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.println("Nie udalo sie dodac odbiornika");
+    return;
+  }
+}
+
+void loop() {
+  // Przygotowanie danych do wysłania
+  strcpy(wysylaneDane.polecenie, "MIGANIE");
+  wysylaneDane.wartosc = random(10, 100); // Losowa wartość dla demonstracji
+
+  Serial.println("Wysylanie pakietu danych...");
+  
+  // Wysłanie pakietu przez ESP-NOW
+  esp_err_t wynik = esp_now_send(adresOdbiornika, (uint8_t *) &wysylaneDane, sizeof(wysylaneDane));
+  
+  if (wynik == ESP_OK) {
+    Serial.println("Wyslano polecenie do odbiornika!");
+  } else {
+    Serial.println("Blad podczas wysylania.");
+  }
+
+  delay(2000); // Wysyłaj pakiet co 2 sekundy
+}
+```
+
+---
+
+#### Krok 4: Kod Odbiornika (Płytka B)
+Odbiornik stale nasłuchuje w tle nadchodzących pakietów. Gdy pojawi się nowa wiadomość, automatycznie wywoływana jest funkcja zwrotna (tzw. *callback*), która pozwala natychmiastowo przetworzyć odebrane dane.
+
+```cpp
+#include <esp_now.h>
+#include <WiFi.h>
+
+const int PIN_LED = 2; // Dioda D3 na naszej płytce
+
+typedef struct struct_message {
+  char polecenie[10];
+  int wartosc;
+} struct_message;
+
+struct_message odebraneDane;
+
+// Funkcja wywoływana automatycznie w momencie odebrania pakietu danych
+void onDataRecv(const esp_now_recv_info_t *recv_info, const uint8_t *incomingData, int len) {
+  // Kopiowanie surowych bajtów do naszej czytelnej struktury
+  memcpy(&odebraneDane, incomingData, sizeof(odebraneDane));
+  
+  Serial.print("Odebrano pakiet od adresu MAC: ");
+  for (int i = 0; i < 6; i++) {
+    Serial.printf("%02X", recv_info->src_addr[i]);
+    if (i < 5) Serial.print(":");
+  }
+  Serial.println();
+  
+  Serial.print("Rozmiar danych: ");
+  Serial.print(len);
+  Serial.println(" bajtow");
+  
+  Serial.print("Polecenie: ");
+  Serial.println(odebraneDane.polecenie);
+  Serial.print("Wartosc: ");
+  Serial.println(odebraneDane.wartosc);
+  Serial.println("-----------------------------");
+
+  // Przykładowa reakcja na odebrane polecenie
+  if (strcmp(odebraneDane.polecenie, "MIGANIE") == 0) {
+    // Krótkie błyśnięcie diodą sygnalizujące odbiór danych
+    digitalWrite(PIN_LED, HIGH);
+    delay(50);
+    digitalWrite(PIN_LED, LOW);
+  }
+}
 
 void setup() {
   Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
+  digitalWrite(PIN_LED, LOW);
+  
+  // Ustawienie Wi-Fi w tryb stacji
+  WiFi.mode(WIFI_STA);
 
-  // Tworzenie kolejki mogącej pomieścić maksymalnie 5 elementów typu int
-  kolejkaDanych = xQueueCreate(5, sizeof(int));
-
-  if (kolejkaDanych == NULL) {
-    Serial.println("Blad: Nie udalo sie utworzyc kolejki!");
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Blad inicjalizacji ESP-NOW");
     return;
   }
-
-  // Tworzenie zadania nadawczego
-  xTaskCreate(TaskNadajnik, "Nadajnik", 2048, NULL, 1, NULL);
   
-  // Tworzenie zadania odbiorczego z wyższym priorytetem
-  xTaskCreate(TaskOdbiornik, "Odbiornik", 2048, NULL, 2, NULL);
-
-  Serial.println("Zadania z kolejka uruchomione!");
+  // Rejestracja funkcji odbierającej dane
+  esp_now_register_recv_cb((esp_now_recv_cb_t)onDataRecv);
+  
+  Serial.println("Odbiornik ESP-NOW gotowy i nasluchuje...");
 }
 
 void loop() {
-  vTaskDelete(NULL);
-}
-
-void TaskNadajnik(void *pvParameters) {
-  for (;;) {
-    // Odczyt wartości z przetwornika ADC (potencjometr)
-    int odczyt = analogRead(PIN_POTENCJOMETR);
-
-    // UZUPEŁNIJ: Wyślij adres zmiennej '&odczyt' do kolejki 'kolejkaDanych'.
-    xQueueSend(
-      /* 1. Uchwyt kolejki */,
-      /* 2. Wskaźnik na wysyłane dane */,
-      /* 3. Czas oczekiwania (np. portMAX_DELAY) */
-    );
-
-    // Pobieraj próbkę co 100 milisekund
-    vTaskDelay(pdMS_TO_TICKS(100));
-  }
-}
-
-void TaskOdbiornik(void *pvParameters) {
-  int odebranaWartosc;
-
-  for (;;) {
-    // UZUPEŁNIJ: Odbierz dane z kolejki 'kolejkaDanych' i zapisz pod adresem '&odebranaWartosc'.
-    // Funkcja xQueueReceive zablokuje zadanie w oczekiwaniu na dane.
-    if (xQueueReceive(
-      /* 1. Uchwyt kolejki */,
-      /* 2. Wskaźnik na bufor odbiorczy */,
-      /* 3. Czas oczekiwania (np. portMAX_DELAY) */
-    ) == pdPASS) {
-      Serial.print("Odebrano z kolejki: ");
-      Serial.println(odebranaWartosc);
-
-      // Skalowanie odczytu (0-4095) na jasność PWM diody (0-255)
-      int jasnosc = map(odebranaWartosc, 0, 4095, 0, 255);
-      analogWrite(PIN_LED, jasnosc);
-    }
-  }
+  // Odbieranie pakietów realizowane jest w tle (asynchronicznie) przez funkcje onDataRecv.
+  // Pętla loop() pozostaje całkowicie wolna do realizacji innych zadan!
 }
 ```
 
-#### Zadanie do samodzielnego wykonania:
-Spróbuj zmienić rozmiar kolejki przy tworzeniu (`xQueueCreate`) na **`1`** i zaobserwuj w Monitorze Szeregowym, czy wpływa to na płynność przekazywania danych. Następnie zmodyfikuj kod w funkcji `TaskNadajnik` dodając instrukcję warunkową, aby mikrokontroler wysyłał dane do kolejki **tylko wtedy**, gdy odczyt z potencjometru zmienił się o więcej niż 50 jednostek w stosunku do poprzedniego pomiaru. Pozwoli to zaoszczędzić czas procesora i nie zapychać kolejki identycznymi, powtarzającymi się wartościami!
+> [!NOTE] Ważne dla układów ESP32-C6 (Core v3.x)
+> Zwróć uwagę na nagłówek funkcji `onDataRecv`. W najnowszych wersjach biblioteki dla układów ESP32 opartych na rdzeniu Arduino w wersji 3.x (czyli m.in. dla ESP32-C6), pierwszym argumentem funkcji zwrotnej jest wskaźnik na strukturę `const esp_now_recv_info_t *recv_info`, z której w wygodny sposób odczytujemy pełne metadane o nadawcy.
+
+---
+
+#### Zadanie do samodzielnego wykonania (Bezprzewodowy kontroler ruchu):
+Połącz wiedzę z poprzednich ćwiczeń i stwórz zaawansowany projekt zdalnego sterowania!
+
+1. **Nadajnik:** Podłącz do Płytki A czujnik **MPU6050** (magistrala I2C). Zmodyfikuj przesyłaną strukturę tak, aby zawierała odczytane wartości kąta nachylenia (np. `float katX; float katY;`). W pętli `loop()` odczytuj bieżący kąt z czujnika i wysyłaj go bezprzewodowo przez ESP-NOW do Odbiornika dziesięć razy na sekundę (`delay(100)`).
+2. **Odbiornik:** Płytka B odbiera paczkę z danymi o nachyleniu. Zaprogramuj ją tak, aby w zależności od przechyłu Płytki A (np. gdy `katX > 30.0` stopni) włączała odpowiednią diodę LED na płytce. W ten sposób uzyskasz w pełni bezprzewodowy, gestowy kontroler ruchu!
+
+<details>
+<summary>Wskazówka do modyfikacji struktury</summary>
+Pamiętaj, że struktura w kodzie Nadajnika i Odbiornika musi być <b>dokładnie identyczna</b>. Zmień definicję na:
+<pre><code>typedef struct struct_message {
+  float katX;
+  float katY;
+} struct_message;
+</code></pre>
+</details>
 
 ---
 
@@ -219,7 +252,7 @@ Aby wyświetlić interfejs graficzny w przeglądarce internetowej, mikrokontrole
 
 Kompletny kod strony zapiszemy bezpośrednio w pliku źródłowym w postaci stałego ciągu znaków. Służy do tego konstrukcja tzw. **surowego literału (Raw String Literal)** o składni `R"rawliteral(...)rawliteral"`, która pozwala wygodnie wklejać wielolinijkowy kod HTML zawierający cudzysłowy bez konieczności ich uciążliwego echowania.
 
-### Ćwiczenie 3: Bezprzewodowy włącznik diody z obsługą mDNS
+### Ćwiczenie 2: Bezprzewodowy włącznik diody z obsługą mDNS
 Stworzymy prosty serwer WWW z estetycznym interfejsem graficznym oraz aktywną usługą mDNS. Strona zawiera przyciski, po kliknięciu których przeglądarka wyśle do mikrokontrolera żądanie pod określony adres URL (np. `/on` lub `/off`), co spowoduje fizyczną zmianę stanu wyjścia GPIO.
 
 #### Uzupełnij kod i wgraj na płytkę:
@@ -356,7 +389,7 @@ Wykorzystuje się do tego architekturę **REST API** oraz powszechny protokół 
 
 Aby mikrokontroler uzyskał dostęp do globalnej sieci Internet, musimy przełączyć go w tryb **Stacji (`WIFI_STA`)** i podać mu dane logowania do istniejącego routera z wyjściem na świat (np. przenośnego punktu dostępowego / hotspotu udostępnionego z Twojego smartfona).
 
-### Ćwiczenie 4: Klient HTTP – Pobieranie i parsowanie danych z REST API
+### Ćwiczenie 3: Klient HTTP – Pobieranie i parsowanie danych z REST API
 W tym ćwiczeniu połączymy się z ogólnodostępnym, darmowym API serwującym losowe ciekawostki w formacie JSON. Użyjemy wbudowanej biblioteki `HTTPClient` do pobrania danych, a następnie za pomocą biblioteki **ArduinoJson** sparsujemy odpowiedź, aby wyciągnąć z niej wyłącznie interesujący nas tekst.
 
 #### Instalacja biblioteki ArduinoJson:
@@ -492,7 +525,7 @@ Struktura serwera wygląda następująco:
    * **Notify:** Serwer samoczynnie wysyła nową wartość do klienta w momencie jej zmiany.
 3. **UUID (Universally Unique Identifier):** Unikalny identyfikator liczbowy przypisany do każdej usługi i charakterystyki, pozwalający jednoznacznie zidentyfikować jej przeznaczenie.
 
-### Ćwiczenie 5: Odbieranie komend ze smartfona przez BLE
+### Ćwiczenie 4: Odbieranie komend ze smartfona przez BLE
 Skonfigurujemy ESP32-C6 jako serwer BLE udostępniający jedną usługę z charakterystyką zapisu (Write). Klientem będzie uniwersalna aplikacja narzędziowa **nRF Connect for Mobile** (dostępna bezpłatnie na systemy Android oraz iOS), z poziomu której prześlemy liczbowe komendy sterujące diodą.
 
 #### Kod do uzupełnienia i wgrania na płytkę:
@@ -594,7 +627,7 @@ Służy do tego właściwość **Notify (Powiadomienia)**. Aby jednak klient (sm
 
 W bibliotece BLE dla środowiska Arduino służy do tego dedykowana klasa `BLE2902`.
 
-### Ćwiczenie 6: Przesyłanie odczytu z potencjometru do smartfona (Notify)
+### Ćwiczenie 5: Przesyłanie odczytu z potencjometru do smartfona (Notify)
 Skonfigurujemy mikrokontroler tak, aby odczytywał napięcie z potencjometru (GPIO4) i cyklicznie przesyłał zaktualizowany wynik do podłączonego smartfona w formie bezprzewodowego powiadomienia BLE.
 
 > [!IMPORTANT] Pamiętaj o unikalnych UUID
@@ -696,7 +729,7 @@ void loop() {
 4. Zaczynaj powoli kręcić potencjometrem na płytce. Na ekranie smartfona w czasie rzeczywistym będą pojawiać się odczytywane wartości napięcia bez konieczności klikania przycisku odświeżania!
 
 #### Zadanie do samodzielnego wykonania:
-Ciągłe wysyłanie pakietów radiowych co 500 ms, nawet gdy potencjometr leży całkowicie nieruchomo, niepotrzebnie zużywa energię baterii telefonu i mikrokontrolera. 
+Ciąłe wysyłanie pakietów radiowych co 500 ms, nawet gdy potencjometr leży całkowicie nieruchomo, niepotrzebnie zużywa energię baterii telefonu i mikrokontrolera. 
 
 Zmodyfikuj kod w pętli `loop()` dodając statyczną lub globalną zmienną pomocniczą `ostatniOdczyt`. Zaprogramuj logikę tak, aby mikrokontroler wywoływał powiadomienie `notify()` **wyłącznie w sytuacji**, gdy aktualny odczyt z potencjometru różni się od poprzedniego pomiaru o co najmniej 50 jednostek.
 
