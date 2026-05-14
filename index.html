@@ -1792,9 +1792,11 @@ W systemie FreeRTOS dla układów ESP32 stale czuwa wbudowany mechanizm nadzorcy
 <hr />
 <h3 id="cwiczenie-8-bezpieczna-wymiana-danych-kolejki-queues">Ćwiczenie 8: Bezpieczna wymiana danych – Kolejki (Queues)</h3>
 <p>W profesjonalnych aplikacjach wielozadaniowych dążymy do całkowitej eliminacji <strong>zmiennych globalnych</strong> przy przekazywaniu danych między poszczególnymi zadaniami. Służą do tego <strong>Kolejki (Queues)</strong>. Kolejka to bezpieczny bufor FIFO (<em>First-In, First-Out</em>), do którego jedno zadanie może wrzucać dane, a inne je stamtąd odbierać. Operacje na kolejce są automatycznie synchronizowane przez system, co całkowicie zabezpiecza program przed problemem <em>Race Condition</em>.</p>
-<p>W tym ćwiczeniu stworzymy dwa zadania:
-1. <strong><code>TaskNadajnik</code></strong>: Odczytuje napięcie z potencjometru (GPIO4) i bezpiecznie wysyła odczytaną wartość do kolejki za pomocą funkcji <code>xQueueSend</code>.
-2. <strong><code>TaskOdbiornik</code></strong>: Czeka na pojawienie się nowej wartości w kolejce za pomocą funkcji <code>xQueueReceive</code>. Gdy dane nadejdą, wypisuje je w Monitorze Szeregowym i steruje jasnością diody (GPIO2).</p>
+<p>W tym ćwiczeniu stworzymy dwa zadania:</p>
+<ol>
+<li><strong><code>TaskNadajnik</code></strong>: Odczytuje napięcie z potencjometru (GPIO4) i bezpiecznie wysyła odczytaną wartość do kolejki za pomocą funkcji <code>xQueueSend</code>.</li>
+<li><strong><code>TaskOdbiornik</code></strong>: Czeka na pojawienie się nowej wartości w kolejce za pomocą funkcji <code>xQueueReceive</code>. Gdy dane nadejdą, wypisuje je w Monitorze Szeregowym i steruje jasnością diody (GPIO2).</li>
+</ol>
 <h4 id="uzupenij-kod-i-wgraj-na-pytke_4">Uzupełnij kod i wgraj na płytkę:</h4>
 <div class="highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PIN_LED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PIN_POTENCJOMETR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
