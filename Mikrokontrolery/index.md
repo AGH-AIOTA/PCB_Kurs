@@ -17,7 +17,7 @@ Podczas tych zajęć będziemy korzystać z układu **ESP32-C6**. Jest to mikrok
 
 Poniżej znajduje się schemat naszej zestawowej płytki edukacyjnej:
 
-![Schemat ideowy płytki edukacyjnej](schematic.png)
+![Schemat ideowy płytki edukacyjnej](img/podstawy/schematic.png)
 
 Analizując schemat, możemy odczytać, do których pinów GPIO podłączone są poszczególne elementy. To właśnie te numery wpiszemy w naszym kodzie:
 
@@ -39,7 +39,7 @@ Dla układu ESP32-C6 istotne jest prawidłowe skonfigurowanie portu komunikacyjn
 
 W tym celu **po wybraniu** odpowiedniej płytki w menu **Narzędzia (Tools)** odnajdujemy opcję **USB CDC On Boot** i ustawiamy ją na **Enabled**:
 
-![Zrzut ekranu: Włączenie opcji USB CDC On Boot w Arduino IDE](cnc_enable.png)
+![Zrzut ekranu: Włączenie opcji USB CDC On Boot w Arduino IDE](img/podstawy/cnc_enable.png)
 
 > [!IMPORTANT] Pamiętaj!
 > Jeśli opcja ta pozostanie wyłączona (Disabled), mikrokontroler nie będzie w stanie przesyłać tekstowych wiadomości do komputera przez port USB za pomocą instrukcji `Serial.println()`.
@@ -100,7 +100,7 @@ void loop() {
 > **Co to jest baud?**
 > Prędkość **baud** (bod) określa, ile symboli (bitów danych) jest przesyłanych w ciągu jednej sekundy. Ustawienie 115200 baud oznacza szybką komunikację. Ważne jest, aby prędkość ustawiona w kodzie (`Serial.begin`) była identyczna z tą wybraną w Monitorze Szeregowym – inaczej zamiast tekstu zobaczysz "krzaki" lub dziwne znaki.
 
-![Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie](serial_monitor.png)
+![Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie](img/podstawy/serial_monitor.png)
 
 #### Zadanie do samodzielnego wykonania:
 Dodaj w pętli `loop()` drugą instrukcję `Serial.println(...)` z dowolnym własnym tekstem (np. Twoim imieniem), aby mikrokontroler co sekundę wysyłał na ekran **dwulinijkowy** komunikat.
@@ -221,7 +221,7 @@ void loop() {
 > **Narzędzie Serial Plotter**
 > Zamiast czytać suche liczby, otwórz w Arduino IDE menu **Narzędzia -> Kreślarka portu szeregowego (Serial Plotter)**. Pokręć potencjometrem, a zobaczysz piękny, rysowany na żywo wykres zmian napięcia!
 
-![Zrzut ekranu: Wykres z potencjometru w Serial Plotterze](serial_plotter.png)
+![Zrzut ekranu: Wykres z potencjometru w Serial Plotterze](img/podstawy/serial_plotter.png)
 
 #### Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):
 Często odczyt z czujnika nie służy do płynnej regulacji, lecz do załączania ostrzeżenia po przekroczeniu pewnego progu. Zmodyfikuj program tak, aby całkowicie usunąć `analogWrite` oraz `map()`, a zamiast tego użyć instrukcji warunkowej `if ... else`:
@@ -248,7 +248,7 @@ Zanim napiszemy kod, musimy zainstalować bibliotekę, która ułatwi nam komuni
 2. Wyszukaj: **MPU6050_light** (autor: rfetick).
 3. Kliknij **Zainstaluj**.
 
-![Zrzut ekranu: Menedżer bibliotek w Arduino IDE](library_manager.png){ width="60%" }
+![Zrzut ekranu: Menedżer bibliotek w Arduino IDE](img/podstawy/library_manager.png){ width="60%" }
 
 #### Kod odczytu w pętli loop():
 ```cpp

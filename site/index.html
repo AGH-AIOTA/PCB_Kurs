@@ -14,7 +14,7 @@
       
       
       
-        <link rel="next" href="zaawansowane/">
+        <link rel="next" href="bezprzewodowe/">
       
       
         
@@ -232,7 +232,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="zaawansowane/" class="md-tabs__link">
+      <a href="bezprzewodowe/" class="md-tabs__link">
         
   
   
@@ -788,7 +788,7 @@
   
   
     <li class="md-nav__item">
-      <a href="zaawansowane/" class="md-nav__link">
+      <a href="bezprzewodowe/" class="md-nav__link">
         
   
   
@@ -1307,7 +1307,7 @@ Początkujący często próbują wpisywać w kodzie fizyczne numery nóżek same
 niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu układu (tzw. <em>strapping pins</em>). Jeśli podłączymy do nich coś, co wymusi na nich konkretny stan w momencie włączania zasilania, mikrokontroler może nie wystartować poprawnie lub wejść w tryb programowania.</p>
 </div>
 <p>Poniżej znajduje się schemat naszej zestawowej płytki edukacyjnej:</p>
-<p><img alt="Schemat ideowy płytki edukacyjnej" src="schematic.png" /></p>
+<p><img alt="Schemat ideowy płytki edukacyjnej" src="img/podstawy/schematic.png" /></p>
 <p>Analizując schemat, możemy odczytać, do których pinów GPIO podłączone są poszczególne elementy. To właśnie te numery wpiszemy w naszym kodzie:</p>
 <table>
 <thead>
@@ -1359,7 +1359,7 @@ niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu ukła
 <p>Aby rozpocząć pracę, płytkę łączymy z komputerem za pomocą kabla podłączonego do portu <strong>USB</strong>. </p>
 <p>Dla układu ESP32-C6 istotne jest prawidłowe skonfigurowanie portu komunikacyjnego w środowisku Arduino IDE. Abyśmy mogli poprawnie odbierać komunikaty przesyłane z mikrokontrolera na ekran komputera, musimy włączyć obsługę wbudowanego kontrolera USB CDC.</p>
 <p>W tym celu <strong>po wybraniu</strong> odpowiedniej płytki w menu <strong>Narzędzia (Tools)</strong> odnajdujemy opcję <strong>USB CDC On Boot</strong> i ustawiamy ją na <strong>Enabled</strong>:</p>
-<p><img alt="Zrzut ekranu: Włączenie opcji USB CDC On Boot w Arduino IDE" src="cnc_enable.png" /></p>
+<p><img alt="Zrzut ekranu: Włączenie opcji USB CDC On Boot w Arduino IDE" src="img/podstawy/cnc_enable.png" /></p>
 <div class="admonition tip">
 <p class="admonition-title">Pamiętaj!</p>
 <p>Jeśli opcja ta pozostanie wyłączona (Disabled), mikrokontroler nie będzie w stanie przesyłać tekstowych wiadomości do komputera przez port USB za pomocą instrukcji <code>Serial.println()</code>.</p>
@@ -1414,7 +1414,7 @@ niektóre piny (np. GPIO8, GPIO9) mają specjalne znaczenie podczas startu ukła
 <p><strong>Co to jest baud?</strong>
 Prędkość <strong>baud</strong> (bod) określa, ile symboli (bitów danych) jest przesyłanych w ciągu jednej sekundy. Ustawienie 115200 baud oznacza szybką komunikację. Ważne jest, aby prędkość ustawiona w kodzie (<code>Serial.begin</code>) była identyczna z tą wybraną w Monitorze Szeregowym – inaczej zamiast tekstu zobaczysz "krzaki" lub dziwne znaki.</p>
 </div>
-<p><img alt="Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie" src="serial_monitor.png" /></p>
+<p><img alt="Zrzut ekranu: Monitor Portu Szeregowego z komunikatem Witaj świecie" src="img/podstawy/serial_monitor.png" /></p>
 <h4 id="zadanie-do-samodzielnego-wykonania">Zadanie do samodzielnego wykonania:</h4>
 <p>Dodaj w pętli <code>loop()</code> drugą instrukcję <code>Serial.println(...)</code> z dowolnym własnym tekstem (np. Twoim imieniem), aby mikrokontroler co sekundę wysyłał na ekran <strong>dwulinijkowy</strong> komunikat.</p>
 <hr />
@@ -1519,7 +1519,7 @@ W naszym przykładzie: bierze odczytaną z potencjometru liczbę od 0 do 4095 i 
 <p><strong>Narzędzie Serial Plotter</strong>
 Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt; Kreślarka portu szeregowego (Serial Plotter)</strong>. Pokręć potencjometrem, a zobaczysz piękny, rysowany na żywo wykres zmian napięcia!</p>
 </div>
-<p><img alt="Zrzut ekranu: Wykres z potencjometru w Serial Plotterze" src="serial_plotter.png" /></p>
+<p><img alt="Zrzut ekranu: Wykres z potencjometru w Serial Plotterze" src="img/podstawy/serial_plotter.png" /></p>
 <h4 id="zadanie-do-samodzielnego-wykonania-termostat-prog-alarmowy">Zadanie do samodzielnego wykonania (Termostat / Próg alarmowy):</h4>
 <p>Często odczyt z czujnika nie służy do płynnej regulacji, lecz do załączania ostrzeżenia po przekroczeniu pewnego progu. Zmodyfikuj program tak, aby całkowicie usunąć <code>analogWrite</code> oraz <code>map()</code>, a zamiast tego użyć instrukcji warunkowej <code>if ... else</code>:</p>
 <ul>
@@ -1542,7 +1542,7 @@ Zamiast czytać suche liczby, otwórz w Arduino IDE menu <strong>Narzędzia -&gt
 <li>Wyszukaj: <strong>MPU6050_light</strong> (autor: rfetick).</li>
 <li>Kliknij <strong>Zainstaluj</strong>.</li>
 </ol>
-<p><img alt="Zrzut ekranu: Menedżer bibliotek w Arduino IDE" src="library_manager.png" width="60%" /></p>
+<p><img alt="Zrzut ekranu: Menedżer bibliotek w Arduino IDE" src="img/podstawy/library_manager.png" width="60%" /></p>
 <h4 id="kod-odczytu-w-petli-loop">Kod odczytu w pętli loop():</h4>
 <div class="highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;MPU6050_light.h&gt;</span>
@@ -1916,7 +1916,7 @@ W systemie FreeRTOS dla układów ESP32 stale czuwa wbudowany mechanizm nadzorcy
         
         
           
-          <a href="zaawansowane/" class="md-footer__link md-footer__link--next" aria-label="Następna strona: Technologie Bezprzewodowe">
+          <a href="bezprzewodowe/" class="md-footer__link md-footer__link--next" aria-label="Następna strona: Technologie Bezprzewodowe">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Następna strona
