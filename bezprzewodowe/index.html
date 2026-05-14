@@ -1218,7 +1218,7 @@
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="c1">// Pętla pozostaje pusta</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><img alt="Zrzut ekranu z przykładowym adresem MAC" class="center" src="../MAC_address.png" /></p>
+<p><img alt="Zrzut ekranu z przykładowym adresem MAC" class="center" src="../img/bezprzewodowe/MAC_address.png" /></p>
 <div class="admonition tip">
 <p class="admonition-title">Zapisz adres MAC!</p>
 <p>Otwórz Monitor Szeregowy, skopiuj wyświetlony adres MAC i zapisz go sobie (np. w notatniku). Będzie on niezbędny do uzupełnienia kodu Nadajnika w kolejnym kroku.</p>
@@ -1559,7 +1559,7 @@ Pamiętaj, że struktura w kodzie Nadajnika i Odbiornika musi być <b>dokładnie
 <li>Wyszukaj: <strong>ArduinoJson</strong> (autor: Benoit Blanchon).</li>
 <li>Kliknij <strong>Zainstaluj</strong>.</li>
 </ol>
-<p><img alt="Zrzut ekranu z instalacją biblioteki ArduinoJson" src="../ArduinoJson.png" /></p>
+<p><img alt="Zrzut ekranu z instalacją biblioteki ArduinoJson" class="center" src="../img/bezprzewodowe/ArduinoJson.png" /></p>
 <div class="admonition tip">
 <p class="admonition-title">Konfiguracja Hotspotu</p>
 <p>Przed wgraniem kodu włącz w swoim smartfonie funkcję <strong>Przenośny punkt dostępowy (Hotspot Wi-Fi)</strong>. Wpisz nazwę swojej udostępnionej sieci (SSID) oraz hasło w odpowiednich zmiennych w poniższym kodzie.</p>
@@ -1681,7 +1681,7 @@ Pamiętaj, że struktura w kodzie Nadajnika i Odbiornika musi być <b>dokładnie
 </ol>
 <h3 id="cwiczenie-4-odbieranie-komend-ze-smartfona-przez-ble">Ćwiczenie 4: Odbieranie komend ze smartfona przez BLE</h3>
 <p>Skonfigurujemy ESP32-C6 jako serwer BLE udostępniający jedną usługę z charakterystyką zapisu (Write). Klientem będzie uniwersalna aplikacja narzędziowa <strong>nRF Connect for Mobile</strong> (dostępna bezpłatnie na systemy Android oraz iOS), z poziomu której prześlemy liczbowe komendy sterujące diodą.</p>
-<p><img alt="Zrzut ekranu z interfejsem aplikacji nRF Connect for Mobile" class="center" src="../nrfApp.png" width="250px" /></p>
+<p><img alt="Zrzut ekranu z interfejsem aplikacji nRF Connect for Mobile" class="center" src="../img/bezprzewodowe/nrfApp.png" width="250px" /></p>
 <h4 id="kod-do-uzupenienia-i-wgrania-na-pytke_1">Kod do uzupełnienia i wgrania na płytkę:</h4>
 <div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;BLEDevice.h&gt;</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;BLEServer.h&gt;</span>
@@ -1765,16 +1765,16 @@ Pamiętaj, że struktura w kodzie Nadajnika i Odbiornika musi być <b>dokładnie
 <li>Uruchom aplikację <strong>nRF Connect for Mobile</strong> na swoim smartfonie.</li>
 <li>Wyszukaj urządzenie po nazwie i kliknij <strong>CONNECT</strong>.</li>
 </ol>
-<p><img alt="Zrzut ekranu z aplikacją nRF Connect for Mobile" class="center" src="../nrfConnectScreen.png" width="250px" /></p>
+<p><img alt="Zrzut ekranu z aplikacją nRF Connect for Mobile" class="center" src="../img/bezprzewodowe/nrfConnectScreen.png" width="250px" /></p>
 <ol>
 <li>Rozwiń listę przy usłudze o identyfikatorze <code>4fafc201-...</code>.</li>
 </ol>
-<p><img alt="Zrzut ekranu z listą serwisów w aplikacji nRF Connect for Mobile" class="center" src="../nrfService.png" width="250px" /></p>
+<p><img alt="Zrzut ekranu z listą serwisów w aplikacji nRF Connect for Mobile" class="center" src="../img/bezprzewodowe/nrfService.png" width="250px" /></p>
 <ol>
 <li>Przy widocznej charakterystyce kliknij ikonę <strong>strzałki w górę</strong> (Write).</li>
 <li>Wybierz typ danych <strong>BYTE</strong> lub <strong>UINT8</strong>, wpisz wartość <strong><code>01</code></strong> i wyślij. Dioda natychmiast się włączy! Przesłanie wartości <strong><code>00</code></strong> wyłączy ją.</li>
 </ol>
-<p><img alt="Zrzut ekranu z charakterystyką w aplikacji nRF Connect for Mobile" class="center" src="../characteristicWrite.png" width="250px" /></p>
+<p><img alt="Zrzut ekranu z charakterystyką w aplikacji nRF Connect for Mobile" class="center" src="../img/bezprzewodowe/characteristicWrite.png" width="250px" /></p>
 <div class="admonition tip">
 <p class="admonition-title">Filtrowanie urządzeń</p>
 <p>W górnej części aplikacji nRF Connect for Mobile znajduje się pasek wyszukiwania (Search). Możesz wpisać w nim <strong>nazwę</strong> rozgłaszanej płytki (np. "ESP32_BLE_Unikalna") lub jej adres <strong>MAC</strong>, aby odfiltrować listę i wyświetlić wyłącznie swoje urządzenie spośród wszystkich dostępnych w sali.</p>
@@ -1885,7 +1885,7 @@ Pamiętaj, że struktura w kodzie Nadajnika i Odbiornika musi być <b>dokładnie
 <li>Odszukaj charakterystykę o identyfikatorze <code>29f37c35-...</code>.</li>
 <li>Zauważysz przy niej ikonę <strong>wielokrotnych strzałek w dół</strong> (Notify). Kliknij ją, aby włączyć subskrypcję powiadomień (ikona zmieni kolor lub zniknie jej przekreślenie).</li>
 </ol>
-<p><img alt="Zrzut ekranu z charakterystyką w aplikacji nRF Connect for Mobile" class="center" src="../nrfNotify.png" width="250px" /></p>
+<p><img alt="Zrzut ekranu z charakterystyką w aplikacji nRF Connect for Mobile" class="center" src="../img/bezprzewodowe/nrfNotify.png" width="250px" /></p>
 <ol>
 <li>Zaczynaj powoli kręcić potencjometrem na płytce. Na ekranie smartfona w czasie rzeczywistym będą pojawiać się odczytywane wartości napięcia bez konieczności klikania przycisku odświeżania!</li>
 </ol>
