@@ -557,9 +557,9 @@ class ObslugaZapisu: public BLECharacteristicCallbacks {
 
         // Sprawdź, czy pierwszy odebrany bajt (wartosc[0]) to 1
         // Jeśli tak, włącz diodę. Jeśli to 0, wyłącz diodę.
-        if (wartosc[0] == '1') {
+        if (wartosc[0] == 1) {
           digitalWrite(PIN_LED, HIGH);
-        } else if (wartosc[0] == '0') {
+        } else if (wartosc[0] == 0) {
           digitalWrite(PIN_LED, LOW);
         }
       }
