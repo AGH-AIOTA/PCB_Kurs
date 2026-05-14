@@ -40,3 +40,9 @@ h1, h2, h3, h4, h5, h6 {
 .md-typeset a {
   transition: color 0.2s ease;
 }
+
+/* Klasa do centrowania obrazów */
+.center {
+  display: block;
+  margin: 0 auto;
+}

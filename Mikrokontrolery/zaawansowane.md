@@ -15,7 +15,7 @@ Gdy chcemy połączyć dwa mikrokontrolery bez użycia kabli (w przeciwieństwie
 ESP-NOW to protokół komunikacji bezpośredniej (peer-to-peer), który pozwala na błyskawiczne i energooszczędne przesyłanie krótkich pakietów danych (do 250 bajtów) pomiędzy układami z rodziny ESP. Działa to w oparciu o unikalne fizyczne adresy kart sieciowych – **adresy MAC**. Nie wymaga to logowania do żadnej lokalnej sieci Wi-Fi, dzięki czemu opóźnienia są minimalne, a połączenie jest niezwykle stabilne i szybkie w zestawieniu.
 
 > [!IMPORTANT] Klucz do komunikacji: Adres MAC
-> Każdy układ ESP32 posiada wbudowany, unikalny adres MAC (składający się z 6 bajtów, np. `24:DC:C3:A1:B2:C0`). Aby Płytka A mogła wysłać wiadomość do Płytki B, musi dokładnie znać jej adres MAC!
+> Każdy układ ESP32 posiada wbudowany, unikalny adres MAC (składający się z 6 bajtów, np. `24:DC:C3:A1:B2:C0`). Aby Płytka A mogła wysłać wiadomość do Płytki B, musi znać jej adres MAC!
 
 #### Krok 1: Jak odczytać adres MAC odbiornika?
 Zanim przystąpisz do pisania głównego programu komunikacyjnego, musisz poznać adres MAC płytki, która będzie pełniła rolę Odbiornika. W tym celu wgraj na nią poniższy, krótki program pomocniczy:
@@ -37,6 +37,8 @@ void loop() {
   // Pętla pozostaje pusta
 }
 ```
+
+![Zrzut ekranu z przykładowym adresem MAC](MAC_address.png){ .center }
 
 > [!TIP] Zapisz adres MAC!
 > Otwórz Monitor Szeregowy, skopiuj wyświetlony adres MAC i zapisz go sobie (np. w notatniku). Będzie on niezbędny do uzupełnienia kodu Nadajnika w kolejnym kroku.
@@ -374,6 +376,11 @@ void loop() {
 }
 ```
 
+> [!WARNING] mDNS i Android
+> Usługa mDNS (adresy z końcówką `.local`) często nie działa w przeglądarkach na systemie **Android**. Jeśli adres `http://esp32.local` nie otwiera strony:
+> - Spróbuj połączyć się z komputera – większość systemów desktopowych obsługuje mDNS bez problemu.
+> - Na smartfonie połącz się wpisując bezpośredni adres IP mikrokontrolera (standardowo `http://192.168.4.1`), który wyświetli się w Monitorze Szeregowym po uruchomieniu serwera.
+
 #### Zadanie do samodzielnego wykonania:
 Zmodyfikuj kod strony HTML oraz logikę serwera w C++, aby dodać obsługę **drugiej diody** znajdującej się na płytce (GPIO3).
 
@@ -398,6 +405,8 @@ Zanim wgrasz kod, musisz zainstalować w środowisku narzędzie do obsługi form
 1. W Arduino IDE wybierz: **Szkic -> Dołącz bibliotekę -> Zarządzaj bibliotekami...**
 2. Wyszukaj: **ArduinoJson** (autor: Benoit Blanchon).
 3. Kliknij **Zainstaluj**.
+
+![Zrzut ekranu z instalacją biblioteki ArduinoJson](ArduinoJson.png)
 
 > [!IMPORTANT] Konfiguracja Hotspotu
 > Przed wgraniem kodu włącz w swoim smartfonie funkcję **Przenośny punkt dostępowy (Hotspot Wi-Fi)**. Wpisz nazwę swojej udostępnionej sieci (SSID) oraz hasło w odpowiednich zmiennych w poniższym kodzie.
@@ -528,6 +537,8 @@ Struktura serwera wygląda następująco:
 ### Ćwiczenie 4: Odbieranie komend ze smartfona przez BLE
 Skonfigurujemy ESP32-C6 jako serwer BLE udostępniający jedną usługę z charakterystyką zapisu (Write). Klientem będzie uniwersalna aplikacja narzędziowa **nRF Connect for Mobile** (dostępna bezpłatnie na systemy Android oraz iOS), z poziomu której prześlemy liczbowe komendy sterujące diodą.
 
+![Zrzut ekranu z interfejsem aplikacji nRF Connect for Mobile](nrfApp.png){ width="250px" .center }
+
 #### Kod do uzupełnienia i wgrania na płytkę:
 ```cpp
 #include <BLEDevice.h>
@@ -611,9 +622,20 @@ void loop() {
 #### Instrukcja testowania:
 1. Uruchom aplikację **nRF Connect for Mobile** na swoim smartfonie.
 2. Wyszukaj urządzenie po nazwie i kliknij **CONNECT**.
+
+![Zrzut ekranu z aplikacją nRF Connect for Mobile](nrfConnectScreen.png){ width="250px" .center }
+
 3. Rozwiń listę przy usłudze o identyfikatorze `4fafc201-...`.
+
+![Zrzut ekranu z listą serwisów w aplikacji nRF Connect for Mobile](nrfService.png){ width="250px" .center }
+
 4. Przy widocznej charakterystyce kliknij ikonę **strzałki w górę** (Write).
 5. Wybierz typ danych **BYTE** lub **UINT8**, wpisz wartość **`01`** i wyślij. Dioda natychmiast się włączy! Przesłanie wartości **`00`** wyłączy ją.
+
+![Zrzut ekranu z charakterystyką w aplikacji nRF Connect for Mobile](characteristicWrite.png){ width="250px" .center }
+
+> [!TIP] Filtrowanie urządzeń
+> W górnej części aplikacji nRF Connect for Mobile znajduje się pasek wyszukiwania (Search). Możesz wpisać w nim **nazwę** rozgłaszanej płytki (np. "ESP32_BLE_Unikalna") lub jej adres **MAC**, aby odfiltrować listę i wyświetlić wyłącznie swoje urządzenie spośród wszystkich dostępnych w sali.
 
 #### Zadanie do samodzielnego wykonania:
 Zmień obsługę logiki w metodzie `onWrite`, aby płytka reagowała na inne, wybrane przez Ciebie wartości liczbowe (np. przesłanie bajtu `0x02` włącza drugą diodę podłączoną do GPIO3, a `0x03` gasi obie).
@@ -726,6 +748,9 @@ void loop() {
 1. Połącz się z urządzeniem w aplikacji **nRF Connect**.
 2. Odszukaj charakterystykę o identyfikatorze `29f37c35-...`.
 3. Zauważysz przy niej ikonę **wielokrotnych strzałek w dół** (Notify). Kliknij ją, aby włączyć subskrypcję powiadomień (ikona zmieni kolor lub zniknie jej przekreślenie).
+
+![Zrzut ekranu z charakterystyką w aplikacji nRF Connect for Mobile](nrfNotify.png){ width="250px" .center }
+
 4. Zaczynaj powoli kręcić potencjometrem na płytce. Na ekranie smartfona w czasie rzeczywistym będą pojawiać się odczytywane wartości napięcia bez konieczności klikania przycisku odświeżania!
 
 #### Zadanie do samodzielnego wykonania:
