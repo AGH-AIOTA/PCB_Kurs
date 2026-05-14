@@ -416,6 +416,16 @@ W klasycznym podejściu programy pisane w środowisku Arduino działają wewnąt
 
 Układ ESP32-C6 natywnie działa pod kontrolą systemu operacyjnego czasu rzeczywistego **FreeRTOS** (*Free Real-Time Operating System*). System ten posiada **planistę (schedulera)**, który potrafi przełączać kontekst wykonania i przydzielać czas procesora do niezależnych bloków kodu, nazywanych **Zadaniami (Tasks)**. Każde zadanie posiada własny stos pamięci oraz przypisany priorytet.
 
+> [!IMPORTANT] Zasady zadań FreeRTOS
+> Każda funkcja realizująca zadanie FreeRTOS **musi** spełniać jeden z dwóch warunków:
+> 1. Działać w **nieskończonej pętli** (np. `for(;;)` lub `while(1)`), z której nigdy nie wychodzi.
+> 2. Zostać jawnie zakończona instrukcją **`vTaskDelete(NULL)`** przed wyjściem z funkcji (parametr `NULL` wskazuje na aktualne zadanie).
+>
+> **Nigdy nie pozwalaj funkcji zadania zakończyć się "po prostu"** (poprzez klamrę domykającą lub `return`) – doprowadziłoby to do niezdefiniowanego zachowania systemu. 
+
+> [!NOTE] Ciekawostka
+> Warto wiedzieć, że w środowisku programistycznym dla układów ESP32 standardowe funkcje `setup()` oraz `loop()` pod spodem nie działają "magicznie" poza systemem. Środowisko automatycznie tworzy dla nich domyślne zadanie FreeRTOS o nazwie `loopTask` i priorytecie 1. Pisząc zwykły kod w Arduino, od zawsze programowałeś wewnątrz zadania FreeRTOS, nawet o tym nie wiedząc! Właśnie dlatego w naszych przykładach możemy bezpiecznie "wyłączyć" pętlę `loop` za pomocą `vTaskDelete(NULL)`, zwalniając przydzieloną jej pamięć.
+
 ### **Wyzwania programowania współbieżnego**
 Dzielenie czasu procesora pomiędzy różne zadania daje ogromne możliwości, ale wprowadza również specyficzne dla systemów wielozadaniowych problemy architektoniczne, które programista musi wziąć pod uwagę:
 
@@ -503,9 +513,6 @@ void TaskDioda2(void *pvParameters) {
 #### Zadanie do samodzielnego wykonania:
 Stwórz w programie **trzecie zadanie** (np. `TaskLicznik`), które posiada wyższy priorytet (`2`) i w nieskończonej pętli co sekundę wypisuje na port szeregowy kolejną liczbę (licznik sekund). Zaobserwuj w Monitorze Szeregowym, w jaki sposób FreeRTOS współdzieli czas procesora dla wszystkich trzech procesów.
 
-> [!NOTE] Ciekawostka
-> **Pętla loop() to również zadanie!**
-> Warto wiedzieć, że w środowisku programistycznym dla układów ESP32 standardowe funkcje `setup()` oraz `loop()` pod spodem nie działają "magicznie" poza systemem. Środowisko automatycznie tworzy dla nich domyślne zadanie FreeRTOS o nazwie `loopTask` i priorytecie 1. Pisząc zwykły kod w Arduino, od zawsze programowałeś wewnątrz zadania FreeRTOS, nawet o tym nie wiedząc! Właśnie dlatego w naszym kodzie mogliśmy bezpiecznie usunąć to domyślne zadanie za pomocą instrukcji `vTaskDelete(NULL)`, zwalniając przydzieloną mu pamięć.
 
 > [!IMPORTANT] Task Watchdog Timer (TWDT)
 > **Dlaczego zadanie bez opóźnienia resetuje płytkę?**
