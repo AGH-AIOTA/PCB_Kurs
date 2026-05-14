@@ -1,3 +1,7 @@
 dodać przycisk do strony mikrokontrolera na jakiś pin
 wyciągnąć piny pod servo
+wyciągnąć piny na SPI
 rozłączyć zasilanie 5v z bateryjnym, ewentualnie połączyć 3.3 przez diodę (schottkiego) aby tylko z espa na płytkę mogło iść
+
+markdown:
+obsługa NVS, servo, SPI, obsługa kart sd, I2S, przerwania zewnętrzne, deep sleepy. Edge Impulse tylko trzeba zrobić dataset jakiś fajny aby nie trzeba było zbierać danych podczas labu.
