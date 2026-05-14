@@ -1696,6 +1696,19 @@ Do porównania odebranych znaków użyj instrukcji warunkowej, na przykład: <co
 <h2 id="czesc-4-wprowadzenie-do-freertos-prawdziwa-wielozadaniowosc">CZĘŚĆ 4: Wprowadzenie do FreeRTOS – Prawdziwa wielozadaniowość</h2>
 <p>W klasycznym podejściu programy pisane w środowisku Arduino działają wewnątrz jednej głównej pętli <code>loop()</code>. Jeśli chcemy realizować kilka operacji jednocześnie, musimy tworzyć rozbudowane maszyny stanów i stale kontrolować upływ czasu za pomocą funkcji <code>millis()</code>. Takie rozwiązanie staje się trudne w utrzymaniu, szczególnie gdy poszczególne procesy wymagają precyzyjnego rygoru czasowego (np. bezwzględnego wywoływania kodu dokładnie co 10 ms). Istnieje jednak o wiele wygodniejsza alternatywa:</p>
 <p>Układ ESP32-C6 natywnie działa pod kontrolą systemu operacyjnego czasu rzeczywistego <strong>FreeRTOS</strong> (<em>Free Real-Time Operating System</em>). System ten posiada <strong>planistę (schedulera)</strong>, który potrafi przełączać kontekst wykonania i przydzielać czas procesora do niezależnych bloków kodu, nazywanych <strong>Zadaniami (Tasks)</strong>. Każde zadanie posiada własny stos pamięci oraz przypisany priorytet.</p>
+<div class="admonition tip">
+<p class="admonition-title">Zasady zadań FreeRTOS</p>
+<p>Każda funkcja realizująca zadanie FreeRTOS <strong>musi</strong> spełniać jeden z dwóch warunków:</p>
+<ol>
+<li>Działać w <strong>nieskończonej pętli</strong> (np. <code>for(;;)</code> lub <code>while(1)</code>), z której nigdy nie wychodzi.</li>
+<li>Zostać jawnie zakończona instrukcją <strong><code>vTaskDelete(NULL)</code></strong> przed wyjściem z funkcji (parametr <code>NULL</code> wskazuje na aktualne zadanie).</li>
+</ol>
+<p><strong>Nigdy nie pozwalaj funkcji zadania zakończyć się "po prostu"</strong> (poprzez klamrę domykającą lub <code>return</code>) – doprowadziłoby to do niezdefiniowanego zachowania systemu. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Ciekawostka</p>
+<p>Warto wiedzieć, że w środowisku programistycznym dla układów ESP32 standardowe funkcje <code>setup()</code> oraz <code>loop()</code> pod spodem nie działają "magicznie" poza systemem. Środowisko automatycznie tworzy dla nich domyślne zadanie FreeRTOS o nazwie <code>loopTask</code> i priorytecie 1. Pisząc zwykły kod w Arduino, od zawsze programowałeś wewnątrz zadania FreeRTOS, nawet o tym nie wiedząc! Właśnie dlatego w naszych przykładach możemy bezpiecznie "wyłączyć" pętlę <code>loop</code> za pomocą <code>vTaskDelete(NULL)</code>, zwalniając przydzieloną jej pamięć.</p>
+</div>
 <h3 id="wyzwania-programowania-wspobieznego"><strong>Wyzwania programowania współbieżnego</strong></h3>
 <p>Dzielenie czasu procesora pomiędzy różne zadania daje ogromne możliwości, ale wprowadza również specyficzne dla systemów wielozadaniowych problemy architektoniczne, które programista musi wziąć pod uwagę:</p>
 <div class="admonition warning">
@@ -1778,11 +1791,6 @@ Do porównania odebranych znaków użyj instrukcji warunkowej, na przykład: <co
 </span></code></pre></div>
 <h4 id="zadanie-do-samodzielnego-wykonania_2">Zadanie do samodzielnego wykonania:</h4>
 <p>Stwórz w programie <strong>trzecie zadanie</strong> (np. <code>TaskLicznik</code>), które posiada wyższy priorytet (<code>2</code>) i w nieskończonej pętli co sekundę wypisuje na port szeregowy kolejną liczbę (licznik sekund). Zaobserwuj w Monitorze Szeregowym, w jaki sposób FreeRTOS współdzieli czas procesora dla wszystkich trzech procesów.</p>
-<div class="admonition note">
-<p class="admonition-title">Ciekawostka</p>
-<p><strong>Pętla loop() to również zadanie!</strong>
-Warto wiedzieć, że w środowisku programistycznym dla układów ESP32 standardowe funkcje <code>setup()</code> oraz <code>loop()</code> pod spodem nie działają "magicznie" poza systemem. Środowisko automatycznie tworzy dla nich domyślne zadanie FreeRTOS o nazwie <code>loopTask</code> i priorytecie 1. Pisząc zwykły kod w Arduino, od zawsze programowałeś wewnątrz zadania FreeRTOS, nawet o tym nie wiedząc! Właśnie dlatego w naszym kodzie mogliśmy bezpiecznie usunąć to domyślne zadanie za pomocą instrukcji <code>vTaskDelete(NULL)</code>, zwalniając przydzieloną mu pamięć.</p>
-</div>
 <div class="admonition tip">
 <p class="admonition-title">Task Watchdog Timer (TWDT)</p>
 <p><strong>Dlaczego zadanie bez opóźnienia resetuje płytkę?</strong>
